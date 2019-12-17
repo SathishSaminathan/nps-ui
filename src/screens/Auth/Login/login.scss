@@ -1,0 +1,53 @@
+@import "../../../constants/ThemeConstants.scss";
+
+$borderRadius: 8px;
+
+.mainContainer {
+  width: 100%;
+  height: 100vh;
+  background-color: $primaryThemeColor;
+  position: relative;
+  .loginContainer {
+    width: 60%;
+    height: 80%;
+    background-color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: $borderRadius;
+    box-shadow: 0px 1px 42px 2px #00000073;
+    overflow: hidden;
+    .inputContainer {
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      height: 100%;
+      .projectDescription {
+        width: 50%;
+        height: 100%;
+        left: 50%;
+        background-color: $primaryThemeColor;
+        position: absolute;
+        transition: all 1s ease-in-out;
+        border-color: red;
+      }
+      .leftInputContainer,
+      .rightInputContainer {
+        width: 50%;
+        height: 100%;
+        background-color: white;
+        border-radius: $borderRadius;
+      }
+      .leftInputContainer {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+      .rightInputContainer {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+    }
+  }
+}
