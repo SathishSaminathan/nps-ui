@@ -8,7 +8,7 @@ $borderRadius: 8px;
   background-color: $primaryThemeColor;
   position: relative;
   .loginContainer {
-    width: 60%;
+    width: 70%;
     height: 80%;
     background-color: white;
     position: absolute;
@@ -27,11 +27,24 @@ $borderRadius: 8px;
       .projectDescription {
         width: 50%;
         height: 100%;
-        left: 50%;
         background-color: $primaryThemeColor;
         position: absolute;
-        transition: all 1s ease-in-out;
-        border-color: red;
+        right: 0;
+        transition: all 1s ease;
+        z-index: 1;
+        &.left {
+          left: 0;
+        }
+        &.right {
+          left: 50%;
+        }
+        .descImage {
+          width: 400px;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
       }
       .leftInputContainer,
       .rightInputContainer {
@@ -40,9 +53,74 @@ $borderRadius: 8px;
         background-color: white;
         border-radius: $borderRadius;
       }
-      .leftInputContainer {
+      .leftInputContainer,
+      .rightInputContainer {
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
+        position: relative;
+        .signUpContainer {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          height: 60%;
+          width: 80%;
+          background-color: white;
+          .titleArea {
+            .titleText {
+              font-weight: 800;
+              text-align: center;
+              font-size: 1.2rem;
+              color: $primaryThemeColor;
+              letter-spacing: 1px;
+            }
+            .titleDesc {
+              padding-top: 10px;
+              text-align: center;
+              color: lightgray;
+            }
+          }
+          .inputArea {
+            width: 100%;
+            margin-top: 40px;
+            font-size: 15px;
+            color: $primaryThemeColor;
+            .input {
+              .label {
+                &.important {
+                  color: $primaryButtonColor;
+                }
+              }
+              input {
+                outline: none;
+                border: 0;
+                background-color: transparent;
+                border-bottom: 1px solid $primaryThemeColor;
+                width: 100%;
+                padding: 10px 10px 10px 0;
+                font-size: 20px;
+              }
+            }
+            .already {
+              font-size: 20px;
+              span {
+                color: $primaryButtonColor;
+                position: relative;
+                padding-left: 5px;
+                cursor: pointer;
+                // &::after {
+                //   content: "";
+                //   height: 1px;
+                //   background-color: $primaryButtonColor;
+                //   position: absolute;
+                //   bottom: 0;
+                //   left: 0;
+                //   width: 50px;
+                // }
+              }
+            }
+          }
+        }
       }
       .rightInputContainer {
         border-top-left-radius: 0;
