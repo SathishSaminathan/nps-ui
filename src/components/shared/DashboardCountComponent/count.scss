@@ -1,0 +1,41 @@
+@import "../../../constants/ThemeConstants.scss";
+
+.countContainer {
+  height: 200px;
+  width: 100%;
+  padding: 10px;
+  .count {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    box-shadow: 0px 0px 19px -3px #00000033;
+    border-radius: 8px;
+    padding: 10px;
+    .label {
+      font-size: 25px;
+      font-weight: bold;
+      height: 20%;
+    }
+    .value {
+      font-size: 50px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 70%;
+      &.Promoters {
+        color: $primaryThemeColor;
+      }
+      &.Passives {
+        color: $successColor;
+      }
+      &.Detractors {
+        color: $primaryButtonColor;
+      }
+      .symbol {
+        font-size: 20px;
+        padding-left: 2px;
+      }
+    }
+  }
+}
