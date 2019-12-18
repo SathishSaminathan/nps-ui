@@ -1,0 +1,27 @@
+
+$boxShadow: 1px 3px 5px 2px #00000026;
+.surveyDescContainer,
+.customizeSurveyContainer {
+  width: 100%;
+  // box-shadow: $boxShadow;
+  padding: 10px 10px 10px 30px;
+  border-radius: 10px;
+}
+.surveyDescContainer {
+  .title {
+    font-size: 40px;
+  }
+  .desc {
+    width: 50%;
+    font-size: 20px;
+  }
+}
+
+.customizeSurveyContainer {
+  .title {
+    font-size: 20px;
+  }
+  .surveyContainer{
+      padding-top: 50px;
+  }
+}

@@ -8,5 +8,32 @@
   color: white;
   font-size: 20px;
   outline: none;
+  transition: all 0.3s ease;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &.disabled {
+    background-color: $primaryButtonDisabled;
+    cursor: not-allowed;
+  }
+  .loader {
+    width: 20px;
+    height: 20px;
+    background-color: transparent;
+    border-radius: 50%;
+    margin-right: 10px;
+    border: 2px solid white;
+    border-top: 2px solid transparent;
+    animation: spin 0.5s linear infinite;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

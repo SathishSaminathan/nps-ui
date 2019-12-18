@@ -1,9 +1,18 @@
 import React from "react";
 import { Row, Col } from "antd";
 
-const CustomInput = ({ label, type, maxLength, important = false }) => {
+const CustomInput = ({
+  label,
+  type,
+  maxLength,
+  important = false,
+  bordered = false,
+  style,
+  handleChange,
+  name
+}) => {
   return (
-    <Row className="input">
+    <Row className="input" style={style}>
       <Col xl={24}>
         <span className={`label ${important ? "important" : ""}`}>
           {label}
@@ -11,7 +20,12 @@ const CustomInput = ({ label, type, maxLength, important = false }) => {
         </span>
       </Col>
       <Col xl={24}>
-        <input type={type} />
+        <input
+          className={`${bordered ? "bordered" : ""}`}
+          type={type}
+          name={name}
+          onChange={handleChange}
+        />
       </Col>
     </Row>
   );

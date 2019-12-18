@@ -67,7 +67,7 @@ export default class Login extends Component {
                       </Col>
                     </Row>
                     <Row style={{ marginTop: 30 }}>
-                      <CustomButton text="Register" />
+                      <CustomButton>Register</CustomButton>
                     </Row>
                     <Col xl={24}>
                       <Row
@@ -121,7 +121,7 @@ export default class Login extends Component {
                       </Row>
                     </Col>
                     <Row style={{ marginTop: 30 }}>
-                      <CustomButton text="Login" />
+                      <CustomButton>Login</CustomButton>
                     </Row>
                     <Col xl={24}>
                       <Row

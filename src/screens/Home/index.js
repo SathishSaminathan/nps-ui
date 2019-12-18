@@ -1,21 +1,10 @@
 import React, { Component } from "react";
 import { Layout, Menu, Icon, Row, Col } from "antd";
-import { Doughnut } from "react-chartjs-2";
-import DashboardCountComponent from "components/shared/DashboardCountComponent";
+import Survey from "components/Survey";
+import DashboardComponent from "components/shared/DashboardComponent";
+import WelcomeComponent from "components/shared/WelcomeComponent";
 
 const { Header, Content, Footer, Sider } = Layout;
-
-const data = {
-  labels: ["PROMOTERS", "PASSIVES", "DETRACTORS"],
-  datasets: [
-    {
-      data: [20, 50, 30],
-      backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
-      hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"]
-    }
-  ]
-};
-
 export default class Home extends Component {
   state = {
     collapsed: true
@@ -64,41 +53,12 @@ export default class Home extends Component {
           </Menu>
         </Sider>
         <Layout>
-          <Header
-            style={{ background: "#fff", padding: 0 }}
-          >
-            {/* <Icon
-              className="trigger"
-              type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
-              onClick={this.toggle}
-            /> */}
-          </Header>
-          <Content style={{ margin: "24px 16px 0" }}>
-            <div style={{ padding: 24, background: "#fff", minHeight: 360 }}>
-              <Row>
-                <Col xl={24}>
-                  <Col xl={12}>
-                    <Col xl={12}>
-                      <DashboardCountComponent
-                        name="Total NPS values"
-                        count={100}
-                      />
-                    </Col>
-                    <Col xl={12}>
-                      <DashboardCountComponent name="Promoters" count={20} />
-                    </Col>
-                    <Col xl={12}>
-                      <DashboardCountComponent name="Passives" count={50} />
-                    </Col>
-                    <Col xl={12}>
-                      <DashboardCountComponent name="Detractors" count={30} />
-                    </Col>
-                  </Col>
-                  <Col xl={12}>
-                    <Doughnut data={data} />
-                  </Col>
-                </Col>
-              </Row>
+          <Header style={{ background: "#fff", padding: 0 }}>{/*  */}</Header>
+          <Content style={{ margin: "24px 16px 0", backgroundColor: 'white', }}>
+            <div style={{ padding: 24, background: "#fff", height: "max-content" }}>
+              {/* <DashboardComponent /> */}
+              {/* <WelcomeComponent /> */}
+              <Survey />
             </div>
           </Content>
           <Footer style={{ textAlign: "center" }}>
