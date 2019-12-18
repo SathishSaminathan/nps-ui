@@ -1,20 +1,20 @@
 @import "../../../constants/ThemeConstants.scss";
 
-$borderRadius: 8px;
+$borderRadius: 0px;
 
 .mainContainer {
   width: 100%;
   height: 100vh;
   background-color: $primaryThemeColor;
   position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
   .loginContainer {
     width: 70%;
     height: 80%;
     background-color: white;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     border-radius: $borderRadius;
     box-shadow: 0px 1px 42px 2px #00000073;
     overflow: hidden;
@@ -28,6 +28,9 @@ $borderRadius: 8px;
         width: 50%;
         height: 100%;
         background-color: $primaryThemeColor;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         position: absolute;
         right: 0;
         transition: all 1s ease;
@@ -40,10 +43,6 @@ $borderRadius: 8px;
         }
         .descImage {
           width: 400px;
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
         }
       }
       .leftInputContainer,
@@ -63,7 +62,6 @@ $borderRadius: 8px;
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
-          height: 60%;
           width: 80%;
           background-color: white;
           .titleArea {
