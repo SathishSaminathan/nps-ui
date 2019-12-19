@@ -1,0 +1,86 @@
+@import "../../constants/_ThemeConstants.scss";
+
+.overallPattern,
+.subPattern,
+.commentPattern {
+  padding: 24px;
+}
+.subPattern {
+  background-color: lightgrey;
+  &::before {
+    content: "";
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-color: lightgray;
+    left: -10px;
+    top: 30%;
+    transform: rotate(45deg);
+  }
+}
+.commentSection {
+  background-color: $primaryThemeColor;
+  padding: 24px 10px;
+  color: white;
+  h2 {
+    color: white;
+  }
+  &::before {
+    content: "";
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-color: $primaryThemeColor;
+    left: -10px;
+    top: 30%;
+    transform: rotate(45deg);
+  }
+  .comment {
+    background-color: white;
+    padding: 10px 10px 10px 20px;
+    border-radius: 8px;
+    .imageDetailArea {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      &::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        width: 1px;
+        background-color: lightgray;
+        height: 70%;
+      }
+      .imageArea {
+        .image {
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+        }
+      }
+      .detailArea {
+        color: $primaryThemeColor;
+        .name {
+          font-weight: bold;
+          font-size: 15px;
+          width: 90%;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+        .mail {
+          width: 90%;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+        .work {
+          font-weight: bold;
+        }
+      }
+    }
+    .commentText {
+      color: $primaryThemeColor;
+      padding: 5px;
+    }
+  }
+}

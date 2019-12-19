@@ -32,18 +32,34 @@ export default class BarChart extends Component {
     console.log(e, array);
   };
   render() {
+    const { title } = this.props;
     return (
       <div>
-        <h2>Bar Example (custom size)</h2>
+        <h2>{title}</h2>
         <HorizontalBar
           data={data}
           //   width={100}
-          height={500}
+          height={"500%"}
           options={{
             maintainAspectRatio: false,
-            onClick: this.handleClick
+            onClick: this.handleClick,
+            scales: {
+              xAxes: [
+                {
+                  gridLines: {
+                    display: false
+                  }
+                }
+              ],
+              yAxes: [
+                {
+                  gridLines: {
+                    display: false
+                  }
+                }
+              ]
+            }
           }}
-          //   onElementsClick={e => console.log(e)}
         />
       </div>
     );
