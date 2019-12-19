@@ -8,7 +8,10 @@ const DashboardCountComponent = ({ count, name }) => {
       <div className="count">
         <span className="label">{name}</span>
         <div className={`value  ${name}`}>
-          <span>{count}<span className="symbol">%</span></span>
+          <span>
+            {count}
+            <span className="symbol">%</span>
+          </span>
         </div>
       </div>
     </div>
