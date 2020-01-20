@@ -50,6 +50,6 @@ const data = {
   ]
 };
 
-export default function LineChart() {
+export default function LineChart({ data }) {
   return <Line data={data} />;
 }
