@@ -116,11 +116,28 @@ export default class TextAnalytics extends Component {
       textAnalyticsData: null,
       working: false,
       data: [],
-      barChartData: barChartData
+      barChartData: barChartData,
+      response: response.Sheet1,
+      filteredResponse: response.Sheet1,
+      products: products,
+      states: []
     };
   };
 
-  generateDatasetForBarChart = textAnalyticsData => {
+  componentDidMount() {
+    const { response, products } = this.state;
+    this.getLineChartData(response, products);
+    this.generateStates(response);
+  }
+
+  generateStates = response => {
+    let states = [...new Set(response.map(data => data.State))];
+    this.setState({
+      states
+    });
+  };
+
+  generateDatasetForBarChart = (textAnalyticsData, products) => {
     const positiveData = [];
     const negativeData = [];
     products.map(product => {
@@ -152,11 +169,11 @@ export default class TextAnalytics extends Component {
     });
   };
 
-  getLineChartData = () => {
-    setTimeout(() => {
-      this.generateDatasetForLineChart(response.Sheet1);
-      this.generateDatasetForBarChart(response.Sheet1);
-    }, 1500);
+  getLineChartData = (response, products) => {
+    // setTimeout(() => {
+    this.generateDatasetForLineChart(response, products);
+    this.generateDatasetForBarChart(response, products);
+    // }, 1500);
     // this.api
     //   .service(TextAnalyticsVariables.GET_DATA)
     //   .then(res => {
@@ -207,7 +224,7 @@ export default class TextAnalytics extends Component {
     return count;
   };
 
-  generateDatasetForLineChart = textAnalyticsData => {
+  generateDatasetForLineChart = (textAnalyticsData, products) => {
     let dataset = [];
     products.map((product, i) => {
       const color =
@@ -235,11 +252,38 @@ export default class TextAnalytics extends Component {
       }
     });
   };
-  componentDidMount() {
-    this.getLineChartData();
-  }
+
+  handleFilter = (value, type) => {
+    const { response, products } = this.state;
+    if (type === "Age") {
+      const age = value.split(":");
+
+      this.setState(
+        {
+          filteredResponse: value
+            ? response.filter(
+                data =>
+                  parseInt(data[type]) >= age[0] &&
+                  parseInt(data[type]) <= age[0]
+              )
+            : response
+        },
+        () => this.getLineChartData(this.state.filteredResponse, products)
+      );
+      return;
+    }
+    this.setState(
+      {
+        filteredResponse:
+          value && value !== "Both"
+            ? response.filter(data => data[type] === value)
+            : response
+      },
+      () => this.getLineChartData(this.state.filteredResponse, products)
+    );
+  };
   render() {
-    const { data, barChartData } = this.state;
+    const { data, barChartData, states } = this.state;
     return (
       // <Row>
       //   <Col xl={8} className="overallPattern">
@@ -313,7 +357,11 @@ export default class TextAnalytics extends Component {
           </Col>
         </Col>
         <Col xl={6}>
-          <Filters products={products} />
+          <Filters
+            states={states}
+            handleFilter={this.handleFilter}
+            products={products}
+          />
         </Col>
       </Row>
     );

@@ -3,7 +3,7 @@ import { HorizontalBar } from "react-chartjs-2";
 
 export default class BarChart extends Component {
   handleClick = (e, array) => {
-    console.log(e, array);
+    // console.log(e, array);
   };
   render() {
     const { title, data } = this.props;

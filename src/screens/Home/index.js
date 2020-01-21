@@ -17,12 +17,12 @@ export default class Home extends Component {
         <Sider
           // breakpoint="lg"
           collapsible
-          onBreakpoint={broken => {
-            console.log(broken);
-          }}
-          onCollapse={(collapsed, type) => {
-            console.log(collapsed, type);
-          }}
+          // onBreakpoint={broken => {
+          //   console.log(broken);
+          // }}
+          // onCollapse={(collapsed, type) => {
+          //   console.log(collapsed, type);
+          // }}
         >
           <div className="logo">
             <img
