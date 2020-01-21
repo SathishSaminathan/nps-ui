@@ -67,10 +67,10 @@ export default class Integrations extends Component {
   render() {
     const { selectedProducts } = this.state;
     return (
-      <Row>
+      <Row style={{ padding: 24 }}>
         <Col xl={24}>
           <Row type="flex" justify="center">
-            <Col xl={12} className="integrationContainer">
+            <Col xl={16} className="integrationContainer">
               <Col xl={24} className="descArea">
                 <CustomText style={{ color: Colors.primaryThemeColor }}>
                   Connect NPS to your favorite services

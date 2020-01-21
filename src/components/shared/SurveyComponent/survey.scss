@@ -1,6 +1,6 @@
 @import "../../../constants/ThemeConstants.scss";
 .surveyTemplateContainer {
-  width: 70%;
+  width: 100%;
   border: 1px solid lightgray;
   border-radius: 8px;
   overflow: hidden;
@@ -37,7 +37,7 @@
     .value {
       .suffix {
         color: $linkColor;
-        padding-left: 10px;
+        // padding-left: 10px;
       }
     }
   }
@@ -52,14 +52,14 @@
       object-fit: contain;
       // background-color: red;
     }
-    .contentContainer{
+    .contentContainer {
       font-size: 30px;
       display: flex;
       align-items: center;
       justify-content: center;
-      .text{
+      .text {
         width: 80%;
-        .companyName{
+        .companyName {
           font-weight: bold;
           padding: 0 5px;
         }

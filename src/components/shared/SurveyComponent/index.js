@@ -28,7 +28,7 @@ const SurveyComponent = ({ fromName, companyName }) => {
               To:
             </Col>
             <Col className="value">
-              Harris<span className="suffix">jose.harris@nps.ly</span>
+              <span className="suffix">jose.harris@nps.ly</span>
             </Col>
           </Col>
         </Row>

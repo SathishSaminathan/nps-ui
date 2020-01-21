@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Line } from "react-chartjs-2";
 
 const data = {
@@ -54,6 +54,16 @@ export default function LineChart({ data }) {
     <Line
       data={data}
       options={{
+        legend: {
+          display: false
+        },
+        plugins: {
+          datalabels: {
+            display: false,
+            align: "center",
+            anchor: "center"
+          }
+        },
         // maintainAspectRatio: false,
         scales: {
           xAxes: [

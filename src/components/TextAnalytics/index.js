@@ -10,6 +10,7 @@ import TextServices from "services/textServices";
 import { TextAnalyticsVariables } from "constants/APIConstants";
 import LineChart from "components/shared/Charts/LineChart";
 import response from "./data";
+import Filters from "components/Filters";
 
 const months = [
   "January",
@@ -49,7 +50,7 @@ const barChartData = {
       borderWidth: 0,
       //   hoverBackgroundColor: "rgba(255,99,132,0.4)",
       //   hoverBorderColor: "rgba(255,99,132,1)",
-      data: [65, 59, 80, 81, 56, 55, 40]
+      data: [0, 0, 0, 0, 0, 0, 0]
     },
     {
       label: "Negative",
@@ -58,7 +59,7 @@ const barChartData = {
       //   borderWidth: 1,
       //   hoverBackgroundColor: "rgba(255,99,132,0.4)",
       //   hoverBorderColor: "rgba(255,99,132,1)",
-      data: [35, 59, 70, 61, 26, 85, 29]
+      data: [0, 0, 0, 0, 0, 0, 0]
     }
   ]
 };
@@ -114,12 +115,48 @@ export default class TextAnalytics extends Component {
     return {
       textAnalyticsData: null,
       working: false,
-      data: []
+      data: [],
+      barChartData: barChartData
     };
   };
 
+  generateDatasetForBarChart = textAnalyticsData => {
+    const positiveData = [];
+    const negativeData = [];
+    products.map(product => {
+      let positive = 0;
+      let negative = 0;
+      textAnalyticsData.map(data => {
+        if (data.Product === product) {
+          if (data.Sentiment === "Negative") negative = negative + 1;
+          else positive = positive + 1;
+        }
+      });
+      positiveData.push(positive);
+      negativeData.push(negative);
+    });
+    this.setState({
+      barChartData: {
+        ...barChartData,
+        datasets: [
+          {
+            ...this.state.barChartData.datasets[0],
+            data: positiveData
+          },
+          {
+            ...this.state.barChartData.datasets[1],
+            data: negativeData
+          }
+        ]
+      }
+    });
+  };
+
   getLineChartData = () => {
-    this.generateDataset(response.Sheet1);
+    setTimeout(() => {
+      this.generateDatasetForLineChart(response.Sheet1);
+      this.generateDatasetForBarChart(response.Sheet1);
+    }, 1500);
     // this.api
     //   .service(TextAnalyticsVariables.GET_DATA)
     //   .then(res => {
@@ -170,7 +207,7 @@ export default class TextAnalytics extends Component {
     return count;
   };
 
-  generateDataset = textAnalyticsData => {
+  generateDatasetForLineChart = textAnalyticsData => {
     let dataset = [];
     products.map((product, i) => {
       const color =
@@ -202,7 +239,7 @@ export default class TextAnalytics extends Component {
     this.getLineChartData();
   }
   render() {
-    const { data } = this.state;
+    const { data, barChartData } = this.state;
     return (
       // <Row>
       //   <Col xl={8} className="overallPattern">
@@ -259,11 +296,25 @@ export default class TextAnalytics extends Component {
             }}
           ></div> */}
           <Col className="topContainer">
-            <LineChart data={data} />
-            <BarChart data={barChartData} />
+            <Row className="headerArea">
+              <Col className="header">Products</Col>
+              <Col>
+                <div className="top">Top Products</div>
+              </Col>
+            </Row>
+            <Row style={{ paddingLeft: 10 }}>
+              <Col>
+                <LineChart data={data} />
+              </Col>
+              <Col>
+                <BarChart data={barChartData} />
+              </Col>
+            </Row>
           </Col>
         </Col>
-        <Col xl={6}>layout 2</Col>
+        <Col xl={6}>
+          <Filters products={products} />
+        </Col>
       </Row>
     );
   }

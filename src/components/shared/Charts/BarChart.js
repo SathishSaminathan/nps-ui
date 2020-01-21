@@ -9,13 +9,23 @@ export default class BarChart extends Component {
     const { title, data } = this.props;
     return (
       <div>
-        <h2>{title}</h2>
+        {title && <h2>{title}</h2>}
         <HorizontalBar
           data={data}
           //   width={100}
           height={"500%"}
           options={{
-            
+            plugins: {
+              datalabels: {
+                display: false,
+                align: "center",
+                anchor: "center",
+                color: "#000",
+                font: {
+                  size: 18
+                }
+              }
+            },
             maintainAspectRatio: false,
             onClick: this.handleClick,
             legend: {

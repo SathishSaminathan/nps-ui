@@ -86,7 +86,7 @@ export default class Home extends Component {
             }}
           >
             <div
-              style={{ padding: 24, background: "#fff", height: "max-content" }}
+              style={{ padding: 0, background: "#fff", height: "max-content" }}
             >
               <HomeRoutes />
             </div>

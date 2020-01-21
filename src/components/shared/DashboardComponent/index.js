@@ -17,7 +17,7 @@ const data = {
 
 const DashboardComponent = () => {
   return (
-    <Row>
+    <Row style={{ padding: 24 }}>
       <Col xl={24}>
         <Col xl={12}>
           <Col xl={12}>
