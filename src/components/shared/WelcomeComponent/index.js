@@ -7,8 +7,8 @@ import CustomButton from "../CustomButton";
 
 const WelcomeComponent = () => {
   return (
-    <Fragment>
-      <Row style={{ padding: 24 }}>
+    <Row style={{ padding: 24 }}>
+      <Row>
         <Col xl={12}>
           <div className="welcomeCard">
             <p className="welcome">
@@ -39,7 +39,7 @@ const WelcomeComponent = () => {
           </div>
         </Col>
       </Row>
-    </Fragment>
+    </Row>
   );
 };
 

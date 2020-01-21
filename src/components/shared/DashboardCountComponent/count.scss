@@ -93,13 +93,17 @@
     // box-shadow: 0px 0px 19px -3px #00000033;
     border-radius: 8px;
     padding: 10px 10px 0 10px;
+    color: $cardColorBlue;
+    .name {
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
   }
 }
 
 .label {
   font-size: 25px;
   font-weight: bold;
-  height: 20%;
 }
 .value {
   font-size: 50px;
@@ -109,19 +113,21 @@
   justify-content: center;
   color: $cardColorBlue;
   // height: 70%;
-  &.Promoters {
-    color: $cardColorGreen;
-  }
-  &.Passives {
-    color: $cardColorOrange;
-  }
-  &.Detractors {
-    color: $cardColorPink;
-  }
+
   .symbol {
     font-size: 20px;
     // padding-left: 2px;
   }
+}
+
+.Promoters {
+  color: $cardColorGreen;
+}
+.Passives {
+  color: $cardColorOrange;
+}
+.Detractors {
+  color: $cardColorPink;
 }
 
 .circleArea {

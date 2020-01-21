@@ -52,7 +52,7 @@ export default class Home extends Component {
               <Icon type="solution" />
               <span className="nav-text">Survey</span>
             </Menu.Item>
-            <Menu.Item key="4">
+            <Menu.Item key="4" disabled>
               <Icon type="usergroup-add" />
               <span className="nav-text">Customers</span>
             </Menu.Item>
@@ -63,7 +63,7 @@ export default class Home extends Component {
               <Icon type="area-chart" />
               <span className="nav-text">Text Analysis</span>
             </Menu.Item>
-            <Menu.Item key="6">
+            <Menu.Item key="6" disabled>
               <Icon type="notification" />
               <span className="nav-text">Responses</span>
             </Menu.Item>

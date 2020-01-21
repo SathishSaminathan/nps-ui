@@ -52,7 +52,22 @@ const DashboardComponent = () => {
           <Col xl={24}>{renderCardComponents()}</Col>
         </Col>
         <Col xl={10}>
-          <Doughnut data={data} />
+          <Doughnut
+            data={data}
+            options={{
+              plugins: {
+                datalabels: {
+                  // display: true,
+                  align: "center",
+                  anchor: "center",
+                  // color: "#000",
+                  font: {
+                    size: 15
+                  }
+                }
+              }
+            }}
+          />
         </Col>
       </Col>
     </Row>

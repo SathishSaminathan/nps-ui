@@ -7,7 +7,9 @@ const Product = ({ product, selectedProducts, handleProductClick }) => {
   return (
     <Col xl={4} className="productContainer">
       <Col
-        className="imageContainer"
+        className={`imageContainer ${
+          checkIfSelected(product.productName) ? "selected" : ""
+        }`}
         onClick={() => handleProductClick(product.productName)}
       >
         <img src={product.image} className="image" />

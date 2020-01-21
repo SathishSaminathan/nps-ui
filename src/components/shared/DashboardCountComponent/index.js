@@ -23,7 +23,7 @@ const DashboardCountComponent = ({ count, name, index }) => {
     <div className="countContainer" style={renderStyle(index)}>
       <div className="innerContainer">
         <div className="count">
-          <span className="label">{name}</span>
+          <div className={`name ${name}`}>{name}</div>
         </div>
         <div className="circleArea">
           <svg className="svg">
