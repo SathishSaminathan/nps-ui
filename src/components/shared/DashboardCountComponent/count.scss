@@ -1,41 +1,140 @@
 @import "../../../constants/ThemeConstants.scss";
 
 .countContainer {
+  --child1: 90;
+  --child2: 10;
+  --child3: 50;
+  --child4: 50;
   // height: 200px;
-  width: 100%;
-  padding: 10px;
+  width: 50%;
+  // padding: 10px;
+  // display: flex;
+  // flex-direction: column;
+  // align-items: center;
+
+  border-radius: 10px;
+  display: inline-block;
+  .innerContainer {
+    margin: 10px;
+    box-shadow: 0px 0px 16px -4px #00000033;
+    border-radius: 10px;
+  }
+  &:nth-child(1) {
+    // background-color: yellow;
+    .svg {
+      circle {
+        &:nth-child(2) {
+          stroke-dashoffset: calc(440 - (440 * var(--child1)) / 100);
+          stroke: $cardColorBlue;
+        }
+      }
+    }
+  }
+  &:nth-child(2) {
+    // background-color: yellow;
+    .svg {
+      circle {
+        &:nth-child(2) {
+          stroke-dashoffset: calc(440 - (440 * var(--child2)) / 100);
+          stroke: $cardColorGreen;
+        }
+      }
+    }
+  }
+  &:nth-child(3) {
+    // background-color: yellow;
+    .svg {
+      circle {
+        &:nth-child(2) {
+          stroke-dashoffset: calc(440 - (440 * var(--child3)) / 100);
+          stroke: $cardColorOrange;
+        }
+      }
+    }
+  }
+  &:nth-child(4) {
+    // background-color: yellow;
+    .svg {
+      circle {
+        &:nth-child(2) {
+          stroke-dashoffset: calc(440 - (440 * var(--child4)) / 100);
+          stroke: $cardColorPink;
+        }
+      }
+    }
+  }
+  .svg {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    z-index: 100;
+    transform: rotate(-90deg);
+    border: none;
+    circle {
+      border: none;
+      width: 100%;
+      height: 100%;
+      fill: none;
+      // stroke: #191919;
+      stroke-width: 10;
+      stroke-linecap: round;
+      transform: translate(5px, 5px);
+      &:nth-child(2) {
+        stroke-dasharray: 440;
+        // stroke-dashoffset: 100;
+        stroke: #00ff43;
+      }
+    }
+  }
   .count {
     width: 100%;
     height: 100%;
     background-color: white;
-    box-shadow: 0px 0px 19px -3px #00000033;
+    // box-shadow: 0px 0px 19px -3px #00000033;
     border-radius: 8px;
-    padding: 10px;
-    .label {
-      font-size: 25px;
-      font-weight: bold;
-      height: 20%;
-    }
-    .value {
-      font-size: 50px;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 70%;
-      &.Promoters {
-        color: $primaryThemeColor;
-      }
-      &.Passives {
-        color: $successColor;
-      }
-      &.Detractors {
-        color: $primaryButtonColor;
-      }
-      .symbol {
-        font-size: 20px;
-        padding-left: 2px;
-      }
-    }
+    padding: 10px 10px 0 10px;
+  }
+}
+
+.label {
+  font-size: 25px;
+  font-weight: bold;
+  height: 20%;
+}
+.value {
+  font-size: 50px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $cardColorBlue;
+  // height: 70%;
+  &.Promoters {
+    color: $cardColorGreen;
+  }
+  &.Passives {
+    color: $cardColorOrange;
+  }
+  &.Detractors {
+    color: $cardColorPink;
+  }
+  .symbol {
+    font-size: 20px;
+    // padding-left: 2px;
+  }
+}
+
+.circleArea {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 10px;
+  .perc {
+    position: absolute;
+    top: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%);
   }
 }

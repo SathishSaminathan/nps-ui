@@ -15,25 +15,43 @@ const data = {
   ]
 };
 
+const card = [
+  {
+    name: "Total NPS values",
+    value: 100
+  },
+  {
+    name: "Promoters",
+    value: 80
+  },
+  {
+    name: "Passives",
+    value: 60
+  },
+  {
+    name: "Detractors",
+    value: 40
+  }
+];
+
 const DashboardComponent = () => {
+  const renderCardComponents = () => {
+    return card.map((data, i) => (
+      <DashboardCountComponent
+        name={data.name}
+        count={data.value}
+        index={i + 1}
+        key={i}
+      />
+    ));
+  };
   return (
     <Row style={{ padding: 24 }}>
       <Col xl={24}>
-        <Col xl={12}>
-          <Col xl={12}>
-            <DashboardCountComponent name="Total NPS values" count={100} />
-          </Col>
-          <Col xl={12}>
-            <DashboardCountComponent name="Promoters" count={20} />
-          </Col>
-          <Col xl={12}>
-            <DashboardCountComponent name="Passives" count={50} />
-          </Col>
-          <Col xl={12}>
-            <DashboardCountComponent name="Detractors" count={30} />
-          </Col>
+        <Col xl={14}>
+          <Col xl={24}>{renderCardComponents()}</Col>
         </Col>
-        <Col xl={12}>
+        <Col xl={10}>
           <Doughnut data={data} />
         </Col>
       </Col>
