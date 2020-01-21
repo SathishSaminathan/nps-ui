@@ -51,5 +51,28 @@ const data = {
 };
 
 export default function LineChart({ data }) {
-  return <Line data={data} />;
+  return (
+    <Line
+      data={data}
+      options={{
+        // maintainAspectRatio: false,
+        scales: {
+          xAxes: [
+            {
+              gridLines: {
+                display: false
+              }
+            }
+          ],
+          yAxes: [
+            {
+              gridLines: {
+                display: false
+              }
+            }
+          ]
+        }
+      }}
+    />
+  );
 }
