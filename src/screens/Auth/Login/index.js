@@ -13,6 +13,7 @@ export default class Login extends Component {
   };
   render() {
     const { isLogin } = this.state;
+    console.log("this.props", this.props);
     return (
       <div className="mainContainer">
         <div className="loginContainer">
@@ -79,9 +80,9 @@ export default class Login extends Component {
                           <div className="already">
                             Already have an account ?
                             <span
-                              onClick={() =>
-                                this.setState({ isLogin: !this.state.isLogin })
-                              }
+                              onClick={() => {
+                                this.setState({ isLogin: !this.state.isLogin });
+                              }}
                             >
                               Log in
                             </span>
@@ -121,7 +122,13 @@ export default class Login extends Component {
                       </Row>
                     </Col>
                     <Row style={{ marginTop: 30 }}>
-                      <CustomButton>Login</CustomButton>
+                      <CustomButton
+                        onClick={() =>
+                          this.props.history.push("/dashboardWithoutData")
+                        }
+                      >
+                        Login
+                      </CustomButton>
                     </Row>
                     <Col xl={24}>
                       <Row

@@ -8,6 +8,7 @@ import { MainRoutes } from "config/routes";
 
 class App extends Component {
   componentDidMount() {
+    this.props.history.push("/login");
     // Chart.plugins.unregister(ChartDataLabels);// for unregistering global chartdatalabels
   }
   render() {
