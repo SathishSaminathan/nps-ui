@@ -63,12 +63,19 @@ export default class Home extends Component {
               <Icon type="area-chart" />
               <span className="nav-text">Text Analysis</span>
             </Menu.Item>
-            <Menu.Item key="6" disabled>
+            <Menu.Item
+              key="6"
+              onClick={() => this.props.history.push("/textAnalytics1")}
+            >
+              <Icon type="area-chart" />
+              <span className="nav-text">Text Analysis1</span>
+            </Menu.Item>
+            <Menu.Item key="7" disabled>
               <Icon type="notification" />
               <span className="nav-text">Responses</span>
             </Menu.Item>
             <Menu.Item
-              key="7"
+              key="8"
               onClick={() => this.props.history.push("/integrations")}
             >
               <Icon type="setting" />
