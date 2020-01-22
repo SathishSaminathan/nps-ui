@@ -49,7 +49,7 @@ const barChartData1 = {
       borderWidth: 1,
       hoverBackgroundColor: Colors.primaryThemeColor,
       hoverBorderColor: Colors.primaryThemeColor,
-      data: [100, 59, 80, 81, 56, 55, 79, 10, 30]
+      data: [11.1, 9.4, 5.1, 12.2, 9.3, 11.8, 5.7, 4.7, 6.4]
     }
   ]
 };
@@ -64,7 +64,7 @@ const barChartData2 = {
       borderWidth: 1,
       hoverBackgroundColor: Colors.primaryThemeColor,
       hoverBorderColor: Colors.primaryThemeColor,
-      data: [100, 59, 80, 81, 56, 55, 79, 10, 100]
+      data: [10.8, 14.3, 10.9, 8.7, 8.9, 6.3, 5.6, 6.6, 5.0]
     }
   ]
 };
@@ -78,7 +78,7 @@ const barChartData3 = {
       borderWidth: 1,
       hoverBackgroundColor: Colors.primaryThemeColor,
       hoverBorderColor: Colors.primaryThemeColor,
-      data: [100, 59, 80, 81, 56, 55, 79, 10, 30]
+      data: [19.6, 11.0, 8.3, 6.6, 7.2, 4.9, 7.7, 6.4, 5.8]
     }
   ]
 };
@@ -92,7 +92,7 @@ const barChartData4 = {
       borderWidth: 1,
       hoverBackgroundColor: Colors.primaryThemeColor,
       hoverBorderColor: Colors.primaryThemeColor,
-      data: [100, 89.6, 66.1, 55.1, 44.9, 44.3, 33.3, 22.1, 11.3]
+      data: [14.3, 12.0, 8.6, 8.6, 8.3, 6.9, 6.4, 6.1, 5.6]
     }
   ]
 };
@@ -106,7 +106,7 @@ const negativeBarChartData1 = {
       borderWidth: 1,
       hoverBackgroundColor: Colors.primaryThemeColor,
       hoverBorderColor: Colors.primaryThemeColor,
-      data: [12.7, 9.6, 6.1, 5.1, 4.9, 4.3, 3.3, 2.1, 1.3]
+      data: [27.7, 26.6, 6.1, 5.1, 4.9, 4.3, 3.6, 3.5, 3.3]
     }
   ]
 };
@@ -121,7 +121,7 @@ const negativeBarChartData2 = {
       borderWidth: 1,
       hoverBackgroundColor: Colors.primaryThemeColor,
       hoverBorderColor: Colors.primaryThemeColor,
-      data: [65, 59, 80, 81, 56, 55, 79, 10, 20]
+      data: [17.3, 21.6, 3.3, 5.7, 8.8, 1.7, 6.7, 4.5, 2.2]
     }
   ]
 };
@@ -135,7 +135,7 @@ const negativeBarChartData3 = {
       borderWidth: 1,
       hoverBackgroundColor: Colors.primaryThemeColor,
       hoverBorderColor: Colors.primaryThemeColor,
-      data: [65, 59, 80, 81, 56, 55, 79, 10, 30]
+      data: [25.4, 22.5, 4.1, 8.5, 6.5, 2.5, 5.7, 3.4, 2.6]
     }
   ]
 };
@@ -149,7 +149,7 @@ const negativeBarChartData4 = {
       borderWidth: 1,
       hoverBackgroundColor: Colors.primaryThemeColor,
       hoverBorderColor: Colors.primaryThemeColor,
-      data: [12.7, 9.6, 6.1, 5.1, 4.9, 4.3, 3.3, 2.1, 1.3]
+      data: [27.4, 26.2, 5.9, 5.3, 4.7, 4.5, 3.6, 3.4, 2.8]
     }
   ]
 };
@@ -210,7 +210,8 @@ class DummyFilter extends Component {
 
 class ChartComponent extends Component {
   render() {
-    const { data } = this.props;
+    const { data, needPadding } = this.props;
+    const ticks = needPadding ? { padding: 0 } : {};
     return (
       <HorizontalBar
         options={{
@@ -233,6 +234,7 @@ class ChartComponent extends Component {
             ],
             yAxes: [
               {
+                ticks,
                 gridLines: {
                   display: false
                 }
@@ -242,9 +244,9 @@ class ChartComponent extends Component {
           maintainAspectRatio: false,
           plugins: {
             datalabels: {
-              display: true,
-              align: "end",
-              anchor: "center",
+              display: false,
+              align: "start",
+              anchor: "start",
               color: "#000",
               font: {
                 size: 12
@@ -309,7 +311,7 @@ export default class TextAnalytics1 extends Component {
                     <Row type="flex" justify="end">
                       <Col>Advocate</Col>
                     </Row>
-                    <ChartComponent data={barChartData1} />
+                    <ChartComponent needPadding data={barChartData1} />
                   </Col>
                   <Col xl={5} style={{ height: "95%" }}>
                     <Row type="flex" justify="end">
