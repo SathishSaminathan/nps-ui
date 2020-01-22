@@ -64,7 +64,7 @@ const barChartData2 = {
       borderWidth: 1,
       hoverBackgroundColor: Colors.primaryThemeColor,
       hoverBorderColor: Colors.primaryThemeColor,
-      data: [10.8, 14.3, 10.9, 8.7, 8.9, 6.3, 5.6, 6.6, 5.4]
+      data: [10.8, 14.3, 10.9, 8.7, 8.9, 6.3, 7.6, 6.6, 6.2]
     }
   ]
 };
@@ -249,7 +249,7 @@ class ChartComponent extends Component {
               anchor: "end",
               color: "#000",
               font: {
-                size: 10
+                size: 12
               },
               formatter: (value, ctx) => {
                 // let sum = 0;
@@ -258,7 +258,7 @@ class ChartComponent extends Component {
                 //   sum += data;
                 // });
                 // let percentage = ((value * 100) / sum).toFixed(2) + "%";
-                return `${value}`;
+                return `${value}%`;
               }
             }
           }
