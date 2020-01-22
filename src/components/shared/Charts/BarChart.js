@@ -13,7 +13,7 @@ export default class BarChart extends Component {
         <HorizontalBar
           data={data}
           //   width={100}
-          height={"500%"}
+          height={"300%"}
           options={{
             plugins: {
               datalabels: {
@@ -34,6 +34,9 @@ export default class BarChart extends Component {
             scales: {
               xAxes: [
                 {
+                  ticks: {
+                    display: false
+                  },
                   gridLines: {
                     display: false
                   },
@@ -42,6 +45,7 @@ export default class BarChart extends Component {
               ],
               yAxes: [
                 {
+                  barPercentage: 0.6,
                   gridLines: {
                     display: false
                   },

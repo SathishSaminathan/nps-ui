@@ -347,10 +347,10 @@ export default class TextAnalytics extends Component {
               </Col>
             </Row>
             <Row style={{ paddingLeft: 10 }}>
-              <Col>
+              <Col style={{height: "30vh"}}>
                 <LineChart data={data} />
               </Col>
-              <Col>
+              <Col style={{paddingTop: 50}}>
                 <BarChart data={barChartData} />
               </Col>
             </Row>

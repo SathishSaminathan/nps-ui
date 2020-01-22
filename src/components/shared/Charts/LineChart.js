@@ -64,10 +64,15 @@ export default function LineChart({ data }) {
             anchor: "center"
           }
         },
-        // maintainAspectRatio: false,
+        maintainAspectRatio: false,
         scales: {
           xAxes: [
             {
+              ticks: {
+                autoSkip: false,
+                maxRotation: 0,
+                minRotation: 0
+              },
               gridLines: {
                 display: false
               }
@@ -75,6 +80,9 @@ export default function LineChart({ data }) {
           ],
           yAxes: [
             {
+              ticks: {
+                display: false //this will remove only the label
+              },
               gridLines: {
                 display: false
               }
