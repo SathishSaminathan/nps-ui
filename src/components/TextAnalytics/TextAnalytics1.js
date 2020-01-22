@@ -244,22 +244,22 @@ class ChartComponent extends Component {
           maintainAspectRatio: false,
           plugins: {
             datalabels: {
-              display: false,
+              display: "auto",
               align: "start",
-              anchor: "start",
+              anchor: "end",
               color: "#000",
               font: {
                 size: 12
-              },
-              formatter: (value, ctx) => {
-                // let sum = 0;
-                // let dataArr = ctx.chart.data.datasets[0].data;
-                // dataArr.map(data => {
-                //   sum += data;
-                // });
-                // let percentage = ((value * 100) / sum).toFixed(2) + "%";
-                return `${value}%`;
               }
+              // formatter: (value, ctx) => {
+              //   // let sum = 0;
+              //   // let dataArr = ctx.chart.data.datasets[0].data;
+              //   // dataArr.map(data => {
+              //   //   sum += data;
+              //   // });
+              //   // let percentage = ((value * 100) / sum).toFixed(2) + "%";
+              //   return `${value}%`;
+              // }
             }
           }
         }}
@@ -295,7 +295,7 @@ export default class TextAnalytics1 extends Component {
     const { data, barChartData, states } = this.state;
     return (
       <Row>
-        <Col xl={18}>
+        <Col xl={20}>
           <Col className="topContainer">
             <Row className="headerArea">
               <Col className="header">Themes by sentiment</Col>
@@ -366,7 +366,7 @@ export default class TextAnalytics1 extends Component {
             </Row>
           </Col>
         </Col>
-        <Col xl={6}>
+        <Col xl={4}>
           <DummyFilter />
         </Col>
       </Row>
