@@ -64,7 +64,7 @@ const barChartData2 = {
       borderWidth: 1,
       hoverBackgroundColor: Colors.primaryThemeColor,
       hoverBorderColor: Colors.primaryThemeColor,
-      data: [10.8, 14.3, 10.9, 8.7, 8.9, 6.3, 5.6, 6.6, 5.0]
+      data: [10.8, 14.3, 10.9, 8.7, 8.9, 6.3, 5.6, 6.6, 5.4]
     }
   ]
 };
@@ -245,21 +245,21 @@ class ChartComponent extends Component {
           plugins: {
             datalabels: {
               display: "auto",
-              align: "start",
+              align: "center",
               anchor: "end",
               color: "#000",
               font: {
-                size: 12
+                size: 10
+              },
+              formatter: (value, ctx) => {
+                // let sum = 0;
+                // let dataArr = ctx.chart.data.datasets[0].data;
+                // dataArr.map(data => {
+                //   sum += data;
+                // });
+                // let percentage = ((value * 100) / sum).toFixed(2) + "%";
+                return `${value}`;
               }
-              // formatter: (value, ctx) => {
-              //   // let sum = 0;
-              //   // let dataArr = ctx.chart.data.datasets[0].data;
-              //   // dataArr.map(data => {
-              //   //   sum += data;
-              //   // });
-              //   // let percentage = ((value * 100) / sum).toFixed(2) + "%";
-              //   return `${value}%`;
-              // }
             }
           }
         }}
