@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col } from "antd";
+import { Row, Col, Radio } from "antd";
 import moment from "moment";
 import { HorizontalBar } from "react-chartjs-2";
 
@@ -169,6 +169,45 @@ const months = [
   "December"
 ];
 
+class DummyFilter extends Component {
+  render() {
+    return (
+      <Row
+        type="flex"
+        align="middle"
+        justify="center"
+        style={{ paddingTop: 20 }}
+      >
+        <Col xl={20}>
+          <Col style={{ marginBottom: 10 }}>
+            <Row>
+              <Col>
+                <span className="label">Brand</span>
+              </Col>
+              <Col>
+                <Radio.Group
+                  defaultValue="Both"
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    paddingLeft: 10
+                  }}
+                  // onChange={e => handleChange(e.target.value, "Gender")}
+                >
+                  <Radio value={"Male"}>(All)</Radio>
+                  <Radio value={"Female"}>AMI</Radio>
+                  <Radio value={"Both"}>NAC</Radio>
+                  <Radio value={"State"}>STATE</Radio>
+                </Radio.Group>
+              </Col>
+            </Row>
+          </Col>
+        </Col>
+      </Row>
+    );
+  }
+}
+
 class ChartComponent extends Component {
   render() {
     const { data } = this.props;
@@ -326,11 +365,7 @@ export default class TextAnalytics1 extends Component {
           </Col>
         </Col>
         <Col xl={6}>
-          <Filters
-            states={states}
-            handleFilter={this.handleFilter}
-            products={products}
-          />
+          <DummyFilter />
         </Col>
       </Row>
     );
