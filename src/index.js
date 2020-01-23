@@ -5,6 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import * as serviceWorker from "./serviceWorker";
 import RouteWithAuth from "./App";
 import "./index.css";
+import "./style.scss";
 import "antd/dist/antd.css";
 
 ReactDOM.render(

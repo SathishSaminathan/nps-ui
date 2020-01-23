@@ -123,9 +123,10 @@ export default class Login extends Component {
                     </Col>
                     <Row style={{ marginTop: 30 }}>
                       <CustomButton
-                        onClick={() =>
-                          this.props.history.push("/dashboardWithoutData")
-                        }
+                        onClick={() => {
+                          this.props.history.push("/dashboardWithoutData");
+                          localStorage.setItem("user", true);
+                        }}
                       >
                         Login
                       </CustomButton>

@@ -5,7 +5,7 @@ import "./welcome.scss";
 import { Images } from "assets/images";
 import CustomButton from "../CustomButton";
 
-const WelcomeComponent = () => {
+const WelcomeComponent = ({ history }) => {
   return (
     <Row style={{ padding: 24 }}>
       <Row>
@@ -34,7 +34,9 @@ const WelcomeComponent = () => {
               electronic typesetting, remaining essentially unchanged
             </p>
             <div>
-              <CustomButton>Take Survey</CustomButton>
+              <CustomButton onClick={() => history.push("/survey")}>
+                Take Survey
+              </CustomButton>
             </div>
           </div>
         </Col>

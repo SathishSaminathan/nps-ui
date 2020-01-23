@@ -8,9 +8,14 @@ import { MainRoutes } from "config/routes";
 
 class App extends Component {
   componentDidMount() {
+    if (!this.checkForUser()) {
+      this.props.history.push("/login");
+    }
     // this.props.history.push("/login");
     // Chart.plugins.unregister(ChartDataLabels);// for unregistering global chartdatalabels
   }
+
+  checkForUser = () => localStorage.getItem("user");
   render() {
     return (
       <Fragment>

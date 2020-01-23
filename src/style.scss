@@ -1,0 +1,98 @@
+@import "./constants/_ThemeConstants.scss";
+.bandArea {
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: row;
+  background-color: $menuColor;
+  padding: 10px;
+
+  .header {
+    color: white;
+    font-size: 1.5rem;
+  }
+}
+
+.createModal {
+  .ant-modal-content {
+    border-radius: 0;
+    .ant-modal-close-x {
+      color: white;
+    }
+    .ant-modal-header {
+      border-radius: 0;
+      background-color: #393a3d;
+      .ant-modal-title,
+      .ant-modal-close-x {
+        color: white;
+      }
+    }
+  }
+  .ant-btn {
+    border-radius: 0;
+    &:hover {
+      border-color: $primaryButtonColor;
+      color: $primaryButtonColor;
+    }
+  }
+  .ant-btn-primary {
+    background-color: $primaryButtonColor;
+    border: 0;
+    color: white !important;
+
+    &:hover {
+      background-color: $primaryButtonColor;
+    }
+  }
+}
+
+.uploadImage {
+  width: 100px;
+  cursor: pointer;
+}
+
+.ant-pagination-item-active {
+  font-weight: 500;
+  background: #fff;
+  border-color: $primaryButtonColor !important;
+  a {
+    color: $primaryButtonColor !important;
+  }
+}
+
+.ant-pagination-item {
+  &:hover {
+    border-color: $primaryButtonColor !important;
+    a {
+      color: $primaryButtonColor !important;
+    }
+  }
+}
+
+.link {
+  color: $primaryButtonColor !important;
+}
+
+.ant-table-fixed-left {
+  border-radius: 0 !important;
+  .ant-table-header {
+    .ant-table-fixed {
+      border-radius: 0 !important;
+    }
+  }
+}
+
+.ant-table-thead {
+  tr {
+    .ant-table-row-cell-break-word {
+      height: 75px !important;
+    }
+    th {
+      border-radius: 0 !important;
+      background-color: $primaryButtonColor !important;
+      // height: 74px !important;
+      span {
+        color: white;
+      }
+    }
+  }
+}

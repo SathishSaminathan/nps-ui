@@ -1,8 +1,26 @@
-import React, { Component } from "react";
-import { Table, Row, Col, Tag } from "antd";
+import React, { Component, Fragment } from "react";
+import { Table, Row, Col, Tag, Upload, message, Button, Icon } from "antd";
 import LinesEllipsis from "react-lines-ellipsis";
 
 import myData from "data.json";
+
+const props = {
+  name: "file",
+  action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+  headers: {
+    authorization: "authorization-text"
+  },
+  onChange(info) {
+    if (info.file.status !== "uploading") {
+      console.log(info.file, info.fileList);
+    }
+    if (info.file.status === "done") {
+      message.success(`${info.file.name} file uploaded successfully`);
+    } else if (info.file.status === "error") {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  }
+};
 
 const columns = [
   {
@@ -115,7 +133,7 @@ const columns = [
     key: "Product",
     fixed: "right",
     width: 100,
-    render: text => text && <a>{text}</a>
+    render: text => text && <a className="link">{text}</a>
   }
 ];
 
@@ -133,16 +151,28 @@ export default class RawData extends Component {
   render() {
     const { data } = this.state;
     return (
-      <Row style={{ padding: 24 }}>
-        <Col>
-          <Table
-            columns={columns}
-            dataSource={data}
-            scroll={{ x: 1500, y: "66vh" }}
-            pagination={{ pageSize: 100 }}
-          />
-        </Col>
-      </Row>
+      <Fragment>
+        <Row className="bandArea" type="flex" justify="space-between" align="middle">
+          <Col className="header">Customer Complaints</Col>
+          <Col>
+            <Upload {...props}>
+              <Button type="primary" className="customButton">
+                <Icon type="upload" /> Upload Complaints
+              </Button>
+            </Upload>
+          </Col>
+        </Row>
+        <Row style={{ padding: 24 }}>
+          <Col>
+            <Table
+              columns={columns}
+              dataSource={data}
+              scroll={{ x: 1500, y: "66vh" }}
+              pagination={{ pageSize: 100 }}
+            />
+          </Col>
+        </Row>
+      </Fragment>
     );
   }
 }
