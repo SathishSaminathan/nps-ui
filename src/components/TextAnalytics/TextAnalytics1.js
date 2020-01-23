@@ -195,7 +195,7 @@ class DummyFilter extends Component {
                   // onChange={e => handleChange(e.target.value, "Gender")}
                 >
                   <Radio value={"Male"}>Credit Card</Radio>
-                  <Radio value={"Male"}>Debit Card</Radio>
+                  <Radio value={"Males"}>Debit Card</Radio>
                   <Radio value={"Female"}>Loan</Radio>
                   <Radio value={"Both"}>Mobile Banking</Radio>
                 </Radio.Group>
