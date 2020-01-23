@@ -24,12 +24,13 @@ export default class Login extends Component {
             <div className="leftInputContainer">
               <div className="signUpContainer">
                 <div className="titleArea">
+                  <div className="titleText">Round's Edge Technologies</div>
                   <div className="titleText">Sign Up for NPS</div>
-                  <p className="titleDesc">
+                  {/* <p className="titleDesc">
                     Lorem Ipsum is simply dummy text of the printing and
                     typesetting industry. Lorem Ipsum has been the industry's
                     standard dummy.
-                  </p>
+                  </p> */}
                 </div>
                 <div className="inputArea">
                   <Row type="flex" justify="center">
@@ -97,12 +98,13 @@ export default class Login extends Component {
             <div className="rightInputContainer">
               <div className="signUpContainer">
                 <div className="titleArea">
+                  <div className="titleText">Round's Edge Technologies</div>
                   <div className="titleText">Login for NPS</div>
-                  <p className="titleDesc">
+                  {/* <p className="titleDesc">
                     Lorem Ipsum is simply dummy text of the printing and
                     typesetting industry. Lorem Ipsum has been the industry's
                     standard dummy.
-                  </p>
+                  </p> */}
                 </div>
                 <div className="inputArea">
                   <Row type="flex" justify="center">

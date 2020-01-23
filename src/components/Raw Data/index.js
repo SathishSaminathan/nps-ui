@@ -3,6 +3,9 @@ import { Table, Row, Col, Tag, Upload, message, Button, Icon } from "antd";
 import LinesEllipsis from "react-lines-ellipsis";
 
 import myData from "data.json";
+import LottieComponent from "components/shared/LottieComponent";
+import { Lotties } from "constants/AppConstants";
+import RecordNotFound from "components/shared/RecordNotFound";
 
 const props = {
   name: "file",
@@ -28,14 +31,16 @@ const columns = [
     width: 150,
     dataIndex: "Customer ID",
     key: "Customer ID",
-    fixed: "left"
+    fixed: "left",
+    align: "center"
   },
   {
     title: "Complaint Id",
     width: 110,
     dataIndex: "Complaint-id",
     key: "Complaint-id",
-    fixed: "left"
+    fixed: "left",
+    align: "center"
   },
   {
     title: "NPS Score",
@@ -133,6 +138,7 @@ const columns = [
     key: "Product",
     fixed: "right",
     width: 100,
+    align: "center",
     render: text => text && <a className="link">{text}</a>
   }
 ];
@@ -141,18 +147,27 @@ export default class RawData extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: myData.Sheet1
+      data: []
     };
   }
 
   componentDidMount() {
-    // console.log("hai", myData.Sheet1[0]);
+    setTimeout(() => {
+      this.setState({
+        data: myData.Sheet1
+      });
+    }, 500);
   }
   render() {
     const { data } = this.state;
     return (
       <Fragment>
-        <Row className="bandArea" type="flex" justify="space-between" align="middle">
+        <Row
+          className="bandArea"
+          type="flex"
+          justify="space-between"
+          align="middle"
+        >
           <Col className="header">Customer Complaints</Col>
           <Col>
             <Upload {...props}>
@@ -168,7 +183,11 @@ export default class RawData extends Component {
               columns={columns}
               dataSource={data}
               scroll={{ x: 1500, y: "66vh" }}
-              pagination={{ pageSize: 100 }}
+              pagination={{ pageSize: 15 }}
+              // loading={data.length === 0}
+              locale={{
+                emptyText: <RecordNotFound />
+              }}
             />
           </Col>
         </Row>
