@@ -3,13 +3,25 @@ import "./survey.scss";
 import { Row, Col } from "antd";
 
 const SurveyValue = ({ value }) => {
-  return <Col className="surveyValue">{value}</Col>;
+  return <Col className={`surveyValue ${renderColors(value)}`}>{value}</Col>;
+};
+
+const renderColors = value => {
+  if (value <= 6) {
+    return "red";
+  }
+  if (value > 6 && value < 9) {
+    return "yellow";
+  }
+  if (value > 8) {
+    return "green";
+  }
 };
 
 const SurveyComponent = ({ fromName, companyName }) => {
   const renderInput = () => {
     let template = [];
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 0; i <= 10; i++) {
       template.push(<SurveyValue value={i} key={i} />);
     }
     return template;
@@ -31,7 +43,7 @@ const SurveyComponent = ({ fromName, companyName }) => {
             </Col>
             <Col className="value">
               {fromName}
-              <span className="suffix">ab@nps.ly</span>
+              <span className="suffix">@roundsedge.com</span>
             </Col>
           </Col>
           <Col xl={24}>
