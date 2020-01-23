@@ -9,6 +9,7 @@ import Survey from "components/Survey";
 import Integrations from "components/Integrations";
 import TextAnalytics from "components/TextAnalytics";
 import TextAnalytics1 from "components/TextAnalytics/TextAnalytics1";
+import RawData from "components/Raw Data";
 
 const MainRoutes = () => {
   return (
@@ -25,6 +26,7 @@ const HomeRoutes = () => {
       <Route path="/dashboardWithData" component={DashboardComponent} />
       <Route path="/dashboardWithoutData" component={WelcomeComponent} />
       <Route path="/survey" component={Survey} />
+      <Route path="/rawData" component={RawData} />
       <Route path="/integrations" component={Integrations} />
       <Route path="/textAnalytics" component={TextAnalytics} />
       <Route path="/textAnalytics1" component={TextAnalytics1} />

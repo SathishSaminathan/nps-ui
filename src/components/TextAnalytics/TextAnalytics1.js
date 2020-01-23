@@ -182,7 +182,7 @@ class DummyFilter extends Component {
           <Col style={{ marginBottom: 10 }}>
             <Row>
               <Col>
-                <span className="label">Brand</span>
+                <span className="label">Product</span>
               </Col>
               <Col>
                 <Radio.Group
@@ -194,10 +194,10 @@ class DummyFilter extends Component {
                   }}
                   // onChange={e => handleChange(e.target.value, "Gender")}
                 >
-                  <Radio value={"Male"}>(All)</Radio>
-                  <Radio value={"Female"}>AMI</Radio>
-                  <Radio value={"Both"}>NAC</Radio>
-                  <Radio value={"State"}>STATE</Radio>
+                  <Radio value={"Male"}>Credit Card</Radio>
+                  <Radio value={"Male"}>Debit Card</Radio>
+                  <Radio value={"Female"}>Loan</Radio>
+                  <Radio value={"Both"}>Mobile Banking</Radio>
                 </Radio.Group>
               </Col>
             </Row>

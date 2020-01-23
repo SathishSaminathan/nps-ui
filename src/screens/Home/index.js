@@ -26,9 +26,10 @@ export default class Home extends Component {
         >
           <div className="logo">
             <img
-              src="http://www.igraphicinc.com/wp-content/uploads/2016/05/Perfect-Logo-Design-for-You-How-to-Choose.png"
+              src="http://roundsedge.com/assets/images/foot-logo.png"
               className="image"
             ></img>
+            {/* <span>Round's Edge</span> */}
           </div>
           <Menu theme="dark" defaultSelectedKeys={["1"]}>
             <Menu.Item
@@ -68,14 +69,21 @@ export default class Home extends Component {
               onClick={() => this.props.history.push("/textAnalytics1")}
             >
               <Icon type="area-chart" />
-              <span className="nav-text">Text Analysis1</span>
+              <span className="nav-text">Sentiment</span>
             </Menu.Item>
-            <Menu.Item key="7" disabled>
+            <Menu.Item
+              key="7"
+              onClick={() => this.props.history.push("/rawData")}
+            >
+              <Icon type="area-chart" />
+              <span className="nav-text">Raw Data</span>
+            </Menu.Item>
+            <Menu.Item key="8" disabled>
               <Icon type="notification" />
               <span className="nav-text">Responses</span>
             </Menu.Item>
             <Menu.Item
-              key="8"
+              key="9"
               onClick={() => this.props.history.push("/integrations")}
             >
               <Icon type="setting" />
@@ -84,12 +92,18 @@ export default class Home extends Component {
           </Menu>
         </Sider>
         <Layout>
-          <Header style={{ background: "#fff", padding: 0 }}>{/*  */}</Header>
+          <Header
+            style={{ background: "#fff", padding: 0 }}
+            className="headerClass"
+          >
+            {/*  */}
+          </Header>
           <Content
             style={{
               margin: "24px 16px 0",
               backgroundColor: "white",
-              minHeight: "fit-content"
+              minHeight: "fit-content",
+              marginTop: 80
             }}
           >
             <div
@@ -99,7 +113,7 @@ export default class Home extends Component {
             </div>
           </Content>
           <Footer style={{ textAlign: "center" }}>
-            Ant Design ©2018 Created by Ant UED
+            NPS ©2020 Created by Round's Edge Technologies
           </Footer>
         </Layout>
       </Layout>

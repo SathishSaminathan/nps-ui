@@ -2,7 +2,8 @@
 .surveyTemplateContainer {
   width: 100%;
   border: 1px solid lightgray;
-  border-radius: 8px;
+  padding-bottom: 5%;
+  // border-radius: 8px;
   overflow: hidden;
   .header {
     height: 60px;
@@ -54,16 +55,27 @@
     }
     .contentContainer {
       font-size: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       .text {
-        width: 80%;
+        // width: 80%;
         .companyName {
           font-weight: bold;
           padding: 0 5px;
         }
       }
+    }
+  }
+}
+
+.surveyValueContainer {
+  .surveyValue {
+    border: 1px solid lightgrey;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 0;
+    &:last-child{
+      border-right: 1px solid lightgrey;
     }
   }
 }

@@ -21,10 +21,10 @@ code {
 
 .logo {
   background-size: contain;
-  height: 100px;
+  height: 64px;
   width: 100%;
   background-repeat: no-repeat;
-  background-color: transparent;
+  background-color: white;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -32,7 +32,7 @@ code {
 }
 
 .image {
-  width: 100px;
+  width: 50px;
 }
 
 .link {
@@ -47,6 +47,7 @@ code {
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
+  margin: 0 !important;
 }
 
 .ant-menu.ant-menu-dark .ant-menu-item-selected,
@@ -86,8 +87,8 @@ code {
   border-color: #ee556a !important;
 }
 
-.ant-radio-inner::after{
- background-color: #ee556a !important; 
+.ant-radio-inner::after {
+  background-color: #ee556a !important;
 }
 
 .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
@@ -101,4 +102,37 @@ code {
 
 .ant-radio-button-wrapper:hover {
   color: #ee556a !important;
+}
+
+.headerClass {
+  position: fixed;
+  top: 0;
+  /* left: 0; */
+  width: 100%;
+  /* background: red !important; */
+  z-index: 1;
+  box-shadow: 8px 3px 12px -3px #00000030;
+}
+
+.textEllipsis {
+  /* width: 80px; */
+  /* display: inline-block; */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tag {
+  color: white !important;
+  border-radius: 15px !important;
+  padding: 3px 10px !important;
+  border: none !important;
+}
+
+.Yes {
+  background-color: #79c447 !important;
+}
+
+.No {
+  background-color: #ff5555 !important;
 }

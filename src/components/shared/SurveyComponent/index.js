@@ -2,17 +2,28 @@ import React, { Component } from "react";
 import "./survey.scss";
 import { Row, Col } from "antd";
 
+const SurveyValue = ({ value }) => {
+  return <Col className="surveyValue">{value}</Col>;
+};
+
 const SurveyComponent = ({ fromName, companyName }) => {
+  const renderInput = () => {
+    let template = [];
+    for (let i = 1; i <= 10; i++) {
+      template.push(<SurveyValue value={i} key={i} />);
+    }
+    return template;
+  };
   return (
-    <div className="surveyTemplateContainer">
-      <div className="header">
-        <div className="dotArea">
-          <div className="dot" />
-          <div className="dot" />
-          <div className="dot" />
-        </div>
-      </div>
-      <div className="fromToArea">
+    <Row className="surveyTemplateContainer">
+      <Row className="header">
+        <Col className="dotArea">
+          <Col className="dot" />
+          <Col className="dot" />
+          <Col className="dot" />
+        </Col>
+      </Row>
+      <Row className="fromToArea">
         <Row>
           <Col xl={24}>
             <Col xl={2} className="label">
@@ -32,7 +43,7 @@ const SurveyComponent = ({ fromName, companyName }) => {
             </Col>
           </Col>
         </Row>
-      </div>
+      </Row>
       <Row className="subjectArea">
         <Row>
           <Col xl={24}>
@@ -55,18 +66,25 @@ const SurveyComponent = ({ fromName, companyName }) => {
               }
             />
           </Col>
-          <Col xl={24} className="contentContainer">
-            <Col className="text">
-              <p>
-                How likely are you to recommended
-                <span className="companyName">{companyName}</span> to a
-                colleague?
-              </p>
-            </Col>
+          <Col xl={24}>
+            <Row type="flex" justify="center" className="contentContainer">
+              <Col xl={24} className="text">
+                <p style={{ textAlign: "center" }}>
+                  How likely are you to recommended
+                  <span className="companyName">{companyName}</span> to a
+                  colleague?
+                </p>
+              </Col>
+              <Col xl={20} className="surveyValueContainer">
+                <Row type="flex" justify="center">
+                  {renderInput()}
+                </Row>
+              </Col>
+            </Row>
           </Col>
         </Col>
       </Row>
-    </div>
+    </Row>
   );
 };
 export default SurveyComponent;
