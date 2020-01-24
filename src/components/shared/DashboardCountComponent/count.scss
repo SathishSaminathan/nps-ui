@@ -76,7 +76,7 @@
       height: 100%;
       fill: none;
       // stroke: #191919;
-      stroke-width: 10;
+      stroke-width: 6;
       stroke-linecap: round;
       transform: translate(5px, 5px);
       &:nth-child(2) {
@@ -95,7 +95,7 @@
     padding: 10px 10px 0 10px;
     color: $cardColorBlue;
     .name {
-      font-size: 1.8rem;
+      font-size: 1.5rem;
       font-weight: bold;
     }
   }
@@ -106,7 +106,7 @@
   font-weight: bold;
 }
 .value {
-  font-size: 50px;
+  font-size: 30px;
   font-weight: bold;
   display: flex;
   align-items: center;

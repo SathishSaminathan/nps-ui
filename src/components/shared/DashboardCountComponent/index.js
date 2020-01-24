@@ -27,8 +27,8 @@ const DashboardCountComponent = ({ count, name, index }) => {
         </div>
         <div className="circleArea">
           <svg className="svg">
-            <circle cx="70" cy="70" r="70"></circle>
-            <circle cx="70" cy="70" r="70"></circle>
+            <circle cx="70" cy="70" r="60"></circle>
+            <circle cx="70" cy="70" r="60"></circle>
           </svg>
           <div className={`value  ${name} perc`}>
             <span>

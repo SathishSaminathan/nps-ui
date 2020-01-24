@@ -80,55 +80,69 @@ class Survey extends Component {
           </Upload>
         </Modal>
         <Row style={{ padding: 24 }}>
-          <Row>
-            <Col xl={24}>
-              <div className="surveyDescContainer">
-                <span className="title">Survey</span>
-                <p className="desc">
-                  Customize your survey with your logo, images and colors so
-                  that it matches your brand's Iidentity
-                </p>
-              </div>
-            </Col>
-          </Row>
-          <Row style={{ paddingTop: 24 }}>
-            <Col xl={24} className="customizeSurveyContainer">
-              <span className="title">Custom Survey</span>
-              <Row className="surveyContainer">
-                <Col xl={6}>
-                  <CustomInput
-                    label="Brand or company name"
-                    type="email"
-                    bordered
-                    name="companyName"
-                    handleChange={this.handleChange}
-                  />
-                  <CustomInput
-                    label="From name"
-                    bordered
-                    style={{ marginTop: 15 }}
-                    name="fromName"
-                    handleChange={this.handleChange}
-                  />
-                </Col>
-                <Col xl={18} style={{ paddingLeft: 15 }}>
-                  <SurveyComponent
-                    fromName={fromName}
-                    companyName={companyName}
-                  />
-                  <Button
-                    style={{ float: "right", marginTop: 10 }}
-                    type="primary"
-                    className="customButton"
-                    size="large"
-                    onClick={() => this.setState({ visible: true })}
-                  >
-                    Next
-                  </Button>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
+          <Col xl={22} md={24} xs={24} sm={24}>
+            <Row>
+              <Col xl={24}>
+                <div className="surveyDescContainer">
+                  <span className="title">Survey</span>
+                  <p className="desc">
+                    Customize your survey with your logo, images and colors so
+                    that it matches your brand's Iidentity
+                  </p>
+                </div>
+              </Col>
+            </Row>
+            <Row style={{ paddingTop: 0 }}>
+              <Col xl={24} className="customizeSurveyContainer">
+                <span className="title">Custom Survey</span>
+                <Row className="surveyContainer">
+                  <Col xl={5}>
+                    <CustomInput
+                      label="Brand or company name"
+                      type="email"
+                      bordered
+                      name="companyName"
+                      labelStyle={{
+                        fontSize: 15
+                      }}
+                      inputStyle={{
+                        padding: 5
+                      }}
+                      handleChange={this.handleChange}
+                    />
+                    <CustomInput
+                      label="From name"
+                      bordered
+                      style={{ marginTop: 15 }}
+                      labelStyle={{
+                        fontSize: 15
+                      }}
+                      inputStyle={{
+                        padding: 5
+                      }}
+                      name="fromName"
+                      handleChange={this.handleChange}
+                    />
+                  </Col>
+                  <Col xl={19} style={{ paddingLeft: 15 }}>
+                    <SurveyComponent
+                      fromName={fromName}
+                      companyName={companyName}
+                    />
+                    <Button
+                      style={{ float: "right", marginTop: 10 }}
+                      type="primary"
+                      className="customButton"
+                      size="large"
+                      onClick={() => this.setState({ visible: true })}
+                    >
+                      Next
+                    </Button>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </Col>
         </Row>
       </Fragment>
     );

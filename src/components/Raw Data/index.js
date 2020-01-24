@@ -1,5 +1,15 @@
 import React, { Component, Fragment } from "react";
-import { Table, Row, Col, Tag, Upload, message, Button, Icon } from "antd";
+import {
+  Table,
+  Row,
+  Col,
+  Tag,
+  Upload,
+  message,
+  Button,
+  Icon,
+  Tooltip
+} from "antd";
 import LinesEllipsis from "react-lines-ellipsis";
 
 import myData from "data.json";
@@ -113,7 +123,11 @@ const columns = [
     dataIndex: "Consumer-Message",
     key: "Issue",
     width: 180,
-    render: text => <div className="textEllipsis">{text}</div>
+    render: text => (
+      <Tooltip placement="left" title={text} style={{ width: 400 }}>
+        <div className="textEllipsis">{text}</div>
+      </Tooltip>
+    )
   },
   // {
   //   title: "Consumer Message",
@@ -183,7 +197,7 @@ export default class RawData extends Component {
               columns={columns}
               dataSource={data}
               scroll={{ x: 1500, y: "66vh" }}
-              pagination={{ pageSize: 15 }}
+              pagination={{ pageSize: 10 }}
               // loading={data.length === 0}
               locale={{
                 emptyText: <RecordNotFound />

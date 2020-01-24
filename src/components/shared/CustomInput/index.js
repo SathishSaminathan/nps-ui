@@ -1,20 +1,34 @@
 import React from "react";
 import { Row, Col } from "antd";
+import { numberOnly } from "helpers/validationHelpers";
 
 const CustomInput = ({
   label,
-  type,
+  type = "text",
   maxLength,
   important = false,
   bordered = false,
   style,
   handleChange,
-  name
+  name,
+  inputStyle,
+  labelStyle,
+  onlyNumber,
+  handleEnter
 }) => {
+  const _handleKeyDown = e => {
+    if (e.key === "Enter") {
+      handleEnter && handleEnter();
+    }
+  };
+
   return (
     <Row className="input" style={style}>
       <Col xl={24}>
-        <span className={`label ${important ? "important" : ""}`}>
+        <span
+          className={`label ${important ? "important" : ""}`}
+          style={labelStyle}
+        >
           {label}
           {important ? "*" : ""}
         </span>
@@ -22,9 +36,14 @@ const CustomInput = ({
       <Col xl={24}>
         <input
           className={`${bordered ? "bordered" : ""}`}
+          style={inputStyle}
           type={type}
           name={name}
-          onChange={handleChange}
+          maxLength={maxLength}
+          onKeyDown={_handleKeyDown}
+          onChange={e =>
+            onlyNumber ? handleChange(numberOnly(e)) : handleChange(e)
+          }
         />
       </Col>
     </Row>

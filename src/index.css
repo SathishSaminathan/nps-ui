@@ -42,8 +42,8 @@ code {
 
 .ant-menu-item {
   height: auto !important;
-  padding: 10px 0 10px 24px !important;
-  font-size: 20px !important;
+  padding: 8px 0 8px 24px !important;
+  font-size: 15px !important;
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
@@ -102,6 +102,14 @@ code {
 
 .ant-radio-button-wrapper:hover {
   color: #ee556a !important;
+}
+
+.ant-tooltip-content {
+  width: 500px;
+  text-align: justify;
+}
+.ant-tooltip-inner{
+  text-align: justify !important;
 }
 
 .headerClass {

@@ -6,14 +6,67 @@ import { Images } from "assets/images";
 import { Row, Col, Button } from "antd";
 import CustomInput from "components/shared/CustomInput";
 import CustomButton from "components/shared/CustomButton";
+import { showNotifications } from "components/shared/NotificationComponent";
+import { Notifications } from "constants/APIConstants";
 
 export default class Login extends Component {
   state = {
-    isLogin: true
+    isLogin: true,
+    userName: null,
+    password: null,
+    isLoading: false,
+    regFirstName: null,
+    regLastName: null,
+    regEmail: null,
+    regMobileNumber: null,
+    regPassword: null,
+    regConfirmPassword: null
+  };
+
+  handleChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
+
+  valid = state => {
+    const { userName, password } = state;
+    if (userName.toUpperCase() === "ADMIN" && password === "Admin") {
+      return true;
+    }
+  };
+
+  handleLogin = () => {
+    const { history } = this.props;
+    if (this.valid(this.state)) {
+      this.setState({
+        isLoading: true
+      });
+      localStorage.setItem("user", true);
+      setTimeout(() => {
+        history.push("/dashboardWithoutData");
+      }, 1000);
+    } else {
+      showNotifications(
+        Notifications.ERROR,
+        "Failed",
+        "User name password mismatch!!"
+      );
+    }
   };
   render() {
-    const { isLogin } = this.state;
-    console.log("this.props", this.props);
+    const {
+      isLogin,
+      userName,
+      password,
+      isLoading,
+      regFirstName,
+      regLastName,
+      regEmail,
+      regMobileNumber,
+      regPassword,
+      regConfirmPassword
+    } = this.state;
     return (
       <div className="mainContainer">
         <div className="loginContainer">
@@ -36,19 +89,51 @@ export default class Login extends Component {
                   <Row type="flex" justify="center">
                     <Col xl={24}>
                       <Row>
-                        <Col xl={24}>
-                          <CustomInput label="Name" important />
+                        <Col xl={12}>
+                          <CustomInput
+                            label="First name"
+                            important
+                            name={"regFirstName"}
+                            inputStyle={{ padding: 0 }}
+                            handleChange={e => this.handleChange(e)}
+                          />
+                        </Col>
+                        <Col xl={12}>
+                          <div style={{ marginLeft: 15 }}>
+                            <CustomInput
+                              label="Last name"
+                              name={"regLastName"}
+                              inputStyle={{ padding: 0 }}
+                              handleChange={e => this.handleChange(e)}
+                            />
+                          </div>
                         </Col>
                       </Row>
                     </Col>
                     <Row>
                       <Col xl={24} style={{ paddingTop: 30 }}>
                         <Col xl={12}>
-                          <CustomInput label="Email" type="email" important />
+                          <CustomInput
+                            label="Email"
+                            type="email"
+                            name={"regEmail"}
+                            important
+                            inputStyle={{ padding: 0 }}
+                            handleChange={e => this.handleChange(e)}
+                          />
                         </Col>
                         <Col xl={12}>
                           <div style={{ marginLeft: 15 }}>
-                            <CustomInput label="Mobile Number" type="number" />
+                            <CustomInput
+                              label="Mobile Number"
+                              // type="number"
+                              name={"regMobileNumber"}
+                              onlyNumber
+                              important
+                              maxLength={10}
+                              inputStyle={{ padding: 0 }}
+                              handleChange={e => this.handleChange(e)}
+                            />
                           </div>
                         </Col>
                       </Col>
@@ -56,20 +141,41 @@ export default class Login extends Component {
                     <Row>
                       <Col xl={24} style={{ paddingTop: 30 }}>
                         <Col xl={12}>
-                          <CustomInput label="Password" type="password" />
+                          <CustomInput
+                            label="Password"
+                            type="password"
+                            name={"regPassword"}
+                            important
+                            inputStyle={{ padding: 0 }}
+                            handleChange={e => this.handleChange(e)}
+                          />
                         </Col>
                         <Col xl={12}>
                           <div style={{ marginLeft: 15 }}>
                             <CustomInput
                               label="Re-Type Password"
                               type="password"
+                              name={"regConfirmPassword"}
+                              important
+                              inputStyle={{ padding: 0 }}
+                              handleChange={e => this.handleChange(e)}
                             />
                           </div>
                         </Col>
                       </Col>
                     </Row>
                     <Row style={{ marginTop: 30 }}>
-                      <CustomButton>Register</CustomButton>
+                      <CustomButton
+                        disabled={
+                          !regFirstName ||
+                          !regEmail ||
+                          !regMobileNumber ||
+                          !regPassword ||
+                          !regConfirmPassword
+                        }
+                      >
+                        Register
+                      </CustomButton>
                     </Row>
                     <Col xl={24}>
                       <Row
@@ -111,10 +217,25 @@ export default class Login extends Component {
                     <Col xl={18}>
                       <Row>
                         <Col xl={24}>
-                          <CustomInput label="Email" type="email" important />
+                          <CustomInput
+                            label="User name"
+                            name={"userName"}
+                            important
+                            inputStyle={{ padding: 0 }}
+                            handleChange={e => this.handleChange(e)}
+                            handleEnter={this.handleLogin}
+                          />
                         </Col>
                         <Col xl={24} style={{ marginTop: 20 }}>
-                          <CustomInput label="Password" type="password" />
+                          <CustomInput
+                            label="Password"
+                            type="password"
+                            name={"password"}
+                            important
+                            inputStyle={{ padding: 0 }}
+                            handleChange={e => this.handleChange(e)}
+                            handleEnter={this.handleLogin}
+                          />
                         </Col>
                         <Col xl={24} style={{ marginTop: 20 }}>
                           <Row type="flex" justify="end">
@@ -126,9 +247,10 @@ export default class Login extends Component {
                     <Row style={{ marginTop: 30 }}>
                       <CustomButton
                         onClick={() => {
-                          this.props.history.push("/dashboardWithoutData");
-                          localStorage.setItem("user", true);
+                          this.handleLogin();
                         }}
+                        loading={isLoading}
+                        disabled={!userName || !password}
                       >
                         Login
                       </CustomButton>

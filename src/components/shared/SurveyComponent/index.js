@@ -81,7 +81,7 @@ const SurveyComponent = ({ fromName, companyName }) => {
           <Col xl={24}>
             <Row type="flex" justify="center" className="contentContainer">
               <Col xl={24} className="text">
-                <p style={{ textAlign: "center" }}>
+                <p style={{ textAlign: "center", fontSize: 15 }}>
                   How likely are you to recommended
                   <span className="companyName">{companyName}</span> to a
                   colleague?
