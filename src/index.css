@@ -4,9 +4,11 @@ body {
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif; */
   /* font-family: "Montserrat", sans-serif; */
-  font-family: "Source Sans Pro", sans-serif !important;
+  /* font-family: "Source Sans Pro", sans-serif !important; */
   /* -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; */
+  font-family: "Roboto", sans-serif !important;
+  /* font-family: "Open Sans", sans-serif; */
   margin: 0;
   padding: 0;
   width: 100%;
@@ -65,9 +67,8 @@ code {
 .ant-menu-inline-collapsed > .ant-menu-item .anticon {
   /* padding: 10px 0; */
 }
-
+/* 
 .ant-select-selection {
-  /* border-color: #fa828e !important; */
   border-width: 1px !important;
   border-radius: 0 !important;
   box-shadow: none !important;
@@ -81,7 +82,7 @@ code {
 .ant-select-dropdown-menu-item-active {
   background-color: #fa828e !important;
   color: white !important;
-}
+} */
 
 .ant-radio-checked .ant-radio-inner {
   border-color: #ee556a !important;
@@ -108,7 +109,7 @@ code {
   width: 500px;
   text-align: justify;
 }
-.ant-tooltip-inner{
+.ant-tooltip-inner {
   text-align: justify !important;
 }
 
@@ -151,6 +152,13 @@ code {
 }
 
 .customButton {
+  background-color: #f22f7e !important;
+  border: none !important;
+  /* outline: none; */
+  border-radius: 0 !important;
+}
+
+.filterButton {
   background-color: #f22f7e !important;
   border: none !important;
   /* outline: none; */

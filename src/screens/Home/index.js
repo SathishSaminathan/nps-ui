@@ -78,42 +78,49 @@ export default class Home extends Component {
               </Menu.Item>
               <Menu.Item
                 key="3"
+                onClick={() => this.props.history.push("/dashboardWithData1")}
+              >
+                <Icon type="dashboard" />
+                <span className="nav-text">Dashboard2</span>
+              </Menu.Item>
+              <Menu.Item
+                key="4"
                 onClick={() => this.props.history.push("/survey")}
               >
                 <Icon type="solution" />
                 <span className="nav-text">Survey</span>
               </Menu.Item>
-              <Menu.Item key="4" disabled>
+              <Menu.Item key="5" disabled>
                 <Icon type="usergroup-add" />
                 <span className="nav-text">Customers</span>
               </Menu.Item>
               <Menu.Item
-                key="5"
+                key="6"
                 onClick={() => this.props.history.push("/textAnalytics")}
               >
                 <Icon type="area-chart" />
                 <span className="nav-text">Text Analysis</span>
               </Menu.Item>
               <Menu.Item
-                key="6"
+                key="7"
                 onClick={() => this.props.history.push("/textAnalytics1")}
               >
                 <Icon type="dot-chart" />
                 <span className="nav-text">Sentiment</span>
               </Menu.Item>
               <Menu.Item
-                key="7"
+                key="8"
                 onClick={() => this.props.history.push("/rawData")}
               >
                 <Icon type="bar-chart" />
                 <span className="nav-text">Raw Data</span>
               </Menu.Item>
-              <Menu.Item key="8" disabled>
+              <Menu.Item key="9" disabled>
                 <Icon type="notification" />
                 <span className="nav-text">Responses</span>
               </Menu.Item>
               <Menu.Item
-                key="9"
+                key="10"
                 onClick={() => this.props.history.push("/integrations")}
               >
                 <Icon type="setting" />

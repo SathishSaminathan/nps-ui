@@ -9,7 +9,7 @@ const WelcomeComponent = ({ history }) => {
   return (
     <Row style={{ padding: 24 }}>
       <Row>
-        <Col xl={12}>
+        <Col xl={18}>
           <div className="welcomeCard">
             <p className="welcome">
               <div className="label">Welcome Back, Sathish!</div>

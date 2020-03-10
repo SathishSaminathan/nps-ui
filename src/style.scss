@@ -106,3 +106,30 @@
 .green {
   background-color: #79c447;
 }
+
+.labelStyle {
+  font-family: "Open Sans";
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.flexCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// .ant-input:focus {
+//   border-color: #f22f7e !important;
+//   box-shadow: 0 0 0 2px #f22f7e3b;
+// }
+// .ant-input:hover {
+//   border-color: #f22f7e !important;
+//   box-shadow: 0 0 0 2px #f22f7e3b;
+// }
+
+.ant-slider-tooltip {
+  .ant-tooltip-content {
+    width: fit-content !important;
+  }
+}

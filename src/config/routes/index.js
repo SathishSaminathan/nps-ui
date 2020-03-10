@@ -11,6 +11,7 @@ import TextAnalytics from "components/TextAnalytics";
 import TextAnalytics1 from "components/TextAnalytics/TextAnalytics1";
 import RawData from "components/Raw Data";
 import ProtectedRoute from "./ProtectedRoutes";
+import DashboardComponent1 from "components/shared/DashboardComponent/DashboardComponent1";
 
 const MainRoutes = () => {
   return (
@@ -24,13 +25,26 @@ const MainRoutes = () => {
 const HomeRoutes = () => {
   return (
     <Switch>
-      <ProtectedRoute path="/dashboardWithData" component={DashboardComponent} />
-      <ProtectedRoute path="/dashboardWithoutData" component={WelcomeComponent} />
-      <ProtectedRoute path="/survey" component={Survey} />
-      <ProtectedRoute path="/rawData" component={RawData} />
-      <ProtectedRoute path="/integrations" component={Integrations} />
-      <ProtectedRoute path="/textAnalytics" component={TextAnalytics} />
-      <ProtectedRoute path="/textAnalytics1" component={TextAnalytics1} />
+      <ProtectedRoute
+        exact
+        path="/dashboardWithData"
+        component={DashboardComponent}
+      />
+      <ProtectedRoute
+        exact
+        path="/dashboardWithData1"
+        component={DashboardComponent1}
+      />
+      <ProtectedRoute
+        exact
+        path="/dashboardWithoutData"
+        component={WelcomeComponent}
+      />
+      <ProtectedRoute exact path="/survey" component={Survey} />
+      <ProtectedRoute exact path="/rawData" component={RawData} />
+      <ProtectedRoute exact path="/integrations" component={Integrations} />
+      <ProtectedRoute exact path="/textAnalytics" component={TextAnalytics} />
+      <ProtectedRoute exact path="/textAnalytics1" component={TextAnalytics1} />
       {/* <Route path="/dashboardWithoutData" component={WelcomeComponent} /> */}
     </Switch>
   );
