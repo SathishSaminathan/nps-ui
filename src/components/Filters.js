@@ -50,13 +50,13 @@ export default function Filters({ products, handleFilter, states }) {
   return (
     <Row type="flex" align="middle" justify="center" style={{ paddingTop: 20 }}>
       <Col xl={20}>
-        <Col style={{ marginBottom: 10 }}>
+        {/* <Col style={{ marginBottom: 10 }}>
           <SelectComponent
             data={products}
             label="Product"
             handleProductChange={handleChange}
           />
-        </Col>
+        </Col> */}
         <Col style={{ marginBottom: 10 }}>
           <SelectComponent
             data={["Web", "Mail", "Slack"]}

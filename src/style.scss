@@ -106,6 +106,15 @@
 .green {
   background-color: #79c447;
 }
+.Dectractors {
+  color: #f5222d !important;
+}
+.Passives {
+  color: #fabb3d !important;
+}
+.Promoters {
+  color: #79c447 !important;
+}
 
 .labelStyle {
   font-family: "Open Sans";
@@ -117,6 +126,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.noMar {
+  margin: 0 !important;
+}
+
+.noPad {
+  padding: 0 !important;
 }
 
 // .ant-input:focus {
@@ -132,4 +149,16 @@
   .ant-tooltip-content {
     width: fit-content !important;
   }
+}
+
+.loaderContainer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
 }

@@ -141,7 +141,7 @@ export default class Home extends Component {
                 style={{
                   padding: 0,
                   background: "#fff",
-                  height: "max-content"
+                  height: "100%"
                 }}
               >
                 <HomeRoutes />
