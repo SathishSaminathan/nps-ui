@@ -1,11 +1,12 @@
 import React, { Component, Fragment } from "react";
 import { Row, Col, DatePicker, Button, Slider } from "antd";
+import ReactSpeedometer from "react-d3-speedometer";
+import { Doughnut, Bar, Pie, Bubble } from "react-chartjs-2";
 
 import "./dashboard1.scss";
 import Label from "../Label";
 import { SelectComponent } from "../SelectComponent";
 import Loader from "../Loader";
-import { Doughnut, Bar } from "react-chartjs-2";
 
 const { RangePicker } = DatePicker;
 
@@ -21,6 +22,16 @@ const products = [
   "Prepaid card"
 ];
 
+const pieData = {
+  labels: ["Red", "Blue", "Yellow"],
+  datasets: [
+    {
+      data: [300, 50, 100],
+      backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+      hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"]
+    }
+  ]
+};
 const marks = {
   100: {
     style: {
@@ -43,6 +54,33 @@ const data = {
       data: [20, 50, 30],
       backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
       hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"]
+    }
+  ]
+};
+
+const bubbleData = {
+  labels: ["January"],
+  datasets: [
+    {
+      label: "My First dataset",
+      fill: false,
+      lineTension: 0.1,
+      backgroundColor: "rgba(75,192,192,0.4)",
+      borderColor: "rgba(75,192,192,1)",
+      borderCapStyle: "butt",
+      borderDash: [],
+      borderDashOffset: 0.0,
+      borderJoinStyle: "miter",
+      pointBorderColor: "rgba(75,192,192,1)",
+      pointBackgroundColor: "#fff",
+      pointBorderWidth: 1,
+      pointHoverRadius: 5,
+      pointHoverBackgroundColor: "rgba(75,192,192,1)",
+      pointHoverBorderColor: "rgba(220,220,220,1)",
+      pointHoverBorderWidth: 2,
+      pointRadius: 1,
+      pointHitRadius: 10,
+      data: [{ x: 10, y: 20, r: 50 }]
     }
   ]
 };
@@ -140,8 +178,8 @@ export default class DashboardComponent1 extends Component {
                 <Label>Themes Proportion</Label>
               </Col>
               <Col xl={24}>
-                <Doughnut
-                  data={data}
+                <Pie
+                  data={pieData}
                   legend={false}
                   height={200}
                   options={{
@@ -341,6 +379,130 @@ export default class DashboardComponent1 extends Component {
           <Col xl={24} style={{ padding: 10 }}>
             <Col xl={24} className="chartArea">
               {this.renderCharts()}
+            </Col>
+          </Col>
+          <Col xl={24} style={{ padding: 10 }}>
+            <Col xl={24} className="masonry-layout">
+              <Col className="masonry-layout__panel">
+                <Label>NPS Category by Count of calls</Label>
+                <Doughnut
+                  data={data}
+                  legend={false}
+                  height={400}
+                  options={{
+                    plugins: {
+                      datalabels: {
+                        // display: true,
+                        align: "center",
+                        anchor: "center",
+                        color: "#000",
+                        font: {
+                          size: 15
+                        },
+                        formatter: (value, ctx) => {
+                          return `${value}%`;
+                        }
+                      }
+                    }
+                  }}
+                />
+                <Label style={{ marginBottom: 20 }}>
+                  NPS Category by Count of calls
+                </Label>
+                <Bubble data={bubbleData} legend={false} height={300} />
+              </Col>
+              <Col style={{ marginTop: 10 }} className="masonry-layout__panel">
+                <Label style={{ marginBottom: 20 }}>NPS(1-10)</Label>
+                <ReactSpeedometer
+                  value={7}
+                  height={200}
+                  customSegmentStops={[0, 3, 6, 10]}
+                  segmentColors={["#ff6384", "#ffce56", "#79c447"]}
+                  minValue={0}
+                  maxValue={10}
+                  needleTransitionDuration={4000}
+                  needleTransition="easeElastic"
+                />
+              </Col>
+              <Col style={{ marginTop: 10 }} className="masonry-layout__panel">
+                <Label style={{ marginBottom: 20 }}>CSAT (1-5)</Label>
+                <ReactSpeedometer
+                  value={4}
+                  height={200}
+                  customSegmentStops={[0, 1.5, 3.5, 5]}
+                  segmentColors={["#ff6384", "#ffce56", "#79c447"]}
+                  minValue={0}
+                  maxValue={5}
+                  needleTransitionDuration={5000}
+                  needleTransition="easeElastic"
+                />
+              </Col>
+              <Col style={{ marginTop: 10 }} className="masonry-layout__panel">
+                <Label style={{ marginBottom: 20 }}>CES(1-5)</Label>
+                <ReactSpeedometer
+                  value={4}
+                  height={200}
+                  customSegmentStops={[0, 1.5, 3.5, 5]}
+                  segmentColors={["#ff6384", "#ffce56", "#79c447"]}
+                  minValue={0}
+                  maxValue={5}
+                  needleTransitionDuration={6000}
+                  needleTransition="easeElastic"
+                />
+              </Col>
+              <Col style={{ marginTop: 10 }} className="masonry-layout__panel">
+                <Label style={{ marginBottom: 20 }}>VOC</Label>
+                <Bar
+                  data={barData}
+                  // legend={false}
+                  height={400}
+                  options={{
+                    scales: {
+                      xAxes: [
+                        {
+                          display: true,
+                          scaleLabel: {
+                            display: true,
+                            // labelString: "X axe name",
+                            fontColor: "#000000",
+                            fontSize: 10
+                          },
+                          gridLines: {
+                            display: false
+                          },
+                          ticks: {
+                            fontColor: "black",
+                            fontSize: 8
+                          }
+                        }
+                      ],
+                      yAxes: [
+                        {
+                          display: true,
+                          scaleLabel: {
+                            display: true,
+                            // labelString: "Y axe name",
+                            fontColor: "#000000",
+                            fontSize: 10
+                          },
+                          gridLines: {
+                            display: false
+                          },
+                          ticks: {
+                            fontColor: "black",
+                            fontSize: 8
+                          }
+                        }
+                      ]
+                    },
+                    plugins: {
+                      datalabels: {
+                        display: false
+                      }
+                    }
+                  }}
+                />
+              </Col>
             </Col>
           </Col>
         </Row>
