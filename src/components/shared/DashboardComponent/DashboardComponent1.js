@@ -7,6 +7,8 @@ import "./dashboard1.scss";
 import Label from "../Label";
 import { SelectComponent } from "../SelectComponent";
 import Loader from "../Loader";
+import DashboardServices from "services/dashboardServices";
+import { DashboardVariables } from "constants/APIConstants";
 
 const { RangePicker } = DatePicker;
 
@@ -116,18 +118,58 @@ export default class DashboardComponent1 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      IsDataFetched: true
+      IsDataFetched: true,
+      Response: []
     };
+    this.dashboardAPI = new DashboardServices();
   }
 
+  componentDidMount() {
+    this.dashboardAPI
+      .service(DashboardVariables.GET_DASHBOARD_DATA)
+      .then(res => {
+        console.log(Object.values(res.data));
+        this.setState({
+          Response: Object.values(res.data)
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  getRandomColors = (data, type) => {
+    switch (type) {
+      case "DOUGHNUT":
+        data.datasets[0].backgroundColor = data.datasets[0].data.map(
+          datum => `#${Math.floor(Math.random() * 16777215).toString(16)}`
+        );
+        return data;
+
+      case "PIE":
+        data.datasets[0].backgroundColor = data.datasets[0].data.map(
+          datum => `#${Math.floor(Math.random() * 16777215).toString(16)}`
+        );
+        return data;
+
+      case "BAR":
+        data.datasets[0].backgroundColor = "#79c447";
+        data.datasets[1].backgroundColor = "#f5222d";
+        return data;
+
+      default:
+        break;
+    }
+  };
+
   renderCharts = () => {
-    return ["Promoters", "Passives", "Dectractors"].map((name, i) => (
+    const { Response } = this.state;
+    return Response.map((res, i) => (
       <Col
         key={i}
         xl={24}
         style={{
           height: 270,
-          // backgroundColor: "red",
           marginTop: 20
         }}
       >
@@ -138,8 +180,8 @@ export default class DashboardComponent1 extends Component {
           style={{ height: "100%" }}
         >
           <Col xl={2} style={{ textAlign: "center" }}>
-            <Label className={`${name}`} style={{ fontSize: 20 }}>
-              {name}
+            <Label className={`${res.npsState}`} style={{ fontSize: 20 }}>
+              {res.npsState}
             </Label>
           </Col>
           <Col xl={6} style={{ height: "100%" }}>
@@ -149,24 +191,29 @@ export default class DashboardComponent1 extends Component {
               </Col>
               <Col xl={24}>
                 <Doughnut
-                  data={data}
+                  data={this.getRandomColors(res.productChart, "DOUGHNUT")}
                   legend={false}
                   height={200}
                   options={{
                     plugins: {
                       datalabels: {
-                        // display: true,
-                        align: "center",
-                        anchor: "center",
-                        color: "#000",
-                        font: {
-                          size: 15
-                        },
-                        formatter: (value, ctx) => {
-                          return `${value}%`;
-                        }
+                        display: false
                       }
                     }
+                    // plugins: {
+                    //   datalabels: {
+                    //     // display: true,
+                    //     align: "center",
+                    //     anchor: "center",
+                    //     color: "#000",
+                    //     font: {
+                    //       size: 15
+                    //     },
+                    //     formatter: (value, ctx) => {
+                    //       return `${value}%`;
+                    //     }
+                    //   }
+                    // }
                   }}
                 />
               </Col>
@@ -179,22 +226,22 @@ export default class DashboardComponent1 extends Component {
               </Col>
               <Col xl={24}>
                 <Pie
-                  data={pieData}
+                  data={this.getRandomColors(res.issueChart, "PIE")}
                   legend={false}
                   height={200}
                   options={{
                     plugins: {
                       datalabels: {
-                        // display: true,
-                        align: "center",
-                        anchor: "center",
-                        color: "#000",
-                        font: {
-                          size: 15
-                        },
-                        formatter: (value, ctx) => {
-                          return `${value}%`;
-                        }
+                        display: false
+                        // align: "center",
+                        // anchor: "center",
+                        // color: "#000",
+                        // font: {
+                        //   size: 15
+                        // },
+                        // formatter: (value, ctx) => {
+                        //   return `${value}%`;
+                        // }
                       }
                     }
                   }}
@@ -209,7 +256,7 @@ export default class DashboardComponent1 extends Component {
               </Col>
               <Col xl={24}>
                 <Bar
-                  data={barData}
+                  data={this.getRandomColors(res.sentimentChart, "BAR")}
                   // legend={false}
                   height={200}
                   options={{
@@ -264,10 +311,11 @@ export default class DashboardComponent1 extends Component {
           </Col>
           <Col xl={4} style={{ textAlign: "center" }}>
             <p className="noMar">
-              <Label>1000</Label> of customers
+              <Label>{res.customerCount ? res.customerCount : 0}</Label> of
+              customers
             </p>
             <p className="noMar">
-              <Label>$10000</Label>
+              <Label>₹{res.totalAmount ? res.totalAmount : 0}</Label>
             </p>
           </Col>
         </Row>

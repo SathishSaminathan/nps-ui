@@ -1,11 +1,11 @@
 const DashboardVariables = {
-  GET_DATA: "GET_DATA"
+  GET_DATA: "GET_DATA",
+  GET_DASHBOARD_DATA: "GET_DASHBOARD_DATA"
 };
 
 const TextAnalyticsVariables = {
   GET_DATA: "GET_DATA"
 };
-
 
 const Notifications = {
   SUCCESS: "success",
@@ -24,4 +24,4 @@ const Notifications = {
   DELETED_SUCCESSFULLY: "deleted successfully!"
 };
 
-export { DashboardVariables, TextAnalyticsVariables,Notifications };
+export { DashboardVariables, TextAnalyticsVariables, Notifications };
