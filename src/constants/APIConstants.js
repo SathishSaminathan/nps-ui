@@ -4,7 +4,8 @@ const DashboardVariables = {
   GET_STATES: "GET_STATES",
   GET_PRODUCTS: "GET_PRODUCTS",
   GET_SENTIMENT: "GET_SENTIMENT",
-  GET_RAW_DATA: "GET_RAW_DATA"
+  GET_RAW_DATA: "GET_RAW_DATA",
+  GET_THEMES: "GET_THEMES"
 };
 
 const TextAnalyticsVariables = {

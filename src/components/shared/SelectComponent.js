@@ -11,7 +11,6 @@ export const SelectComponent = ({
   defaultValue = null,
   value
 }) => {
-  console.log("data", data);
   return (
     <Row>
       {label && (

@@ -9,6 +9,7 @@ import { SelectComponent } from "../SelectComponent";
 import Loader from "../Loader";
 import DashboardServices from "services/dashboardServices";
 import { DashboardVariables } from "constants/APIConstants";
+import moment from "moment";
 
 const { RangePicker } = DatePicker;
 
@@ -123,12 +124,14 @@ export default class DashboardComponent1 extends Component {
       States: [],
       Sentiments: [],
       Products: [],
+      Themes: [],
       FilterData: {
         Product: null,
         State: null,
         Sentiment: null,
         Timeline: null,
-        ValueInvolved: []
+        ValueInvolved: [],
+        Theme: null
       }
     };
     this.dashboardAPI = new DashboardServices();
@@ -138,13 +141,15 @@ export default class DashboardComponent1 extends Component {
     Promise.all([
       this.dashboardAPI.service(DashboardVariables.GET_PRODUCTS),
       this.dashboardAPI.service(DashboardVariables.GET_STATES),
-      this.dashboardAPI.service(DashboardVariables.GET_SENTIMENT)
+      this.dashboardAPI.service(DashboardVariables.GET_SENTIMENT),
+      this.dashboardAPI.service(DashboardVariables.GET_THEMES)
     ])
-      .then(([res1, res2, res3]) => {
+      .then(([res1, res2, res3, res4]) => {
         this.setState({
           Products: res1.data,
           States: res2.data,
-          Sentiments: res3.data
+          Sentiments: res3.data,
+          Themes: res4.data
         });
       })
       .catch(err => {
@@ -170,7 +175,6 @@ export default class DashboardComponent1 extends Component {
     this.dashboardAPI
       .service(DashboardVariables.GET_DASHBOARD_DATA)
       .then(res => {
-        console.log(Object.values(res.data));
         this.setState({
           Response: Object.values(res.data)
         });
@@ -372,7 +376,8 @@ export default class DashboardComponent1 extends Component {
         State: null,
         Sentiment: null,
         Timeline: null,
-        ValueInvolved: []
+        ValueInvolved: [],
+        Theme: null
       }
     });
   };
@@ -383,8 +388,10 @@ export default class DashboardComponent1 extends Component {
       States,
       Products,
       Sentiments,
-      FilterData: { Timeline, Sentiment, State, Product, ValueInvolved }
+      Themes,
+      FilterData: { Timeline, Sentiment, State, Product, ValueInvolved, Theme }
     } = this.state;
+    console.log("Timeline", Timeline);
     return (
       <Row style={{ position: "relative", height: "100%" }}>
         {!IsDataFetched && <Loader />}
@@ -408,7 +415,21 @@ export default class DashboardComponent1 extends Component {
                     onChange={(dates, dateStrings) =>
                       this.handleFilterInputs(dateStrings, "Timeline")
                     }
-                    // value={Timeline}
+                    value={
+                      Timeline
+                        ? [
+                            moment(Timeline[0], "DD-YY-YYYY"),
+                            moment(Timeline[1], "DD-YY-YYYY")
+                          ]
+                        : null
+                    }
+                    ranges={{
+                      Today: [moment(), moment()],
+                      "This Month": [
+                        moment().startOf("month"),
+                        moment().endOf("month")
+                      ]
+                    }}
                     format={"DD-MM-YYYY"}
                   ></RangePicker>
                 </Col>
@@ -458,8 +479,11 @@ export default class DashboardComponent1 extends Component {
                 <Col xl={6} className="item">
                   <Label>Themes</Label>
                   <SelectComponent
-                    data={[]}
-                    // handleProductChange={handleChange}
+                    data={Themes}
+                    defaultValue={Theme}
+                    value={Theme}
+                    handleProductChange={this.handleFilterInputs}
+                    field="Theme"
                   />
                 </Col>
                 <Col xl={6} className="item">
