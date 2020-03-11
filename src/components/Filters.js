@@ -54,28 +54,26 @@ export default function Filters({ products, handleFilter, states }) {
     handleFilter(value, type);
   };
 
-  const reset = (value) => {
+  const reset = value => {
     setVia(null);
     setGender(null);
     setState(null);
     setAge(null);
-  }
-  const filter = (value) => {
-
+  };
+  const filter = value => {
     let filterData = {
       via,
       age,
       gender,
       state
-    }
+    };
     console.log({ filterData });
     // this._service.service(filterData).then(res => {
     //   console.log(res);
     // }).catch(err => {
     //   console.log(err);
     // });
-  }
-
+  };
 
   return (
     <Row type="flex" align="middle" justify="center" style={{ paddingTop: 20 }}>
@@ -124,10 +122,7 @@ export default function Filters({ products, handleFilter, states }) {
           <Col>
             <span className="label">Age</span>
           </Col>
-          <Radio.Group
-            onChange={e => setAge(e.target.value)}
-            value={age}
-          >
+          <Radio.Group onChange={e => setAge(e.target.value)} value={age}>
             <Radio.Button value="18:25">18-25</Radio.Button>
             <Radio.Button value="26:35">26-35</Radio.Button>
             <Radio.Button value="36:50">36-50</Radio.Button>
@@ -135,23 +130,27 @@ export default function Filters({ products, handleFilter, states }) {
         </Col>
         <Col style={{ marginBottom: 10 }}>
           <Button
-            style={{ textAlign: 'center', marginTop: 10, backgroundColor: '#ccc' }}
+            style={{
+              textAlign: "center",
+              marginTop: 10,
+              backgroundColor: "#ccc"
+            }}
             type="primary"
             className="customButton"
             size="large"
-            onClick={(value) => reset()}
+            onClick={value => reset()}
           >
             Reset
-                    </Button>
+          </Button>
           <Button
-            style={{ textAlign: 'center', marginTop: 10, marginLeft: 10 }}
+            style={{ textAlign: "center", marginTop: 10, marginLeft: 10 }}
             type="primary"
             className="customButton"
             size="large"
-            onClick={(value) => filter(value)}
+            onClick={value => filter(value)}
           >
             Filter
-                    </Button>
+          </Button>
         </Col>
       </Col>
     </Row>
