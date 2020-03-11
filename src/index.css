@@ -106,7 +106,7 @@ code {
 }
 
 .ant-tooltip-content {
-  width: 500px;
+  max-width: 500px;
   text-align: justify;
 }
 .ant-tooltip-inner {
@@ -136,6 +136,14 @@ code {
   text-overflow: ellipsis;
 }
 
+.productEllipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 100px;
+  white-space: nowrap;
+  display: inline-block;
+}
+
 .tag {
   color: white !important;
   border-radius: 15px !important;
@@ -143,12 +151,16 @@ code {
   border: none !important;
 }
 
-.Yes {
+.Yes, .Male {
   background-color: #79c447 !important;
 }
 
 .No {
   background-color: #ff5555 !important;
+}
+
+.NA, .Female {
+  background-color: #30bae7 !important;
 }
 
 .customButton {

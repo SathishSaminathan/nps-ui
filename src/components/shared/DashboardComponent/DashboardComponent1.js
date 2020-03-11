@@ -119,7 +119,7 @@ export default class DashboardComponent1 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      IsDataFetched: true,
+      IsDataFetched: false,
       Response: [],
       States: [],
       Sentiments: [],
@@ -168,21 +168,28 @@ export default class DashboardComponent1 extends Component {
 
   handleFilter = () => {
     console.log("FilterData", this.state.FilterData);
+    this.getChartData(this.state.FilterData);
   };
 
   componentDidMount() {
     this.getDDLists();
+    const { FilterData } = this.state;
+    this.getChartData(FilterData);
+  }
+
+  getChartData = FilterData => {
     this.dashboardAPI
-      .service(DashboardVariables.GET_DASHBOARD_DATA)
+      .service(DashboardVariables.GET_DASHBOARD_DATA, FilterData)
       .then(res => {
         this.setState({
-          Response: Object.values(res.data)
+          Response: Object.values(res.data),
+          IsDataFetched: true
         });
       })
       .catch(err => {
         console.log(err);
       });
-  }
+  };
 
   getRandomColors = (data, type) => {
     switch (type) {
