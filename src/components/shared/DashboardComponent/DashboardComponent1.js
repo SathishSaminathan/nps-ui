@@ -119,12 +119,54 @@ export default class DashboardComponent1 extends Component {
     super(props);
     this.state = {
       IsDataFetched: true,
-      Response: []
+      Response: [],
+      States: [],
+      Sentiments: [],
+      Products: [],
+      FilterData: {
+        Product: null,
+        State: null,
+        Sentiment: null,
+        Timeline: null,
+        ValueInvolved: []
+      }
     };
     this.dashboardAPI = new DashboardServices();
   }
 
+  getDDLists = () => {
+    Promise.all([
+      this.dashboardAPI.service(DashboardVariables.GET_PRODUCTS),
+      this.dashboardAPI.service(DashboardVariables.GET_STATES),
+      this.dashboardAPI.service(DashboardVariables.GET_SENTIMENT)
+    ])
+      .then(([res1, res2, res3]) => {
+        this.setState({
+          Products: res1.data,
+          States: res2.data,
+          Sentiments: res3.data
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  handleFilterInputs = (value, type) => {
+    this.setState({
+      FilterData: {
+        ...this.state.FilterData,
+        [type]: value || null
+      }
+    });
+  };
+
+  handleFilter = () => {
+    console.log("FilterData", this.state.FilterData);
+  };
+
   componentDidMount() {
+    this.getDDLists();
     this.dashboardAPI
       .service(DashboardVariables.GET_DASHBOARD_DATA)
       .then(res => {
@@ -323,8 +365,26 @@ export default class DashboardComponent1 extends Component {
     ));
   };
 
+  handleReset = () => {
+    this.setState({
+      FilterData: {
+        Product: null,
+        State: null,
+        Sentiment: null,
+        Timeline: null,
+        ValueInvolved: []
+      }
+    });
+  };
+
   render() {
-    const { IsDataFetched } = this.state;
+    const {
+      IsDataFetched,
+      States,
+      Products,
+      Sentiments,
+      FilterData: { Timeline, Sentiment, State, Product, ValueInvolved }
+    } = this.state;
     return (
       <Row style={{ position: "relative", height: "100%" }}>
         {!IsDataFetched && <Loader />}
@@ -343,7 +403,14 @@ export default class DashboardComponent1 extends Component {
               <Row>
                 <Col xl={6} className="item">
                   <Label>Time line</Label>
-                  <RangePicker style={{ width: "100%" }}></RangePicker>
+                  <RangePicker
+                    style={{ width: "100%" }}
+                    onChange={(dates, dateStrings) =>
+                      this.handleFilterInputs(dateStrings, "Timeline")
+                    }
+                    // value={Timeline}
+                    format={"DD-MM-YYYY"}
+                  ></RangePicker>
                 </Col>
                 <Col xl={6} className="item">
                   <Label>Value Involved</Label>
@@ -353,10 +420,14 @@ export default class DashboardComponent1 extends Component {
                       style={{ width: "88%" }}
                       step={5}
                       marks={marks}
-                      defaultValue={[1000, 100000]}
+                      defaultValue={ValueInvolved}
+                      value={ValueInvolved}
                       min={100}
                       max={999999}
                       tipFormatter={value => `₹ ${value}`}
+                      onChange={value =>
+                        this.handleFilterInputs(value, "ValueInvolved")
+                      }
                       //   onChange={onChange}
                       //   onAfterChange={onAfterChange}
                     />
@@ -365,15 +436,21 @@ export default class DashboardComponent1 extends Component {
                 <Col xl={6} className="item">
                   <Label>Product</Label>
                   <SelectComponent
-                    data={products}
-                    // handleProductChange={handleChange}
+                    data={Products}
+                    defaultValue={Product}
+                    value={Product}
+                    handleProductChange={this.handleFilterInputs}
+                    field="Product"
                   />
                 </Col>
                 <Col xl={6} className="item">
                   <Label>Location</Label>
                   <SelectComponent
-                    data={[]}
-                    // handleProductChange={handleChange}
+                    data={States}
+                    defaultValue={State}
+                    value={State}
+                    handleProductChange={this.handleFilterInputs}
+                    field="State"
                   />
                 </Col>
               </Row>
@@ -388,8 +465,11 @@ export default class DashboardComponent1 extends Component {
                 <Col xl={6} className="item">
                   <Label>Sentiments</Label>
                   <SelectComponent
-                    data={[]}
-                    // handleProductChange={handleChange}
+                    data={Sentiments}
+                    defaultValue={Sentiment}
+                    value={Sentiment}
+                    handleProductChange={this.handleFilterInputs}
+                    field="Sentiment"
                   />
                 </Col>
                 <Col
@@ -407,7 +487,7 @@ export default class DashboardComponent1 extends Component {
                     type="primary"
                     className="filterButton"
                     icon="filter"
-                    onClick={() => this.setState({ visible: true })}
+                    onClick={this.handleFilter}
                   >
                     Filter
                   </Button>
@@ -416,7 +496,7 @@ export default class DashboardComponent1 extends Component {
                     type="primary"
                     className="filterButton"
                     icon="reload"
-                    onClick={() => this.setState({ visible: true })}
+                    onClick={this.handleReset}
                   >
                     Reset
                   </Button>

@@ -6,32 +6,41 @@ const { Option } = Select;
 export const SelectComponent = ({
   handleProductChange,
   data,
-  label = null
-}) => (
-  <Row>
-    {label && (
+  label = null,
+  field,
+  defaultValue = null,
+  value
+}) => {
+  console.log("data", data);
+  return (
+    <Row>
+      {label && (
+        <Col>
+          <span className="label">{label}</span>
+        </Col>
+      )}
       <Col>
-        <span className="label">{label}</span>
+        <Select
+          allowClear
+          showSearch
+          value={value}
+          defaultValue={defaultValue}
+          style={{ width: "100%" }}
+          placeholder="All"
+          optionFilterProp="children"
+          onChange={value => handleProductChange(value, field)}
+          filterOption={(input, option) =>
+            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >=
+            0
+          }
+        >
+          {data.map((datum, i) => (
+            <Option value={datum.value} key={i}>
+              {datum.label}
+            </Option>
+          ))}
+        </Select>
       </Col>
-    )}
-    <Col>
-      <Select
-        allowClear
-        showSearch
-        style={{ width: "100%" }}
-        placeholder="All"
-        optionFilterProp="children"
-        onChange={value => handleProductChange(value, label)}
-        filterOption={(input, option) =>
-          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-        }
-      >
-        {data.map((product, i) => (
-          <Option value={product} key={i}>
-            {product}
-          </Option>
-        ))}
-      </Select>
-    </Col>
-  </Row>
-);
+    </Row>
+  );
+};
