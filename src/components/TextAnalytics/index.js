@@ -341,9 +341,9 @@ export default class TextAnalytics extends Component {
           ></div> */}
           <Col className="topContainer">
             <Row className="headerArea">
-              <Col className="header">Products</Col>
+              <Col className="header">Themes</Col>
               <Col>
-                <div className="top">Top Products</div>
+                <div className="top">Top Themes</div>
               </Col>
             </Row>
             <Row style={{ paddingLeft: 10 }}>

@@ -501,9 +501,98 @@ export default class DashboardComponent1 extends Component {
                 </Col>
               </Col>
             </Col>
+            <Col xl={24} style={{ padding: 20 }}>
+              <Col xl={24} className="">
+                <Col xl={8}>
+                  <Col xl={23} className="card">
+                    <Col style={{ marginBottom: 10 }}>
+                      <Label>NPS Category by Count of calls</Label>
+                    </Col>
+                    {SummaryResponse.length !== 0 && (
+                      <Doughnut
+                        data={this.getRandomColors(SummaryResponse, "DOUGHNUT")}
+                        legend={false}
+                        height={300}
+                        options={{
+                          plugins: {
+                            datalabels: {
+                              // display: true,
+                              align: "center",
+                              anchor: "center",
+                              color: "#000",
+                              font: {
+                                size: 15
+                              },
+                              formatter: (value, ctx) => {
+                                return `${value}%`;
+                              }
+                            }
+                          }
+                        }}
+                      />
+                    )}
+                  </Col>
+                </Col>
+                <Col xl={16} className="card">
+                  <Label style={{ marginBottom: 20 }}>VOC</Label>
+                  {VOCResponse.length !== 0 && (
+                    <Bar
+                      data={this.getRandomColors(VOCResponse, "BAR")}
+                      // legend={false}
+                      height={140}
+                      options={{
+                        scales: {
+                          xAxes: [
+                            {
+                              display: true,
+                              scaleLabel: {
+                                display: true,
+                                // labelString: "X axe name",
+                                fontColor: "#000000",
+                                fontSize: 10
+                              },
+                              gridLines: {
+                                display: false
+                              },
+                              // ticks: {
+                              //   fontColor: "black",
+                              //   fontSize: 8
+                              // }
+                            }
+                          ],
+                          yAxes: [
+                            {
+                              display: true,
+                              scaleLabel: {
+                                display: true,
+                                // labelString: "Y axe name",
+                                fontColor: "#000000",
+                                fontSize: 10
+                              },
+                              gridLines: {
+                                display: false
+                              },
+                              // ticks: {
+                              //   fontColor: "black",
+                              //   fontSize: 8
+                              // }
+                            }
+                          ]
+                        },
+                        plugins: {
+                          datalabels: {
+                            display: false
+                          }
+                        }
+                      }}
+                    />
+                  )}
+                </Col>
+              </Col>
+            </Col>
           </Row>
-          <Col xl={24} style={{ marginTop: 20 }} className="filterArea">
-            <Col xl={23} className="filter">
+          <Col xl={24} className="filterArea">
+            <Col xl={24} className="filter">
               <Row>
                 <Col xl={6} className="item">
                   <Label>Time line</Label>
@@ -625,98 +714,9 @@ export default class DashboardComponent1 extends Component {
               </Row>
             </Col>
           </Col>
-          <Col xl={24} style={{ padding: 10 }}>
+          <Col xl={24} style={{ padding: 10, marginTop: 10 }}>
             <Col xl={24} className="chartArea">
               {this.renderCharts()}
-            </Col>
-          </Col>
-          <Col xl={24} style={{ padding: 10 }}>
-            <Col xl={24} className="">
-              <Col xl={8}>
-                <Col xl={23} className="card">
-                  <Col style={{ marginBottom: 10 }}>
-                    <Label>NPS Category by Count of calls</Label>
-                  </Col>
-                  {SummaryResponse.length !== 0 && (
-                    <Doughnut
-                      data={this.getRandomColors(SummaryResponse, "DOUGHNUT")}
-                      legend={false}
-                      height={300}
-                      options={{
-                        plugins: {
-                          datalabels: {
-                            // display: true,
-                            align: "center",
-                            anchor: "center",
-                            color: "#000",
-                            font: {
-                              size: 15
-                            },
-                            formatter: (value, ctx) => {
-                              return `${value}%`;
-                            }
-                          }
-                        }
-                      }}
-                    />
-                  )}
-                </Col>
-              </Col>
-              <Col xl={8} className="card">
-                <Label style={{ marginBottom: 20 }}>VOC</Label>
-                {VOCResponse.length !== 0 && (
-                  <Bar
-                    data={this.getRandomColors(VOCResponse, "BAR")}
-                    // legend={false}
-                    height={400}
-                    options={{
-                      scales: {
-                        xAxes: [
-                          {
-                            display: true,
-                            scaleLabel: {
-                              display: true,
-                              // labelString: "X axe name",
-                              fontColor: "#000000",
-                              fontSize: 10
-                            },
-                            gridLines: {
-                              display: false
-                            },
-                            ticks: {
-                              fontColor: "black",
-                              fontSize: 8
-                            }
-                          }
-                        ],
-                        yAxes: [
-                          {
-                            display: true,
-                            scaleLabel: {
-                              display: true,
-                              // labelString: "Y axe name",
-                              fontColor: "#000000",
-                              fontSize: 10
-                            },
-                            gridLines: {
-                              display: false
-                            },
-                            ticks: {
-                              fontColor: "black",
-                              fontSize: 8
-                            }
-                          }
-                        ]
-                      },
-                      plugins: {
-                        datalabels: {
-                          display: false
-                        }
-                      }
-                    }}
-                  />
-                )}
-              </Col>
             </Col>
           </Col>
         </Row>

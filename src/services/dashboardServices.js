@@ -21,7 +21,9 @@ class DashboardServices {
             ""}&state=${data.State || ""}`
         );
       case DashboardVariables.GET_RAW_DATA:
-        return axios.get("http://122.165.203.72:9094/nps/api/v1/raw/data");
+        return axios.get(
+          `http://122.165.203.72:9094/nps/api/v1/raw/data?pageIndex=${data}`
+        );
       case DashboardVariables.GET_CHART_SUMMARY:
         return axios.get(
           "http://122.165.203.72:9094/nps/api/v1/nps/chart/summary"
@@ -39,9 +41,7 @@ class DashboardServices {
           `http://122.165.203.72:9094/nps/api/v1/value?type=${data}`
         );
       case DashboardVariables.GET_VOC:
-        return axios.get(
-          `http://122.165.203.72:9094/nps/api/v1/voc/chart`
-        );
+        return axios.get(`http://122.165.203.72:9094/nps/api/v1/voc/chart`);
     }
   }
 }

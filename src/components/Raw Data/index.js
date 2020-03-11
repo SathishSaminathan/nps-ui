@@ -8,7 +8,8 @@ import {
   message,
   Button,
   Icon,
-  Tooltip
+  Tooltip,
+  Pagination
 } from "antd";
 import LinesEllipsis from "react-lines-ellipsis";
 
@@ -18,6 +19,7 @@ import { Lotties } from "constants/AppConstants";
 import RecordNotFound from "components/shared/RecordNotFound";
 import DashboardServices from "services/dashboardServices";
 import { DashboardVariables } from "constants/APIConstants";
+import Loader from "components/shared/Loader";
 
 const props = {
   name: "file",
@@ -145,19 +147,10 @@ const columns = [
   //   )
   // },
   // { title: "Timely Response?", dataIndex: "Timely-Response?", key: "Timely-Response?", width: 150 },
-
-  {
-    title: "Issue",
-    dataIndex: "issue",
-    key: "issue",
-    fixed: "right",
-    width: 250
-  },
   {
     title: "Product",
     dataIndex: "product",
     key: "product",
-    fixed: "right",
     width: 150,
     align: "center",
     render: text =>
@@ -171,6 +164,20 @@ const columns = [
           <a className="link productEllipsis">{text}</a>
         </Tooltip>
       )
+  },
+  {
+    title: "Issue",
+    dataIndex: "issue",
+    key: "issue",
+    fixed: "right",
+    width: 200
+  },
+  {
+    title: "Sub Issue",
+    dataIndex: "subIssue",
+    key: "subIssue",
+    fixed: "right",
+    width: 200
   }
 ];
 
@@ -184,19 +191,18 @@ const columns1 = [
     align: "center"
   },
   {
-    title: "Complaint Id",
+    title: "NPS Score",
     width: 110,
-    dataIndex: "Complaint-id",
-    key: "Complaint-id",
+    dataIndex: "NPS-Score",
+    key: "NPS-Score",
     fixed: "left",
     align: "center"
   },
   {
-    title: "NPS Score",
-    width: 150,
-    dataIndex: "NPS-Score",
-    key: "NPS-Score",
-    fixed: "left",
+    title: "Complaint Id",
+    width: 110,
+    dataIndex: "Complaint-id",
+    key: "Complaint-id",
     align: "center"
   },
   {
@@ -301,37 +307,45 @@ export default class RawData extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: []
+      data: [],
+      PaginationValue: 1,
+      IsDataFetched: false,
+      TotalData: 100
     };
     this.dashboardAPI = new DashboardServices();
   }
 
   componentDidMount() {
-    // this.fetchData();
-    setTimeout(() => {
-      this.setState({
-        data: myData.Sheet1
-      });
-    }, 500);
+    const { PaginationValue } = this.state;
+    this.fetchData(PaginationValue);
   }
 
-  fetchData = () => {
+  fetchData = PaginationValue => {
+    this.setState({
+      IsDataFetched: false
+    });
     this.dashboardAPI
-      .service(DashboardVariables.GET_RAW_DATA)
+      .service(DashboardVariables.GET_RAW_DATA, PaginationValue - 1)
       .then(res => {
-        console.log(res);
         this.setState({
-          data: res.data.results
+          data: res.data.results,
+          TotalData: res.data.totalData,
+          IsDataFetched: true
         });
       })
       .catch(err => {
         console.log(err);
       });
   };
+
+  handlePagination = value => {
+    this.fetchData(value);
+  };
   render() {
-    const { data } = this.state;
+    const { data, PaginationValue, IsDataFetched, TotalData } = this.state;
     return (
-      <Fragment>
+      <Row>
+        {!IsDataFetched && <Loader />}
         <Row
           className="bandArea"
           type="flex"
@@ -348,20 +362,29 @@ export default class RawData extends Component {
           </Col>
         </Row>
         <Row style={{ padding: 24 }}>
-          <Col>
+          <Col xl={24} style={{ marginBottom: 10 }}>
+            <Pagination
+              style={{ float: "right" }}
+              defaultCurrent={PaginationValue}
+              onChange={this.handlePagination}
+              total={TotalData}
+            />
+          </Col>
+          <Col xl={24}>
             <Table
-              columns={columns1}
+              columns={columns}
               dataSource={data}
               scroll={{ x: 1500, y: "66vh" }}
-              pagination={{ pageSize: 10 }}
-              loading={data.length === 0}
+              // pagination={{ pageSize: 10 }}
+              pagination={false}
+              // loading={data.length === 0}
               locale={{
                 emptyText: <RecordNotFound />
               }}
             />
           </Col>
         </Row>
-      </Fragment>
+      </Row>
     );
   }
 }
