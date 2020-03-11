@@ -16,6 +16,8 @@ import myData from "data.json";
 import LottieComponent from "components/shared/LottieComponent";
 import { Lotties } from "constants/AppConstants";
 import RecordNotFound from "components/shared/RecordNotFound";
+import DashboardServices from "services/dashboardServices";
+import { DashboardVariables } from "constants/APIConstants";
 
 const props = {
   name: "file",
@@ -39,89 +41,88 @@ const columns = [
   {
     title: "Customer ID",
     width: 150,
-    dataIndex: "Customer ID",
-    key: "Customer ID",
+    dataIndex: "customerId",
+    key: "customerId",
+    fixed: "left",
+    align: "center"
+  },
+  {
+    title: "NPS Score",
+    width: 80,
+    dataIndex: "npsScore",
+    key: "npsScore",
     fixed: "left",
     align: "center"
   },
   {
     title: "Complaint Id",
     width: 110,
-    dataIndex: "Complaint-id",
-    key: "Complaint-id",
-    fixed: "left",
-    align: "center"
-  },
-  {
-    title: "NPS Score",
-    width: 150,
-    dataIndex: "NPS-Score",
-    key: "NPS-Score",
-    fixed: "left",
+    dataIndex: "complaintId",
+    key: "complaintId",
+    // fixed: "left",
     align: "center"
   },
   {
     title: "Date Received",
-    dataIndex: "Date-Received",
-    key: "Date-Received",
+    dataIndex: "receivedDate",
+    key: "receivedDate",
     width: 100
   },
   {
     title: "Gender",
-    dataIndex: "Gender",
-    key: "Gender",
-    width: 100
+    dataIndex: "gender",
+    key: "gender",
+    width: 100,
+    render: text => (
+      <Tag className={`${text} tag`}>{text}</Tag>
+    )
   },
   {
     title: "Age",
-    dataIndex: "Age",
-    key: "Age",
+    dataIndex: "age",
+    key: "age",
     width: 100
   },
   {
     title: "State",
-    dataIndex: "State",
-    key: "State",
+    dataIndex: "state",
+    key: "state",
     width: 80
   },
   {
     title: "Zip-Code",
-    dataIndex: "Zip-Code",
-    key: "Zip-Code",
+    dataIndex: "zipCode",
+    key: "zipCode",
     width: 100
   },
   {
     title: "Timely Response",
-    dataIndex: "Timely-Response?",
-    key: "Timely-Response?",
+    dataIndex: "timelyResponse",
+    key: "timelyResponse",
     width: 100,
     align: "center",
     render: text => <Tag className={`${text} tag`}>{text}</Tag>
   },
   {
     title: "Disputed",
-    dataIndex: "Disputed?",
-    key: "Disputed?",
+    dataIndex: "disputed",
+    key: "disputed",
     width: 100,
     align: "center",
-    render: text => <Tag className={`${text} tag`}>{text}</Tag>
+    render: text => (
+      <Tag className={`${text === "N/A" ? "NA" : text} tag`}>{text}</Tag>
+    )
   },
   {
     title: "Via",
-    dataIndex: "Via",
-    key: "Via",
+    dataIndex: "via",
+    key: "via",
     width: 100
   },
   {
-    title: "Issue",
-    dataIndex: "Issue",
-    key: "Issue",
-    width: 250
-  },
-  {
     title: "Consumer Message",
-    dataIndex: "Consumer-Message",
-    key: "Issue",
+    dataIndex: "message",
+    key: "message",
     width: 180,
     render: text => (
       <Tooltip placement="left" title={text} style={{ width: 400 }}>
@@ -146,14 +147,27 @@ const columns = [
   //   )
   // },
   // { title: "Timely Response?", dataIndex: "Timely-Response?", key: "Timely-Response?", width: 150 },
+
+  {
+    title: "Issue",
+    dataIndex: "issue",
+    key: "issue",
+    fixed: "right",
+    width: 250
+  },
   {
     title: "Product",
-    dataIndex: "Product",
-    key: "Product",
+    dataIndex: "product",
+    key: "product",
     fixed: "right",
-    width: 100,
+    width: 150,
     align: "center",
-    render: text => text && <a className="link">{text}</a>
+    render: text =>
+      text && (
+        <Tooltip placement="left" title={text} className="productName" style={{ width: 100 }}>
+          <a className="link productEllipsis">{text}</a>
+        </Tooltip>
+      )
   }
 ];
 
@@ -163,15 +177,26 @@ export default class RawData extends Component {
     this.state = {
       data: []
     };
+    this.dashboardAPI = new DashboardServices();
   }
 
   componentDidMount() {
-    setTimeout(() => {
-      this.setState({
-        data: myData.Sheet1
-      });
-    }, 500);
+    this.fetchData();
   }
+
+  fetchData = () => {
+    this.dashboardAPI
+      .service(DashboardVariables.GET_RAW_DATA)
+      .then(res => {
+        console.log(res);
+        this.setState({
+          data: res.data.results
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
   render() {
     const { data } = this.state;
     return (
@@ -198,7 +223,7 @@ export default class RawData extends Component {
               dataSource={data}
               scroll={{ x: 1500, y: "66vh" }}
               pagination={{ pageSize: 10 }}
-              // loading={data.length === 0}
+              loading={data.length === 0}
               locale={{
                 emptyText: <RecordNotFound />
               }}
