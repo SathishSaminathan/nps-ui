@@ -4,8 +4,8 @@ import { DashboardVariables } from "constants/APIConstants";
 
 class DashboardServices {
   service(type, data, id) {
-    // const IP = "192.168.0.2:6062";
-    const IP = "122.165.203.72:9094";
+    const IP = "192.168.0.2:6062";
+    // const IP = "122.165.203.72:9094";
     switch (type) {
       case DashboardVariables.GET_DATA:
         return axios.get(`https://api.myjson.com/bins/nh1ki`);
@@ -14,7 +14,7 @@ class DashboardServices {
           `http://${IP}/nps/api/v1/nps/chart/data?endMoney=${(data.ValueInvolved &&
             data.ValueInvolved[1]) ||
             ""}&endReceivedDate=${(data.Timeline && data.Timeline[1]) ||
-            ""}&issue=${data.Theme || ""}&product=${data.Product ||
+            ""}&issueId=${data.Theme || ""}&productId=${data.Product ||
             ""}&eSentiment=${data.Sentiment ||
             ""}&startMoney=${(data.ValueInvolved && data.ValueInvolved[0]) ||
             ""}&startReceivedDate=${(data.Timeline && data.Timeline[0]) ||
