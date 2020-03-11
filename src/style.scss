@@ -184,3 +184,10 @@
     padding: 5px 0;
   }
 }
+
+.containerStyle{
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

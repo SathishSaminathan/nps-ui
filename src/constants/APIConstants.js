@@ -5,7 +5,8 @@ const DashboardVariables = {
   GET_PRODUCTS: "GET_PRODUCTS",
   GET_SENTIMENT: "GET_SENTIMENT",
   GET_RAW_DATA: "GET_RAW_DATA",
-  GET_THEMES: "GET_THEMES"
+  GET_THEMES: "GET_THEMES",
+  GET_CHART_SUMMARY: "GET_CHART_SUMMARY"
 };
 
 const TextAnalyticsVariables = {

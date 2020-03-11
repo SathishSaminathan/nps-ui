@@ -119,7 +119,7 @@ export default class DashboardComponent1 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      IsDataFetched: false,
+      IsDataFetched: true,
       Response: [],
       States: [],
       Sentiments: [],
@@ -175,9 +175,19 @@ export default class DashboardComponent1 extends Component {
     this.getDDLists();
     const { FilterData } = this.state;
     this.getChartData(FilterData);
+    this.getChartSummary()
   }
 
+  getChartSummary=()=>{
+    
+  }
   getChartData = FilterData => {
+    this.setState(
+      {
+        IsDataFetched: false
+      },
+      () => console.log(this.state.IsDataFetched)
+    );
     this.dashboardAPI
       .service(DashboardVariables.GET_DASHBOARD_DATA, FilterData)
       .then(res => {
@@ -246,27 +256,13 @@ export default class DashboardComponent1 extends Component {
                 <Doughnut
                   data={this.getRandomColors(res.productChart, "DOUGHNUT")}
                   legend={false}
-                  height={200}
+                  height={190}
                   options={{
                     plugins: {
                       datalabels: {
                         display: false
                       }
                     }
-                    // plugins: {
-                    //   datalabels: {
-                    //     // display: true,
-                    //     align: "center",
-                    //     anchor: "center",
-                    //     color: "#000",
-                    //     font: {
-                    //       size: 15
-                    //     },
-                    //     formatter: (value, ctx) => {
-                    //       return `${value}%`;
-                    //     }
-                    //   }
-                    // }
                   }}
                 />
               </Col>
@@ -281,20 +277,11 @@ export default class DashboardComponent1 extends Component {
                 <Pie
                   data={this.getRandomColors(res.issueChart, "PIE")}
                   legend={false}
-                  height={200}
+                  height={190}
                   options={{
                     plugins: {
                       datalabels: {
                         display: false
-                        // align: "center",
-                        // anchor: "center",
-                        // color: "#000",
-                        // font: {
-                        //   size: 15
-                        // },
-                        // formatter: (value, ctx) => {
-                        //   return `${value}%`;
-                        // }
                       }
                     }
                   }}
@@ -311,7 +298,7 @@ export default class DashboardComponent1 extends Component {
                 <Bar
                   data={this.getRandomColors(res.sentimentChart, "BAR")}
                   // legend={false}
-                  height={200}
+                  height={180}
                   options={{
                     scales: {
                       xAxes: [
@@ -377,16 +364,19 @@ export default class DashboardComponent1 extends Component {
   };
 
   handleReset = () => {
-    this.setState({
-      FilterData: {
-        Product: null,
-        State: null,
-        Sentiment: null,
-        Timeline: null,
-        ValueInvolved: [],
-        Theme: null
-      }
-    });
+    this.setState(
+      {
+        FilterData: {
+          Product: null,
+          State: null,
+          Sentiment: null,
+          Timeline: null,
+          ValueInvolved: [],
+          Theme: null
+        }
+      },
+      () => this.getChartData(this.state.FilterData)
+    );
   };
 
   render() {
@@ -398,7 +388,6 @@ export default class DashboardComponent1 extends Component {
       Themes,
       FilterData: { Timeline, Sentiment, State, Product, ValueInvolved, Theme }
     } = this.state;
-    console.log("Timeline", Timeline);
     return (
       <Row style={{ position: "relative", height: "100%" }}>
         {!IsDataFetched && <Loader />}
@@ -412,6 +401,55 @@ export default class DashboardComponent1 extends Component {
               </Row>
             </Col>
           </Col>
+          <Row>
+            <Col xl={24} style={{ marginTop: 10, padding: 20 }}>
+              <Col xl={8} className="">
+                <Col xl={23} className="card containerStyle">
+                  <Label style={{ marginBottom: 20 }}>NPS(1-10)</Label>
+                  <ReactSpeedometer
+                    value={7}
+                    height={190}
+                    customSegmentStops={[0, 3, 6, 10]}
+                    segmentColors={["#ff6384", "#ffce56", "#79c447"]}
+                    minValue={0}
+                    maxValue={10}
+                    needleTransitionDuration={4000}
+                    needleTransition="easeElastic"
+                  />
+                </Col>
+              </Col>
+              <Col xl={8} className="">
+                <Col xl={23} className="card containerStyle">
+                  <Label style={{ marginBottom: 20 }}>CSAT (1-5)</Label>
+                  <ReactSpeedometer
+                    value={4}
+                    height={190}
+                    customSegmentStops={[0, 1.5, 3.5, 5]}
+                    segmentColors={["#ff6384", "#ffce56", "#79c447"]}
+                    minValue={0}
+                    maxValue={5}
+                    needleTransitionDuration={5000}
+                    needleTransition="easeElastic"
+                  />
+                </Col>
+              </Col>
+              <Col xl={8} className="">
+                <Col xl={23} className="card containerStyle">
+                  <Label style={{ marginBottom: 20 }}>CES(1-5)</Label>
+                  <ReactSpeedometer
+                    value={4}
+                    height={190}
+                    customSegmentStops={[0, 1.5, 3.5, 5]}
+                    segmentColors={["#ff6384", "#ffce56", "#79c447"]}
+                    minValue={0}
+                    maxValue={5}
+                    needleTransitionDuration={6000}
+                    needleTransition="easeElastic"
+                  />
+                </Col>
+              </Col>
+            </Col>
+          </Row>
           <Col xl={24} style={{ marginTop: 20 }} className="filterArea">
             <Col xl={23} className="filter">
               <Row>
@@ -541,75 +579,36 @@ export default class DashboardComponent1 extends Component {
             </Col>
           </Col>
           <Col xl={24} style={{ padding: 10 }}>
-            <Col xl={24} className="masonry-layout">
-              <Col className="masonry-layout__panel">
-                <Label>NPS Category by Count of calls</Label>
-                <Doughnut
-                  data={data}
-                  legend={false}
-                  height={400}
-                  options={{
-                    plugins: {
-                      datalabels: {
-                        // display: true,
-                        align: "center",
-                        anchor: "center",
-                        color: "#000",
-                        font: {
-                          size: 15
-                        },
-                        formatter: (value, ctx) => {
-                          return `${value}%`;
+            <Col xl={24} className="">
+              <Col xl={8}>
+                <Col xl={23} className="card">
+                  <Col style={{ marginBottom: 10 }}>
+                    <Label>NPS Category by Count of calls</Label>
+                  </Col>
+                  <Doughnut
+                    data={data}
+                    legend={false}
+                    height={200}
+                    options={{
+                      plugins: {
+                        datalabels: {
+                          // display: true,
+                          align: "center",
+                          anchor: "center",
+                          color: "#000",
+                          font: {
+                            size: 15
+                          },
+                          formatter: (value, ctx) => {
+                            return `${value}%`;
+                          }
                         }
                       }
-                    }
-                  }}
-                />
-                <Label style={{ marginBottom: 20 }}>
-                  NPS Category by Count of calls
-                </Label>
-                <Bubble data={bubbleData} legend={false} height={300} />
+                    }}
+                  />
+                </Col>
               </Col>
-              <Col style={{ marginTop: 10 }} className="masonry-layout__panel">
-                <Label style={{ marginBottom: 20 }}>NPS(1-10)</Label>
-                <ReactSpeedometer
-                  value={7}
-                  height={200}
-                  customSegmentStops={[0, 3, 6, 10]}
-                  segmentColors={["#ff6384", "#ffce56", "#79c447"]}
-                  minValue={0}
-                  maxValue={10}
-                  needleTransitionDuration={4000}
-                  needleTransition="easeElastic"
-                />
-              </Col>
-              <Col style={{ marginTop: 10 }} className="masonry-layout__panel">
-                <Label style={{ marginBottom: 20 }}>CSAT (1-5)</Label>
-                <ReactSpeedometer
-                  value={4}
-                  height={200}
-                  customSegmentStops={[0, 1.5, 3.5, 5]}
-                  segmentColors={["#ff6384", "#ffce56", "#79c447"]}
-                  minValue={0}
-                  maxValue={5}
-                  needleTransitionDuration={5000}
-                  needleTransition="easeElastic"
-                />
-              </Col>
-              <Col style={{ marginTop: 10 }} className="masonry-layout__panel">
-                <Label style={{ marginBottom: 20 }}>CES(1-5)</Label>
-                <ReactSpeedometer
-                  value={4}
-                  height={200}
-                  customSegmentStops={[0, 1.5, 3.5, 5]}
-                  segmentColors={["#ff6384", "#ffce56", "#79c447"]}
-                  minValue={0}
-                  maxValue={5}
-                  needleTransitionDuration={6000}
-                  needleTransition="easeElastic"
-                />
-              </Col>
-              <Col style={{ marginTop: 10 }} className="masonry-layout__panel">
+              <Col xl={8} className="card">
                 <Label style={{ marginBottom: 20 }}>VOC</Label>
                 <Bar
                   data={barData}
