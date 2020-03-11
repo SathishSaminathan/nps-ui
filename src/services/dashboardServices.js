@@ -23,7 +23,9 @@ class DashboardServices {
       case DashboardVariables.GET_RAW_DATA:
         return axios.get("http://122.165.203.72:9094/nps/api/v1/raw/data");
       case DashboardVariables.GET_CHART_SUMMARY:
-        return axios.get("http://122.165.203.72:9094/nps/api/v1/raw/data");
+        return axios.get(
+          "http://122.165.203.72:9094/nps/api/v1/nps/chart/summary"
+        );
       case DashboardVariables.GET_STATES:
         return axios.get("http://122.165.203.72:9094/nps/api/v1/states");
       case DashboardVariables.GET_PRODUCTS:
@@ -32,6 +34,14 @@ class DashboardServices {
         return axios.get("http://122.165.203.72:9094/nps/api/v1/issues");
       case DashboardVariables.GET_SENTIMENT:
         return axios.get("http://122.165.203.72:9094/nps/api/v1/sentiments");
+      case DashboardVariables.GET_SPEEDOMETER:
+        return axios.get(
+          `http://122.165.203.72:9094/nps/api/v1/value?type=${data}`
+        );
+      case DashboardVariables.GET_VOC:
+        return axios.get(
+          `http://122.165.203.72:9094/nps/api/v1/voc/chart`
+        );
     }
   }
 }

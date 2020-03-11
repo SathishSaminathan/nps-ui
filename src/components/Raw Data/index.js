@@ -73,9 +73,7 @@ const columns = [
     dataIndex: "gender",
     key: "gender",
     width: 100,
-    render: text => (
-      <Tag className={`${text} tag`}>{text}</Tag>
-    )
+    render: text => <Tag className={`${text} tag`}>{text}</Tag>
   },
   {
     title: "Age",
@@ -164,10 +162,138 @@ const columns = [
     align: "center",
     render: text =>
       text && (
-        <Tooltip placement="left" title={text} className="productName" style={{ width: 100 }}>
+        <Tooltip
+          placement="left"
+          title={text}
+          className="productName"
+          style={{ width: 100 }}
+        >
           <a className="link productEllipsis">{text}</a>
         </Tooltip>
       )
+  }
+];
+
+const columns1 = [
+  {
+    title: "Customer ID",
+    width: 150,
+    dataIndex: "Customer ID",
+    key: "Customer ID",
+    fixed: "left",
+    align: "center"
+  },
+  {
+    title: "Complaint Id",
+    width: 110,
+    dataIndex: "Complaint-id",
+    key: "Complaint-id",
+    fixed: "left",
+    align: "center"
+  },
+  {
+    title: "NPS Score",
+    width: 150,
+    dataIndex: "NPS-Score",
+    key: "NPS-Score",
+    fixed: "left",
+    align: "center"
+  },
+  {
+    title: "Date Received",
+    dataIndex: "Date-Received",
+    key: "Date-Received",
+    width: 100
+  },
+  {
+    title: "Gender",
+    dataIndex: "Gender",
+    key: "Gender",
+    width: 100
+  },
+  {
+    title: "Age",
+    dataIndex: "Age",
+    key: "Age",
+    width: 100
+  },
+  {
+    title: "State",
+    dataIndex: "State",
+    key: "State",
+    width: 80
+  },
+  {
+    title: "Zip-Code",
+    dataIndex: "Zip-Code",
+    key: "Zip-Code",
+    width: 100
+  },
+  {
+    title: "Timely Response",
+    dataIndex: "Timely-Response?",
+    key: "Timely-Response?",
+    width: 100,
+    align: "center",
+    render: text => <Tag className={`${text} tag`}>{text}</Tag>
+  },
+  {
+    title: "Disputed",
+    dataIndex: "Disputed?",
+    key: "Disputed?",
+    width: 100,
+    align: "center",
+    render: text => <Tag className={`${text} tag`}>{text}</Tag>
+  },
+  {
+    title: "Via",
+    dataIndex: "Via",
+    key: "Via",
+    width: 100
+  },
+  {
+    title: "Consumer Message",
+    dataIndex: "Consumer-Message",
+    key: "Issue",
+    width: 180,
+    render: text => (
+      <Tooltip placement="left" title={text} style={{ width: 400 }}>
+        <div className="textEllipsis">{text}</div>
+      </Tooltip>
+    )
+  },
+  // {
+  //   title: "Consumer Message",
+  //   dataIndex: "Consumer-Message",
+  //   key: "Consumer-Message",
+  //   width: 150,
+  //   render: text => (
+  //     // <LinesEllipsis
+  //     //   text={text}
+  //     //   maxLine="3"
+  //     //   ellipsis="..."
+  //     //   // trimRight
+  //     //   basedOn="letters"
+  //     // />
+  //     <div className="textEllipsis">{text}</div>
+  //   )
+  // },
+  // { title: "Timely Response?", dataIndex: "Timely-Response?", key: "Timely-Response?", width: 150 },
+  {
+    title: "Issue",
+    dataIndex: "Issue",
+    fixed: "right",
+    key: "Issue",
+    width: 250
+  },
+  {
+    title: "Product",
+    dataIndex: "Product",
+    key: "Product",
+    fixed: "right",
+    width: 100,
+    align: "center",
+    render: text => text && <a className="link">{text}</a>
   }
 ];
 
@@ -181,7 +307,12 @@ export default class RawData extends Component {
   }
 
   componentDidMount() {
-    this.fetchData();
+    // this.fetchData();
+    setTimeout(() => {
+      this.setState({
+        data: myData.Sheet1
+      });
+    }, 500);
   }
 
   fetchData = () => {
@@ -219,7 +350,7 @@ export default class RawData extends Component {
         <Row style={{ padding: 24 }}>
           <Col>
             <Table
-              columns={columns}
+              columns={columns1}
               dataSource={data}
               scroll={{ x: 1500, y: "66vh" }}
               pagination={{ pageSize: 10 }}

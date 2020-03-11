@@ -125,6 +125,11 @@ export default class DashboardComponent1 extends Component {
       Sentiments: [],
       Products: [],
       Themes: [],
+      SummaryResponse: [],
+      VOCResponse: [],
+      NPS: 0,
+      CSAT: 0,
+      CES: 0,
       FilterData: {
         Product: null,
         State: null,
@@ -136,6 +141,24 @@ export default class DashboardComponent1 extends Component {
     };
     this.dashboardAPI = new DashboardServices();
   }
+
+  getSpeedometerValue = () => {
+    Promise.all([
+      this.dashboardAPI.service(DashboardVariables.GET_SPEEDOMETER, "NPS"),
+      this.dashboardAPI.service(DashboardVariables.GET_SPEEDOMETER, "CSAT"),
+      this.dashboardAPI.service(DashboardVariables.GET_SPEEDOMETER, "CES")
+    ])
+      .then(([res1, res2, res3]) => {
+        this.setState({
+          NPS: res1.data.value,
+          CSAT: res2.data.value,
+          CES: res3.data.value
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   getDDLists = () => {
     Promise.all([
@@ -167,7 +190,6 @@ export default class DashboardComponent1 extends Component {
   };
 
   handleFilter = () => {
-    console.log("FilterData", this.state.FilterData);
     this.getChartData(this.state.FilterData);
   };
 
@@ -175,12 +197,37 @@ export default class DashboardComponent1 extends Component {
     this.getDDLists();
     const { FilterData } = this.state;
     this.getChartData(FilterData);
-    this.getChartSummary()
+    this.getChartSummary();
+    this.getSpeedometerValue();
+    this.getVOCChart();
   }
 
-  getChartSummary=()=>{
-    
-  }
+  getChartSummary = () => {
+    this.dashboardAPI
+      .service(DashboardVariables.GET_CHART_SUMMARY)
+      .then(res => {
+        this.setState({
+          SummaryResponse: res.data
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  getVOCChart = () => {
+    this.dashboardAPI
+      .service(DashboardVariables.GET_VOC)
+      .then(res => {
+        this.setState({
+          VOCResponse: res.data
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   getChartData = FilterData => {
     this.setState(
       {
@@ -386,6 +433,11 @@ export default class DashboardComponent1 extends Component {
       Products,
       Sentiments,
       Themes,
+      SummaryResponse,
+      VOCResponse,
+      NPS,
+      CSAT,
+      CES,
       FilterData: { Timeline, Sentiment, State, Product, ValueInvolved, Theme }
     } = this.state;
     return (
@@ -407,7 +459,7 @@ export default class DashboardComponent1 extends Component {
                 <Col xl={23} className="card containerStyle">
                   <Label style={{ marginBottom: 20 }}>NPS(1-10)</Label>
                   <ReactSpeedometer
-                    value={7}
+                    value={NPS}
                     height={190}
                     customSegmentStops={[0, 3, 6, 10]}
                     segmentColors={["#ff6384", "#ffce56", "#79c447"]}
@@ -422,7 +474,7 @@ export default class DashboardComponent1 extends Component {
                 <Col xl={23} className="card containerStyle">
                   <Label style={{ marginBottom: 20 }}>CSAT (1-5)</Label>
                   <ReactSpeedometer
-                    value={4}
+                    value={2.6}
                     height={190}
                     customSegmentStops={[0, 1.5, 3.5, 5]}
                     segmentColors={["#ff6384", "#ffce56", "#79c447"]}
@@ -435,14 +487,14 @@ export default class DashboardComponent1 extends Component {
               </Col>
               <Col xl={8} className="">
                 <Col xl={23} className="card containerStyle">
-                  <Label style={{ marginBottom: 20 }}>CES(1-5)</Label>
+                  <Label style={{ marginBottom: 20 }}>CES(1-10)</Label>
                   <ReactSpeedometer
-                    value={4}
+                    value={CES}
                     height={190}
-                    customSegmentStops={[0, 1.5, 3.5, 5]}
+                    customSegmentStops={[0, 3, 6, 10]}
                     segmentColors={["#ff6384", "#ffce56", "#79c447"]}
                     minValue={0}
-                    maxValue={5}
+                    maxValue={10}
                     needleTransitionDuration={6000}
                     needleTransition="easeElastic"
                   />
@@ -585,81 +637,85 @@ export default class DashboardComponent1 extends Component {
                   <Col style={{ marginBottom: 10 }}>
                     <Label>NPS Category by Count of calls</Label>
                   </Col>
-                  <Doughnut
-                    data={data}
-                    legend={false}
-                    height={200}
-                    options={{
-                      plugins: {
-                        datalabels: {
-                          // display: true,
-                          align: "center",
-                          anchor: "center",
-                          color: "#000",
-                          font: {
-                            size: 15
-                          },
-                          formatter: (value, ctx) => {
-                            return `${value}%`;
+                  {SummaryResponse.length !== 0 && (
+                    <Doughnut
+                      data={this.getRandomColors(SummaryResponse, "DOUGHNUT")}
+                      legend={false}
+                      height={300}
+                      options={{
+                        plugins: {
+                          datalabels: {
+                            // display: true,
+                            align: "center",
+                            anchor: "center",
+                            color: "#000",
+                            font: {
+                              size: 15
+                            },
+                            formatter: (value, ctx) => {
+                              return `${value}%`;
+                            }
                           }
                         }
-                      }
-                    }}
-                  />
+                      }}
+                    />
+                  )}
                 </Col>
               </Col>
               <Col xl={8} className="card">
                 <Label style={{ marginBottom: 20 }}>VOC</Label>
-                <Bar
-                  data={barData}
-                  // legend={false}
-                  height={400}
-                  options={{
-                    scales: {
-                      xAxes: [
-                        {
-                          display: true,
-                          scaleLabel: {
+                {VOCResponse.length !== 0 && (
+                  <Bar
+                    data={this.getRandomColors(VOCResponse, "BAR")}
+                    // legend={false}
+                    height={400}
+                    options={{
+                      scales: {
+                        xAxes: [
+                          {
                             display: true,
-                            // labelString: "X axe name",
-                            fontColor: "#000000",
-                            fontSize: 10
-                          },
-                          gridLines: {
-                            display: false
-                          },
-                          ticks: {
-                            fontColor: "black",
-                            fontSize: 8
+                            scaleLabel: {
+                              display: true,
+                              // labelString: "X axe name",
+                              fontColor: "#000000",
+                              fontSize: 10
+                            },
+                            gridLines: {
+                              display: false
+                            },
+                            ticks: {
+                              fontColor: "black",
+                              fontSize: 8
+                            }
                           }
-                        }
-                      ],
-                      yAxes: [
-                        {
-                          display: true,
-                          scaleLabel: {
+                        ],
+                        yAxes: [
+                          {
                             display: true,
-                            // labelString: "Y axe name",
-                            fontColor: "#000000",
-                            fontSize: 10
-                          },
-                          gridLines: {
-                            display: false
-                          },
-                          ticks: {
-                            fontColor: "black",
-                            fontSize: 8
+                            scaleLabel: {
+                              display: true,
+                              // labelString: "Y axe name",
+                              fontColor: "#000000",
+                              fontSize: 10
+                            },
+                            gridLines: {
+                              display: false
+                            },
+                            ticks: {
+                              fontColor: "black",
+                              fontSize: 8
+                            }
                           }
+                        ]
+                      },
+                      plugins: {
+                        datalabels: {
+                          display: false
                         }
-                      ]
-                    },
-                    plugins: {
-                      datalabels: {
-                        display: false
                       }
-                    }
-                  }}
-                />
+                    }}
+                  />
+                )}
               </Col>
             </Col>
           </Col>
