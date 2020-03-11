@@ -3,7 +3,7 @@ import React from "react";
 const Label = ({ children, className, style, color = "black" }) => {
   return (
     <span
-      className={`${className} labelStyle`}
+      className={`${className ? className : ""} labelStyle`}
       style={{ color: color, ...style }}
     >
       {children}

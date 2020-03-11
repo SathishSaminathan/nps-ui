@@ -106,13 +106,13 @@
 .green {
   background-color: #79c447;
 }
-.Dectractors {
+.Detractor {
   color: #f5222d !important;
 }
-.Passives {
+.Passive {
   color: #fabb3d !important;
 }
-.Promoters {
+.Promoter {
   color: #79c447 !important;
 }
 
@@ -161,4 +161,26 @@
   align-items: center;
   justify-content: center;
   z-index: 1;
+}
+
+.card {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  padding: 25px;
+}
+
+.masonry-layout {
+  column-count: 3;
+  column-gap: 10px;
+  width: 100% !important;
+}
+.masonry-layout__panel {
+  // box-shadow: 0 2px 5px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  break-inside: avoid;
+  padding: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.19);
+
+  text-align: center;
+  span {
+    padding: 5px 0;
+  }
 }

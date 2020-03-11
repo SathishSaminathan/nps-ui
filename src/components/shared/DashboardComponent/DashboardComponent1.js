@@ -1,11 +1,15 @@
 import React, { Component, Fragment } from "react";
 import { Row, Col, DatePicker, Button, Slider } from "antd";
+import ReactSpeedometer from "react-d3-speedometer";
+import { Doughnut, Bar, Pie, Bubble } from "react-chartjs-2";
 
 import "./dashboard1.scss";
 import Label from "../Label";
 import { SelectComponent } from "../SelectComponent";
 import Loader from "../Loader";
-import { Doughnut, Bar } from "react-chartjs-2";
+import DashboardServices from "services/dashboardServices";
+import { DashboardVariables } from "constants/APIConstants";
+import moment from "moment";
 
 const { RangePicker } = DatePicker;
 
@@ -21,6 +25,16 @@ const products = [
   "Prepaid card"
 ];
 
+const pieData = {
+  labels: ["Red", "Blue", "Yellow"],
+  datasets: [
+    {
+      data: [300, 50, 100],
+      backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+      hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"]
+    }
+  ]
+};
 const marks = {
   100: {
     style: {
@@ -43,6 +57,33 @@ const data = {
       data: [20, 50, 30],
       backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
       hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"]
+    }
+  ]
+};
+
+const bubbleData = {
+  labels: ["January"],
+  datasets: [
+    {
+      label: "My First dataset",
+      fill: false,
+      lineTension: 0.1,
+      backgroundColor: "rgba(75,192,192,0.4)",
+      borderColor: "rgba(75,192,192,1)",
+      borderCapStyle: "butt",
+      borderDash: [],
+      borderDashOffset: 0.0,
+      borderJoinStyle: "miter",
+      pointBorderColor: "rgba(75,192,192,1)",
+      pointBackgroundColor: "#fff",
+      pointBorderWidth: 1,
+      pointHoverRadius: 5,
+      pointHoverBackgroundColor: "rgba(75,192,192,1)",
+      pointHoverBorderColor: "rgba(220,220,220,1)",
+      pointHoverBorderWidth: 2,
+      pointRadius: 1,
+      pointHitRadius: 10,
+      data: [{ x: 10, y: 20, r: 50 }]
     }
   ]
 };
@@ -78,18 +119,103 @@ export default class DashboardComponent1 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      IsDataFetched: true
+      IsDataFetched: true,
+      Response: [],
+      States: [],
+      Sentiments: [],
+      Products: [],
+      Themes: [],
+      FilterData: {
+        Product: null,
+        State: null,
+        Sentiment: null,
+        Timeline: null,
+        ValueInvolved: [],
+        Theme: null
+      }
     };
+    this.dashboardAPI = new DashboardServices();
   }
 
+  getDDLists = () => {
+    Promise.all([
+      this.dashboardAPI.service(DashboardVariables.GET_PRODUCTS),
+      this.dashboardAPI.service(DashboardVariables.GET_STATES),
+      this.dashboardAPI.service(DashboardVariables.GET_SENTIMENT),
+      this.dashboardAPI.service(DashboardVariables.GET_THEMES)
+    ])
+      .then(([res1, res2, res3, res4]) => {
+        this.setState({
+          Products: res1.data,
+          States: res2.data,
+          Sentiments: res3.data,
+          Themes: res4.data
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  handleFilterInputs = (value, type) => {
+    this.setState({
+      FilterData: {
+        ...this.state.FilterData,
+        [type]: value || null
+      }
+    });
+  };
+
+  handleFilter = () => {
+    console.log("FilterData", this.state.FilterData);
+  };
+
+  componentDidMount() {
+    this.getDDLists();
+    this.dashboardAPI
+      .service(DashboardVariables.GET_DASHBOARD_DATA)
+      .then(res => {
+        this.setState({
+          Response: Object.values(res.data)
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  getRandomColors = (data, type) => {
+    switch (type) {
+      case "DOUGHNUT":
+        data.datasets[0].backgroundColor = data.datasets[0].data.map(
+          datum => `#${Math.floor(Math.random() * 16777215).toString(16)}`
+        );
+        return data;
+
+      case "PIE":
+        data.datasets[0].backgroundColor = data.datasets[0].data.map(
+          datum => `#${Math.floor(Math.random() * 16777215).toString(16)}`
+        );
+        return data;
+
+      case "BAR":
+        data.datasets[0].backgroundColor = "#79c447";
+        data.datasets[1].backgroundColor = "#f5222d";
+        return data;
+
+      default:
+        break;
+    }
+  };
+
   renderCharts = () => {
-    return ["Promoters", "Passives", "Dectractors"].map((name, i) => (
+    const { Response } = this.state;
+    return Response.map((res, i) => (
       <Col
         key={i}
         xl={24}
         style={{
           height: 270,
-          // backgroundColor: "red",
           marginTop: 20
         }}
       >
@@ -100,8 +226,8 @@ export default class DashboardComponent1 extends Component {
           style={{ height: "100%" }}
         >
           <Col xl={2} style={{ textAlign: "center" }}>
-            <Label className={`${name}`} style={{ fontSize: 20 }}>
-              {name}
+            <Label className={`${res.npsState}`} style={{ fontSize: 20 }}>
+              {res.npsState}
             </Label>
           </Col>
           <Col xl={6} style={{ height: "100%" }}>
@@ -111,24 +237,29 @@ export default class DashboardComponent1 extends Component {
               </Col>
               <Col xl={24}>
                 <Doughnut
-                  data={data}
+                  data={this.getRandomColors(res.productChart, "DOUGHNUT")}
                   legend={false}
                   height={200}
                   options={{
                     plugins: {
                       datalabels: {
-                        // display: true,
-                        align: "center",
-                        anchor: "center",
-                        color: "#000",
-                        font: {
-                          size: 15
-                        },
-                        formatter: (value, ctx) => {
-                          return `${value}%`;
-                        }
+                        display: false
                       }
                     }
+                    // plugins: {
+                    //   datalabels: {
+                    //     // display: true,
+                    //     align: "center",
+                    //     anchor: "center",
+                    //     color: "#000",
+                    //     font: {
+                    //       size: 15
+                    //     },
+                    //     formatter: (value, ctx) => {
+                    //       return `${value}%`;
+                    //     }
+                    //   }
+                    // }
                   }}
                 />
               </Col>
@@ -140,23 +271,23 @@ export default class DashboardComponent1 extends Component {
                 <Label>Themes Proportion</Label>
               </Col>
               <Col xl={24}>
-                <Doughnut
-                  data={data}
+                <Pie
+                  data={this.getRandomColors(res.issueChart, "PIE")}
                   legend={false}
                   height={200}
                   options={{
                     plugins: {
                       datalabels: {
-                        // display: true,
-                        align: "center",
-                        anchor: "center",
-                        color: "#000",
-                        font: {
-                          size: 15
-                        },
-                        formatter: (value, ctx) => {
-                          return `${value}%`;
-                        }
+                        display: false
+                        // align: "center",
+                        // anchor: "center",
+                        // color: "#000",
+                        // font: {
+                        //   size: 15
+                        // },
+                        // formatter: (value, ctx) => {
+                        //   return `${value}%`;
+                        // }
                       }
                     }
                   }}
@@ -171,7 +302,7 @@ export default class DashboardComponent1 extends Component {
               </Col>
               <Col xl={24}>
                 <Bar
-                  data={barData}
+                  data={this.getRandomColors(res.sentimentChart, "BAR")}
                   // legend={false}
                   height={200}
                   options={{
@@ -226,10 +357,11 @@ export default class DashboardComponent1 extends Component {
           </Col>
           <Col xl={4} style={{ textAlign: "center" }}>
             <p className="noMar">
-              <Label>1000</Label> of customers
+              <Label>{res.customerCount ? res.customerCount : 0}</Label> of
+              customers
             </p>
             <p className="noMar">
-              <Label>$10000</Label>
+              <Label>₹{res.totalAmount ? res.totalAmount : 0}</Label>
             </p>
           </Col>
         </Row>
@@ -237,8 +369,29 @@ export default class DashboardComponent1 extends Component {
     ));
   };
 
+  handleReset = () => {
+    this.setState({
+      FilterData: {
+        Product: null,
+        State: null,
+        Sentiment: null,
+        Timeline: null,
+        ValueInvolved: [],
+        Theme: null
+      }
+    });
+  };
+
   render() {
-    const { IsDataFetched } = this.state;
+    const {
+      IsDataFetched,
+      States,
+      Products,
+      Sentiments,
+      Themes,
+      FilterData: { Timeline, Sentiment, State, Product, ValueInvolved, Theme }
+    } = this.state;
+    console.log("Timeline", Timeline);
     return (
       <Row style={{ position: "relative", height: "100%" }}>
         {!IsDataFetched && <Loader />}
@@ -257,7 +410,28 @@ export default class DashboardComponent1 extends Component {
               <Row>
                 <Col xl={6} className="item">
                   <Label>Time line</Label>
-                  <RangePicker style={{ width: "100%" }}></RangePicker>
+                  <RangePicker
+                    style={{ width: "100%" }}
+                    onChange={(dates, dateStrings) =>
+                      this.handleFilterInputs(dateStrings, "Timeline")
+                    }
+                    value={
+                      Timeline
+                        ? [
+                            moment(Timeline[0], "DD-YY-YYYY"),
+                            moment(Timeline[1], "DD-YY-YYYY")
+                          ]
+                        : null
+                    }
+                    ranges={{
+                      Today: [moment(), moment()],
+                      "This Month": [
+                        moment().startOf("month"),
+                        moment().endOf("month")
+                      ]
+                    }}
+                    format={"DD-MM-YYYY"}
+                  ></RangePicker>
                 </Col>
                 <Col xl={6} className="item">
                   <Label>Value Involved</Label>
@@ -267,10 +441,14 @@ export default class DashboardComponent1 extends Component {
                       style={{ width: "88%" }}
                       step={5}
                       marks={marks}
-                      defaultValue={[1000, 100000]}
+                      defaultValue={ValueInvolved}
+                      value={ValueInvolved}
                       min={100}
                       max={999999}
                       tipFormatter={value => `₹ ${value}`}
+                      onChange={value =>
+                        this.handleFilterInputs(value, "ValueInvolved")
+                      }
                       //   onChange={onChange}
                       //   onAfterChange={onAfterChange}
                     />
@@ -279,15 +457,21 @@ export default class DashboardComponent1 extends Component {
                 <Col xl={6} className="item">
                   <Label>Product</Label>
                   <SelectComponent
-                    data={products}
-                    // handleProductChange={handleChange}
+                    data={Products}
+                    defaultValue={Product}
+                    value={Product}
+                    handleProductChange={this.handleFilterInputs}
+                    field="Product"
                   />
                 </Col>
                 <Col xl={6} className="item">
                   <Label>Location</Label>
                   <SelectComponent
-                    data={[]}
-                    // handleProductChange={handleChange}
+                    data={States}
+                    defaultValue={State}
+                    value={State}
+                    handleProductChange={this.handleFilterInputs}
+                    field="State"
                   />
                 </Col>
               </Row>
@@ -295,15 +479,21 @@ export default class DashboardComponent1 extends Component {
                 <Col xl={6} className="item">
                   <Label>Themes</Label>
                   <SelectComponent
-                    data={[]}
-                    // handleProductChange={handleChange}
+                    data={Themes}
+                    defaultValue={Theme}
+                    value={Theme}
+                    handleProductChange={this.handleFilterInputs}
+                    field="Theme"
                   />
                 </Col>
                 <Col xl={6} className="item">
                   <Label>Sentiments</Label>
                   <SelectComponent
-                    data={[]}
-                    // handleProductChange={handleChange}
+                    data={Sentiments}
+                    defaultValue={Sentiment}
+                    value={Sentiment}
+                    handleProductChange={this.handleFilterInputs}
+                    field="Sentiment"
                   />
                 </Col>
                 <Col
@@ -321,7 +511,7 @@ export default class DashboardComponent1 extends Component {
                     type="primary"
                     className="filterButton"
                     icon="filter"
-                    onClick={() => this.setState({ visible: true })}
+                    onClick={this.handleFilter}
                   >
                     Filter
                   </Button>
@@ -330,7 +520,7 @@ export default class DashboardComponent1 extends Component {
                     type="primary"
                     className="filterButton"
                     icon="reload"
-                    onClick={() => this.setState({ visible: true })}
+                    onClick={this.handleReset}
                   >
                     Reset
                   </Button>
@@ -341,6 +531,130 @@ export default class DashboardComponent1 extends Component {
           <Col xl={24} style={{ padding: 10 }}>
             <Col xl={24} className="chartArea">
               {this.renderCharts()}
+            </Col>
+          </Col>
+          <Col xl={24} style={{ padding: 10 }}>
+            <Col xl={24} className="masonry-layout">
+              <Col className="masonry-layout__panel">
+                <Label>NPS Category by Count of calls</Label>
+                <Doughnut
+                  data={data}
+                  legend={false}
+                  height={400}
+                  options={{
+                    plugins: {
+                      datalabels: {
+                        // display: true,
+                        align: "center",
+                        anchor: "center",
+                        color: "#000",
+                        font: {
+                          size: 15
+                        },
+                        formatter: (value, ctx) => {
+                          return `${value}%`;
+                        }
+                      }
+                    }
+                  }}
+                />
+                <Label style={{ marginBottom: 20 }}>
+                  NPS Category by Count of calls
+                </Label>
+                <Bubble data={bubbleData} legend={false} height={300} />
+              </Col>
+              <Col style={{ marginTop: 10 }} className="masonry-layout__panel">
+                <Label style={{ marginBottom: 20 }}>NPS(1-10)</Label>
+                <ReactSpeedometer
+                  value={7}
+                  height={200}
+                  customSegmentStops={[0, 3, 6, 10]}
+                  segmentColors={["#ff6384", "#ffce56", "#79c447"]}
+                  minValue={0}
+                  maxValue={10}
+                  needleTransitionDuration={4000}
+                  needleTransition="easeElastic"
+                />
+              </Col>
+              <Col style={{ marginTop: 10 }} className="masonry-layout__panel">
+                <Label style={{ marginBottom: 20 }}>CSAT (1-5)</Label>
+                <ReactSpeedometer
+                  value={4}
+                  height={200}
+                  customSegmentStops={[0, 1.5, 3.5, 5]}
+                  segmentColors={["#ff6384", "#ffce56", "#79c447"]}
+                  minValue={0}
+                  maxValue={5}
+                  needleTransitionDuration={5000}
+                  needleTransition="easeElastic"
+                />
+              </Col>
+              <Col style={{ marginTop: 10 }} className="masonry-layout__panel">
+                <Label style={{ marginBottom: 20 }}>CES(1-5)</Label>
+                <ReactSpeedometer
+                  value={4}
+                  height={200}
+                  customSegmentStops={[0, 1.5, 3.5, 5]}
+                  segmentColors={["#ff6384", "#ffce56", "#79c447"]}
+                  minValue={0}
+                  maxValue={5}
+                  needleTransitionDuration={6000}
+                  needleTransition="easeElastic"
+                />
+              </Col>
+              <Col style={{ marginTop: 10 }} className="masonry-layout__panel">
+                <Label style={{ marginBottom: 20 }}>VOC</Label>
+                <Bar
+                  data={barData}
+                  // legend={false}
+                  height={400}
+                  options={{
+                    scales: {
+                      xAxes: [
+                        {
+                          display: true,
+                          scaleLabel: {
+                            display: true,
+                            // labelString: "X axe name",
+                            fontColor: "#000000",
+                            fontSize: 10
+                          },
+                          gridLines: {
+                            display: false
+                          },
+                          ticks: {
+                            fontColor: "black",
+                            fontSize: 8
+                          }
+                        }
+                      ],
+                      yAxes: [
+                        {
+                          display: true,
+                          scaleLabel: {
+                            display: true,
+                            // labelString: "Y axe name",
+                            fontColor: "#000000",
+                            fontSize: 10
+                          },
+                          gridLines: {
+                            display: false
+                          },
+                          ticks: {
+                            fontColor: "black",
+                            fontSize: 8
+                          }
+                        }
+                      ]
+                    },
+                    plugins: {
+                      datalabels: {
+                        display: false
+                      }
+                    }
+                  }}
+                />
+              </Col>
             </Col>
           </Col>
         </Row>
