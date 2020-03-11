@@ -3,13 +3,14 @@ import { Select, Row, Col, Radio, Button } from "antd";
 
 const { Option } = Select;
 
-const SelectComponent = ({ handleProductChange, data, label }) => (
+const SelectComponent = ({ handleProductChange, data, label, value }) => (
   <Row>
     <Col>
       <span className="label">{label}</span>
     </Col>
     <Col>
       <Select
+        value={value}
         allowClear
         showSearch
         style={{ width: 200 }}
@@ -53,6 +54,12 @@ export default function Filters({ products, handleFilter, states }) {
     handleFilter(value, type);
   };
 
+  const reset = (value) => {
+    setVia(null);
+    setGender(null);
+    setState(null);
+    setAge(null);
+  }
   const filter = (value) => {
 
     let filterData = {
@@ -84,6 +91,7 @@ export default function Filters({ products, handleFilter, states }) {
           <SelectComponent
             data={["Web", "Mail", "Slack"]}
             label="Via"
+            value={via}
             handleProductChange={(value, type) => setVia(value)}
           />
         </Col>
@@ -94,7 +102,7 @@ export default function Filters({ products, handleFilter, states }) {
             </Col>
             <Col>
               <Radio.Group
-                defaultValue="Both"
+                value={gender}
                 onChange={e => setGender(e.target.value)}
               >
                 <Radio value={"Male"}>Male</Radio>
@@ -108,6 +116,7 @@ export default function Filters({ products, handleFilter, states }) {
           <SelectComponent
             data={states}
             label="State"
+            value={state}
             handleProductChange={(value, type) => setState(value)}
           />
         </Col>
@@ -117,7 +126,7 @@ export default function Filters({ products, handleFilter, states }) {
           </Col>
           <Radio.Group
             onChange={e => setAge(e.target.value)}
-            defaultValue="a"
+            value={age}
           >
             <Radio.Button value="18:25">18-25</Radio.Button>
             <Radio.Button value="26:35">26-35</Radio.Button>
@@ -126,7 +135,16 @@ export default function Filters({ products, handleFilter, states }) {
         </Col>
         <Col style={{ marginBottom: 10 }}>
           <Button
-            style={{ textAlign: 'center', marginTop: 10 }}
+            style={{ textAlign: 'center', marginTop: 10, backgroundColor: '#ccc' }}
+            type="primary"
+            className="customButton"
+            size="large"
+            onClick={(value) => reset()}
+          >
+            Reset
+                    </Button>
+          <Button
+            style={{ textAlign: 'center', marginTop: 10, marginLeft: 10 }}
             type="primary"
             className="customButton"
             size="large"
