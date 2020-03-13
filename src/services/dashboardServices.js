@@ -4,8 +4,8 @@ import { DashboardVariables } from "constants/APIConstants";
 
 class DashboardServices {
   service(type, data, id) {
-    const IP = "192.168.0.2:6062";
-    // const IP = "122.165.203.72:9094";
+    // const IP = "192.168.0.2:6062";
+    const IP = "122.165.203.72:9094";
     switch (type) {
       case DashboardVariables.GET_DATA:
         return axios.get(`https://api.myjson.com/bins/nh1ki`);
