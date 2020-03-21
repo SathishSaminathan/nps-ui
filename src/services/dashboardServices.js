@@ -42,6 +42,8 @@ class DashboardServices {
         );
       case DashboardVariables.GET_VOC:
         return axios.get(`http://122.165.203.72:9094/nps/api/v1/voc/chart`);
+      case DashboardVariables.FEEDBACK_SERVICE:
+        return axios.get(`http://122.165.203.72:9094/nps/api/v1/feedback/summary?feedbackCategory=${data}`);
     }
   }
 }

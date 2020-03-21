@@ -1,6 +1,10 @@
 import React, { Component, Fragment } from "react";
-import { Row, Col, DatePicker, Button, Slider } from "antd";
+import { Row, Col, DatePicker, Button, Slider, Tabs, Rate } from "antd";
 import ReactSpeedometer from "react-d3-speedometer";
+import { FaEuroSign, FaDonate, FaUserEdit } from "react-icons/fa";
+import { WiDaySunny, WiTime9 } from "react-icons/wi";
+import { AiFillDollarCircle } from "react-icons/ai";
+import { GiBracers } from "react-icons/gi";
 import { Doughnut, Bar, Pie, Bubble } from "react-chartjs-2";
 
 import "./dashboard1.scss";
@@ -10,7 +14,12 @@ import Loader from "../Loader";
 import DashboardServices from "services/dashboardServices";
 import { DashboardVariables } from "constants/APIConstants";
 import moment from "moment";
+import FilterComponent from "./FilterComponent";
+import { Images } from "assets/images";
+import ComparisionChart from "./ComparisionChart";
+import ChurnPrediction from "./ChurnPrediction";
 
+const { TabPane } = Tabs;
 const { RangePicker } = DatePicker;
 
 const products = [
@@ -180,27 +189,29 @@ export default class DashboardComponent1 extends Component {
       });
   };
 
-  handleFilterInputs = (value, type) => {
-    this.setState({
-      FilterData: {
-        ...this.state.FilterData,
-        [type]: value || null
-      }
-    });
-  };
-
-  handleFilter = () => {
-    this.getChartData(this.state.FilterData);
-  };
-
   componentDidMount() {
     this.getDDLists();
     const { FilterData } = this.state;
-    this.getChartData(FilterData);
     this.getChartSummary();
     this.getSpeedometerValue();
     this.getVOCChart();
+    // Promise.all([
+    //   this.getFeedbackService("QUALITY"),
+    //   this.getFeedbackService("PRICE"),
+    //   this.getFeedbackService("DESIGN"),
+    //   this.getFeedbackService("SERVICE")
+    // ])
+    //   .then(([res1, res2, res3, res4]) => {
+    //     debugger;
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //   });
   }
+
+  getFeedbackService = type => {
+    return this.dashboardAPI.service(DashboardVariables.FEEDBACK_SERVICE, type);
+  };
 
   getChartSummary = () => {
     this.dashboardAPI
@@ -221,26 +232,6 @@ export default class DashboardComponent1 extends Component {
       .then(res => {
         this.setState({
           VOCResponse: res.data
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-
-  getChartData = FilterData => {
-    this.setState(
-      {
-        IsDataFetched: false
-      },
-      () => console.log(this.state.IsDataFetched)
-    );
-    this.dashboardAPI
-      .service(DashboardVariables.GET_DASHBOARD_DATA, FilterData)
-      .then(res => {
-        this.setState({
-          Response: Object.values(res.data),
-          IsDataFetched: true
         });
       })
       .catch(err => {
@@ -272,161 +263,14 @@ export default class DashboardComponent1 extends Component {
     }
   };
 
-  renderCharts = () => {
-    const { Response } = this.state;
-    return Response.map((res, i) => (
-      <Col
-        key={i}
-        xl={24}
-        style={{
-          height: 270,
-          marginTop: 20
-        }}
-      >
-        <Row
-          type="flex"
-          justify="center"
-          align="middle"
-          style={{ height: "100%" }}
-        >
-          <Col xl={2} style={{ textAlign: "center" }}>
-            <Label className={`${res.npsState}`} style={{ fontSize: 20 }}>
-              {res.npsState}
-            </Label>
-          </Col>
-          <Col xl={6} style={{ height: "100%" }}>
-            <Row style={{ height: "100%" }} type="flex" justify="space-between">
-              <Col xl={24} style={{ textAlign: "center" }}>
-                <Label>Product Proportion</Label>
-              </Col>
-              <Col xl={24}>
-                <Doughnut
-                  data={this.getRandomColors(res.productChart, "DOUGHNUT")}
-                  legend={false}
-                  height={190}
-                  options={{
-                    plugins: {
-                      datalabels: {
-                        display: false
-                      }
-                    }
-                  }}
-                />
-              </Col>
-            </Row>
-          </Col>
-          <Col xl={6} style={{ height: "100%" }}>
-            <Row style={{ height: "100%" }} type="flex" justify="space-between">
-              <Col xl={24} style={{ textAlign: "center" }}>
-                <Label>Themes Proportion</Label>
-              </Col>
-              <Col xl={24}>
-                <Pie
-                  data={this.getRandomColors(res.issueChart, "PIE")}
-                  legend={false}
-                  height={190}
-                  options={{
-                    plugins: {
-                      datalabels: {
-                        display: false
-                      }
-                    }
-                  }}
-                />
-              </Col>
-            </Row>
-          </Col>
-          <Col xl={6} style={{ height: "100%" }}>
-            <Row style={{ height: "100%" }} type="flex" justify="space-between">
-              <Col xl={24} style={{ textAlign: "center" }}>
-                <Label>Customer Satisfaction</Label>
-              </Col>
-              <Col xl={24}>
-                <Bar
-                  data={this.getRandomColors(res.sentimentChart, "BAR")}
-                  // legend={false}
-                  height={180}
-                  options={{
-                    scales: {
-                      xAxes: [
-                        {
-                          display: true,
-                          scaleLabel: {
-                            display: true,
-                            // labelString: "X axe name",
-                            fontColor: "#000000",
-                            fontSize: 10
-                          },
-                          gridLines: {
-                            display: false
-                          },
-                          ticks: {
-                            fontColor: "black",
-                            fontSize: 8
-                          }
-                        }
-                      ],
-                      yAxes: [
-                        {
-                          display: true,
-                          scaleLabel: {
-                            display: true,
-                            // labelString: "Y axe name",
-                            fontColor: "#000000",
-                            fontSize: 10
-                          },
-                          gridLines: {
-                            display: false
-                          },
-                          ticks: {
-                            fontColor: "black",
-                            fontSize: 8
-                          }
-                        }
-                      ]
-                    },
-                    maintainAspectRatio: false,
-                    plugins: {
-                      datalabels: {
-                        display: false
-                      }
-                    }
-                  }}
-                />
-              </Col>
-            </Row>
-          </Col>
-          <Col xl={4} style={{ textAlign: "center" }}>
-            <p className="noMar">
-              <Label>{res.customerCount ? res.customerCount : 0}</Label> of
-              customers
-            </p>
-            <p className="noMar">
-              <Label>₹{res.totalAmount ? res.totalAmount : 0}</Label>
-            </p>
-          </Col>
-        </Row>
-      </Col>
-    ));
-  };
-
-  handleReset = () => {
-    this.setState(
-      {
-        FilterData: {
-          Product: null,
-          State: null,
-          Sentiment: null,
-          Timeline: null,
-          ValueInvolved: [],
-          Theme: null
-        }
-      },
-      () => this.getChartData(this.state.FilterData)
-    );
-  };
-
   render() {
+    const configImage = {
+      1: Images.Smiley1,
+      2: Images.Smiley2,
+      3: Images.Smiley3,
+      4: Images.Smiley4,
+      5: Images.Smiley5
+    };
     const {
       IsDataFetched,
       States,
@@ -440,9 +284,12 @@ export default class DashboardComponent1 extends Component {
       CES,
       FilterData: { Timeline, Sentiment, State, Product, ValueInvolved, Theme }
     } = this.state;
+
+    const desc = ["terrible", "bad", "normal", "good", "wonderful"].reverse();
+
     return (
       <Row style={{ position: "relative", height: "100%" }}>
-        {!IsDataFetched && <Loader />}
+        {SummaryResponse.length === 0 && VOCResponse.length === 0 && <Loader />}
         <Row style={{ height: "100%" }}>
           <Col xl={24}>
             <Col className="topContainer">
@@ -453,271 +300,309 @@ export default class DashboardComponent1 extends Component {
               </Row>
             </Col>
           </Col>
-          <Row>
-            <Col xl={24} style={{ marginTop: 10, padding: 20 }}>
-              <Col xl={8} className="">
-                <Col xl={23} className="card containerStyle">
-                  <Label style={{ marginBottom: 20 }}>NPS(1-10)</Label>
-                  <ReactSpeedometer
-                    value={NPS}
-                    height={190}
-                    customSegmentStops={[0, 3, 6, 10]}
-                    segmentColors={["#ff6384", "#ffce56", "#79c447"]}
-                    minValue={0}
-                    maxValue={10}
-                    needleTransitionDuration={4000}
-                    needleTransition="easeElastic"
-                  />
-                </Col>
-              </Col>
-              <Col xl={8} className="">
-                <Col xl={23} className="card containerStyle">
-                  <Label style={{ marginBottom: 20 }}>CSAT (1-5)</Label>
-                  <ReactSpeedometer
-                    value={2.6}
-                    height={190}
-                    customSegmentStops={[0, 1.5, 3.5, 5]}
-                    segmentColors={["#ff6384", "#ffce56", "#79c447"]}
-                    minValue={0}
-                    maxValue={5}
-                    needleTransitionDuration={5000}
-                    needleTransition="easeElastic"
-                  />
-                </Col>
-              </Col>
-              <Col xl={8} className="">
-                <Col xl={23} className="card containerStyle">
-                  <Label style={{ marginBottom: 20 }}>CES(1-10)</Label>
-                  <ReactSpeedometer
-                    value={CES}
-                    height={190}
-                    customSegmentStops={[0, 3, 6, 10]}
-                    segmentColors={["#ff6384", "#ffce56", "#79c447"]}
-                    minValue={0}
-                    maxValue={10}
-                    needleTransitionDuration={6000}
-                    needleTransition="easeElastic"
-                  />
-                </Col>
-              </Col>
-            </Col>
-            <Col xl={24} style={{ padding: 20 }}>
-              <Col xl={24} className="">
-                <Col xl={8}>
-                  <Col xl={23} className="card">
-                    <Col style={{ marginBottom: 10 }}>
-                      <Label>NPS Category by Count of calls</Label>
+          <Col xl={24} style={{ paddingTop: 10 }}>
+            <Tabs className="custTab" defaultActiveKey="4">
+              <TabPane tab="Tab 1" key="1">
+                <Row>
+                  <Col xl={24} style={{ marginTop: 10, padding: 20 }}>
+                    <Col xl={8} className="">
+                      <Col xl={23} className="card containerStyle">
+                        <Label style={{ marginBottom: 20 }}>NPS(1-10)</Label>
+                        <ReactSpeedometer
+                          value={NPS}
+                          height={120}
+                          width={190}
+                          ringWidth={20}
+                          customSegmentStops={[0, 3, 6, 10]}
+                          segmentColors={["#ff6384", "#ffce56", "#79c447"]}
+                          minValue={0}
+                          maxValue={10}
+                          needleTransitionDuration={4000}
+                          needleTransition="easeElastic"
+                        />
+                      </Col>
                     </Col>
-                    {SummaryResponse.length !== 0 && (
-                      <Doughnut
-                        data={this.getRandomColors(SummaryResponse, "DOUGHNUT")}
-                        legend={false}
-                        height={300}
-                        options={{
-                          plugins: {
-                            datalabels: {
-                              // display: true,
-                              align: "center",
-                              anchor: "center",
-                              color: "#000",
-                              font: {
-                                size: 15
+                    <Col xl={8} className="">
+                      <Col xl={23} className="card containerStyle">
+                        <Label style={{ marginBottom: 20 }}>CSAT (1-5)</Label>
+                        <ReactSpeedometer
+                          value={2.6}
+                          height={120}
+                          width={190}
+                          ringWidth={20}
+                          customSegmentStops={[0, 1.5, 3.5, 5]}
+                          segmentColors={["#ff6384", "#ffce56", "#79c447"]}
+                          minValue={0}
+                          maxValue={5}
+                          needleTransitionDuration={5000}
+                          needleTransition="easeElastic"
+                        />
+                      </Col>
+                    </Col>
+                    <Col xl={8} className="">
+                      <Col xl={23} className="card containerStyle">
+                        <Label style={{ marginBottom: 20 }}>CES(1-10)</Label>
+                        <ReactSpeedometer
+                          value={CES}
+                          height={120}
+                          width={190}
+                          ringWidth={20}
+                          customSegmentStops={[0, 3, 6, 10]}
+                          segmentColors={["#ff6384", "#ffce56", "#79c447"]}
+                          minValue={0}
+                          maxValue={10}
+                          needleTransitionDuration={6000}
+                          needleTransition="easeElastic"
+                        />
+                      </Col>
+                    </Col>
+                  </Col>
+                  <Col xl={24} style={{ padding: 20 }}>
+                    <Col xl={24} className="">
+                      <Col xl={8}>
+                        <Col xl={23} className="card">
+                          <Col style={{ marginBottom: 10 }}>
+                            <Label>NPS Category by Count of calls</Label>
+                          </Col>
+                          {SummaryResponse.length !== 0 && (
+                            <Doughnut
+                              data={this.getRandomColors(
+                                SummaryResponse,
+                                "DOUGHNUT"
+                              )}
+                              legend={false}
+                              height={250}
+                              options={{
+                                plugins: {
+                                  datalabels: {
+                                    // display: true,
+                                    align: "center",
+                                    anchor: "center",
+                                    color: "#000",
+                                    font: {
+                                      size: 15
+                                    },
+                                    formatter: (value, ctx) => {
+                                      return `${value}%`;
+                                    }
+                                  }
+                                }
+                              }}
+                            />
+                          )}
+                        </Col>
+                      </Col>
+                      <Col xl={16} className="card">
+                        <Label style={{ marginBottom: 20 }}>VOC</Label>
+                        {VOCResponse.length !== 0 && (
+                          <Bar
+                            data={this.getRandomColors(VOCResponse, "BAR")}
+                            // legend={false}
+                            height={110}
+                            options={{
+                              scales: {
+                                xAxes: [
+                                  {
+                                    display: true,
+                                    scaleLabel: {
+                                      display: true,
+                                      // labelString: "X axe name",
+                                      fontColor: "#000000",
+                                      fontSize: 10
+                                    },
+                                    gridLines: {
+                                      display: false
+                                    }
+                                    // ticks: {
+                                    //   fontColor: "black",
+                                    //   fontSize: 8
+                                    // }
+                                  }
+                                ],
+                                yAxes: [
+                                  {
+                                    display: true,
+                                    scaleLabel: {
+                                      display: true,
+                                      // labelString: "Y axe name",
+                                      fontColor: "#000000",
+                                      fontSize: 10
+                                    },
+                                    gridLines: {
+                                      display: false
+                                    }
+                                    // ticks: {
+                                    //   fontColor: "black",
+                                    //   fontSize: 8
+                                    // }
+                                  }
+                                ]
                               },
-                              formatter: (value, ctx) => {
-                                return `${value}%`;
+                              plugins: {
+                                datalabels: {
+                                  display: false
+                                }
                               }
-                            }
-                          }
-                        }}
-                      />
-                    )}
+                            }}
+                          />
+                        )}
+                      </Col>
+                    </Col>
                   </Col>
-                </Col>
-                <Col xl={16} className="card">
-                  <Label style={{ marginBottom: 20 }}>VOC</Label>
-                  {VOCResponse.length !== 0 && (
-                    <Bar
-                      data={this.getRandomColors(VOCResponse, "BAR")}
-                      // legend={false}
-                      height={140}
-                      options={{
-                        scales: {
-                          xAxes: [
-                            {
-                              display: true,
-                              scaleLabel: {
-                                display: true,
-                                // labelString: "X axe name",
-                                fontColor: "#000000",
-                                fontSize: 10
-                              },
-                              gridLines: {
-                                display: false
-                              },
-                              // ticks: {
-                              //   fontColor: "black",
-                              //   fontSize: 8
-                              // }
-                            }
-                          ],
-                          yAxes: [
-                            {
-                              display: true,
-                              scaleLabel: {
-                                display: true,
-                                // labelString: "Y axe name",
-                                fontColor: "#000000",
-                                fontSize: 10
-                              },
-                              gridLines: {
-                                display: false
-                              },
-                              // ticks: {
-                              //   fontColor: "black",
-                              //   fontSize: 8
-                              // }
-                            }
-                          ]
-                        },
-                        plugins: {
-                          datalabels: {
-                            display: false
-                          }
-                        }
-                      }}
-                    />
-                  )}
-                </Col>
-              </Col>
-            </Col>
-          </Row>
-          <Col xl={24} className="filterArea">
-            <Col xl={24} className="filter">
-              <Row>
-                <Col xl={6} className="item">
-                  <Label>Time line</Label>
-                  <RangePicker
-                    style={{ width: "100%" }}
-                    onChange={(dates, dateStrings) =>
-                      this.handleFilterInputs(dateStrings, "Timeline")
-                    }
-                    value={
-                      Timeline
-                        ? [
-                            moment(Timeline[0], "DD-YY-YYYY"),
-                            moment(Timeline[1], "DD-YY-YYYY")
-                          ]
-                        : null
-                    }
-                    ranges={{
-                      Today: [moment(), moment()],
-                      "This Month": [
-                        moment().startOf("month"),
-                        moment().endOf("month")
-                      ]
-                    }}
-                    format={"DD-MM-YYYY"}
-                  ></RangePicker>
-                </Col>
-                <Col xl={6} className="item">
-                  <Label>Value Involved</Label>
-                  <Col className="flexCenter">
-                    <Slider
-                      range
-                      style={{ width: "88%" }}
-                      step={5}
-                      marks={marks}
-                      defaultValue={ValueInvolved}
-                      value={ValueInvolved}
-                      min={100}
-                      max={999999}
-                      tipFormatter={value => `₹ ${value}`}
-                      onChange={value =>
-                        this.handleFilterInputs(value, "ValueInvolved")
-                      }
-                      //   onChange={onChange}
-                      //   onAfterChange={onAfterChange}
-                    />
+                  <Col xl={24} style={{ padding: 5 }}>
+                    <Col xl={6} className="feedbackCardContainer">
+                      <Col xl={24} className="feedbackCard">
+                        <Row style={{ height: "100%" }}>
+                          <Col className="feedbackCardHead">
+                            <p className="title">Quality</p>
+                            <p className="desc">
+                              How do you evaluate the quality of the Product?
+                            </p>
+                          </Col>
+                          <Col className="feedbackCardBody">
+                            <div className="smileyContainer">
+                              {[18.77, 13.38, 9.97, 10.96, 46.92].map(
+                                (value, i) => (
+                                  <div className="smileyRow">
+                                    <div className="value">{value}%</div>
+                                    <img src={configImage[i + 1]} />
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Col>
+                    <Col xl={6} className="feedbackCardContainer">
+                      <Col xl={24} className="feedbackCard">
+                        <Row style={{ height: "100%" }}>
+                          <Col className="feedbackCardHead">
+                            <p className="title">Pricing</p>
+                            <p className="desc">
+                              what do you think about the price of the product?
+                            </p>
+                          </Col>
+                          <Col className="feedbackCardBody">
+                            <div className="smileyContainer">
+                              <div className="pricingRow">
+                                <div className="value">{18}%</div>
+                                <FaDonate className="icon" />
+                                <div className="desc">Top Expensive</div>
+                              </div>
+                              <div className="pricingRow">
+                                <div className="value">{18}%</div>
+                                <AiFillDollarCircle className="icon" />
+                                <div className="desc">Just right</div>
+                              </div>
+                              <div className="pricingRow">
+                                <div className="value">{63}%</div>
+                                <FaEuroSign className="icon" />
+                                <div className="desc">Top Cheap</div>
+                              </div>
+                            </div>
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Col>
+                    <Col xl={6} className="feedbackCardContainer">
+                      <Col xl={24} className="feedbackCard">
+                        <Row style={{ height: "100%" }}>
+                          <Col className="feedbackCardHead">
+                            <p className="title">Design</p>
+                            <p className="desc">
+                              How do you evaluate the design of the Product
+                            </p>
+                          </Col>
+                          <Col className="feedbackCardBody">
+                            <div className="designRow">
+                              <div className="desc">
+                                <span>75%</span> liked the product design.
+                              </div>
+                              <div className="desc">
+                                <span>75%</span> think is fits with the brand.
+                              </div>
+                              <div className="desc">
+                                <span>75%</span> think its appealing.
+                              </div>
+                            </div>
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Col>
+                    <Col xl={6} className="feedbackCardContainer">
+                      <Col xl={24} className="feedbackCard">
+                        <Row style={{ height: "100%" }}>
+                          <Col className="feedbackCardHead">
+                            <p className="title">Service</p>
+                            <p className="desc">
+                              How do you evaluate the performance of our team?
+                            </p>
+                          </Col>
+                          <Col
+                            className="feedbackCardBody"
+                            style={{ flexDirection: "column" }}
+                          >
+                            <div className="serviceRow">
+                              <WiDaySunny className="icon" />
+                              <div>Friendly</div>
+                              <Rate
+                                className="custRate"
+                                tooltips={desc}
+                                disabled
+                                value={3}
+                              />
+                            </div>
+                            <div className="serviceRow">
+                              <FaUserEdit className="icon" />
+                              <div>Customize</div>
+                              <Rate
+                                className="custRate"
+                                tooltips={desc}
+                                disabled
+                                value={3}
+                              />
+                            </div>
+                            <div className="serviceRow">
+                              <GiBracers className="icon" />
+                              <div>Competent</div>
+                              <Rate
+                                className="custRate"
+                                tooltips={desc}
+                                disabled
+                                value={3}
+                              />
+                            </div>
+                            <div className="serviceRow">
+                              <WiTime9 className="icon" />
+                              <div>Short wait</div>
+                              <Rate
+                                className="custRate"
+                                tooltips={desc}
+                                disabled
+                                value={3}
+                              />
+                            </div>
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Col>
                   </Col>
-                </Col>
-                <Col xl={6} className="item">
-                  <Label>Product</Label>
-                  <SelectComponent
-                    data={Products}
-                    defaultValue={Product}
-                    value={Product}
-                    handleProductChange={this.handleFilterInputs}
-                    field="Product"
-                  />
-                </Col>
-                <Col xl={6} className="item">
-                  <Label>Location</Label>
-                  <SelectComponent
-                    data={States}
-                    defaultValue={State}
-                    value={State}
-                    handleProductChange={this.handleFilterInputs}
-                    field="State"
-                  />
-                </Col>
-              </Row>
-              <Row style={{ marginTop: 10 }}>
-                <Col xl={6} className="item">
-                  <Label>Themes</Label>
-                  <SelectComponent
-                    data={Themes}
-                    defaultValue={Theme}
-                    value={Theme}
-                    handleProductChange={this.handleFilterInputs}
-                    field="Theme"
-                  />
-                </Col>
-                <Col xl={6} className="item">
-                  <Label>Sentiments</Label>
-                  <SelectComponent
-                    data={Sentiments}
-                    defaultValue={Sentiment}
-                    value={Sentiment}
-                    handleProductChange={this.handleFilterInputs}
-                    field="Sentiment"
-                  />
-                </Col>
-                <Col
-                  xl={3}
-                  style={{
-                    height: 56,
-                    display: "flex",
-                    alignItems: "flex-end",
-                    padding: 5,
-                    paddingBottom: 0
-                  }}
-                >
-                  <Button
-                    //   style={{ float: "right", marginTop: 10 }}
-                    type="primary"
-                    className="filterButton"
-                    icon="filter"
-                    onClick={this.handleFilter}
-                  >
-                    Filter
-                  </Button>
-                  <Button
-                    style={{ marginLeft: 5 }}
-                    type="primary"
-                    className="filterButton"
-                    icon="reload"
-                    onClick={this.handleReset}
-                  >
-                    Reset
-                  </Button>
-                </Col>
-              </Row>
-            </Col>
-          </Col>
-          <Col xl={24} style={{ padding: 10, marginTop: 10 }}>
-            <Col xl={24} className="chartArea">
-              {this.renderCharts()}
-            </Col>
+                </Row>
+              </TabPane>
+              <TabPane tab="Tab 2" key="2">
+                <FilterComponent />
+              </TabPane>
+              <TabPane tab="Tab 3" key="3">
+                <ComparisionChart />
+              </TabPane>
+              <TabPane tab="Churn Prediction" key="4">
+                <ChurnPrediction />
+              </TabPane>
+              <TabPane tab="Cost Prediction" key="5">
+                Content of Tab Pane 3
+              </TabPane>
+            </Tabs>
           </Col>
         </Row>
       </Row>

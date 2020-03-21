@@ -1,3 +1,4 @@
+@import "../../../constants/_ThemeConstants.scss";
 .filterArea {
   display: flex !important;
   align-items: center;
@@ -18,4 +19,268 @@
   // margin: 10px;
   padding-top: 10;
   padding-bottom: 10;
+}
+
+.feedbackCardContainer {
+  // padding: 5px;
+  padding-right: 5px;
+  height: 250px;
+  .feedbackCard {
+    height: 100%;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    width: 100%;
+    height: 100%;
+    .feedbackCardHead {
+      background-color: $primaryButtonColor;
+      // height: 100px;
+      color: white !important;
+      padding: 5px 0;
+      height: 20%;
+      p {
+        margin: 0;
+      }
+      .title {
+        text-align: center;
+        font-size: 1rem;
+      }
+      .desc {
+        font-size: 0.7rem;
+        text-align: center;
+      }
+    }
+    .feedbackCardBody {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 80%;
+      .smileyContainer {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        .smileyRow {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          padding: 10px 10px;
+          &:hover {
+            img {
+              transform: scale(1) rotate(30deg);
+            }
+            .value {
+              // font-size: 0.8rem;
+            }
+          }
+          .value {
+            transition: all 0.3s ease-in-out;
+            font-size: 0.6rem;
+            // &:hover {
+            //   ~ img {
+            //     transform: scale(1);
+            //   }
+            // }
+          }
+          img {
+            transition: all 0.5s ease-in-out;
+            transform: scale(0.8);
+            width: 38px;
+          }
+        }
+      }
+      .pricingRow {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 10px;
+        &:nth-child(1) {
+          .icon {
+            color: $cardColorPink;
+          }
+        }
+        &:nth-child(2) {
+          padding: 10px 0;
+          .icon {
+            color: $cardColorGreen;
+          }
+        }
+        &:nth-child(3) {
+          .icon {
+            color: $successColor;
+          }
+        }
+        .value {
+          font-size: 1.5rem;
+        }
+        .icon {
+          font-size: 60px;
+          padding: 5px;
+        }
+        .desc {
+          font-weight: bold;
+        }
+      }
+      .designRow {
+        position: relative;
+
+        .desc {
+          span {
+            font-weight: bold;
+            font-size: 1.5rem;
+          }
+          &:nth-child(1) {
+            span {
+              color: $successColor;
+            }
+          }
+          &:nth-child(2) {
+            padding: 10px 0;
+            span {
+              color: $cardColorGreen;
+            }
+          }
+          &:nth-child(3) {
+            span {
+              color: $cardColorPink;
+            }
+          }
+          // color: white;
+        }
+        // width: 300px;
+        // background-repeat: no-repeat;
+        // background-size: contain;
+        // background-image: url("../../../assets/images/bubble.png");
+      }
+      .serviceRow {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        padding: 1px 10px;
+        .icon {
+          font-size: 20px;
+          margin: 5px;
+        }
+        div {
+          width: 30%;
+          display: flex;
+        }
+        // justify-content: center;
+        // svg {
+        //   width: 10%;
+        // }
+        // div {
+        //   width: 20%;
+        // }
+        // // .custRate {
+        // //   width: 70%;
+        // // }
+      }
+    }
+  }
+  &:last-child {
+    padding-right: 0;
+  }
+}
+
+.custTab {
+  .ant-tabs-tab {
+    // margin: 0;
+  }
+  //   .ant-tabs-nav {
+  //     margin: 0;
+  //     &::before{
+  //       content: "";
+  //     }
+  //     font-size: 1rem; // this applies to all text in the Tabs component
+  //     // border-bottom: 1px solid darkmagenta; // also applies to all border
+  // }
+}
+
+.churn {
+  display: flex !important;
+  padding: 0 5px;
+  .churnCardContainer {
+    width: 20%;
+    padding: 5px;
+    .churnCard {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 10px;
+      height: 200px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      &:hover {
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
+          0 10px 10px rgba(0, 0, 0, 0.22);
+        .name {
+          color: $primaryButtonColor;
+        }
+        .countArea {
+          svg {
+            color: $cardColorBlue;
+          }
+          div {
+            color: $cardColorGreen;
+          }
+        }
+        .valueArea {
+          svg {
+            color: $cardColorGreen;
+          }
+          div {
+            color: $cardColorBlue;
+          }
+        }
+        border-radius: 10px;
+      }
+      .name {
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        text-align: center;
+        font-weight: bold;
+        font-size: 1.3rem;
+      }
+      .countValueArea {
+        height: 60%;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        .divider {
+          width: 2px;
+          height: 50%;
+          background-color: #d2d2d2;
+        }
+        .countArea,
+        .valueArea {
+          width: 50%;
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          svg {
+            font-size: 4rem;
+          }
+          div {
+            padding-top: 10px;
+            font-size: 1.5rem;
+          }
+        }
+        .countArea {
+          svg {
+            color: $cardColorBlue;
+          }
+          div {
+            color: $cardColorGreen;
+          }
+        }
+        .valueArea {
+          svg {
+            color: $cardColorGreen;
+          }
+          div {
+            color: $cardColorBlue;
+          }
+        }
+      }
+    }
+  }
 }

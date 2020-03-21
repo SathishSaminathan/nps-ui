@@ -47,6 +47,7 @@ export default class Home extends Component {
             }
             // breakpoint="lg"
             collapsible
+            defaultCollapsed
             // onBreakpoint={broken => {
             //   console.log(broken);
             // }}
