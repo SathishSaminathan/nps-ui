@@ -9,7 +9,8 @@ export const SelectComponent = ({
   label = null,
   field,
   defaultValue = null,
-  value
+  value = undefined,
+  placeholder
 }) => {
   return (
     <Row>
@@ -25,7 +26,7 @@ export const SelectComponent = ({
           value={value}
           defaultValue={defaultValue}
           style={{ width: "100%" }}
-          placeholder="All"
+          placeholder={placeholder ? placeholder : "All"}
           optionFilterProp="children"
           onChange={value => handleProductChange(value, field)}
           filterOption={(input, option) =>

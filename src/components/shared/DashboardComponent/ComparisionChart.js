@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Bar } from "react-chartjs-2";
 import { DashboardVariables } from "constants/APIConstants";
 import DashboardServices from "services/dashboardServices";
-import { getRandomColors } from "helpers/validationHelpers";
+import { Row, Col, Select } from "antd";
+import ProductChartCamparision from "./ProductChartCamparision";
+import ProductThemesComparision from "./ProductThemesComparision";
 
 export default class ComparisionChart extends Component {
   constructor(props) {
@@ -31,60 +32,13 @@ export default class ComparisionChart extends Component {
   };
 
   render() {
-    const { VOCResponse } = this.state;
     return (
-      VOCResponse.length !== 0 && (
-        <Bar
-          data={getRandomColors(VOCResponse, "BAR")}
-          // legend={false}
-          height={110}
-          options={{
-            scales: {
-              xAxes: [
-                {
-                  display: true,
-                  scaleLabel: {
-                    display: true,
-                    // labelString: "X axe name",
-                    fontColor: "#000000",
-                    fontSize: 10
-                  },
-                  gridLines: {
-                    display: false
-                  }
-                  // ticks: {
-                  //   fontColor: "black",
-                  //   fontSize: 8
-                  // }
-                }
-              ],
-              yAxes: [
-                {
-                  display: true,
-                  scaleLabel: {
-                    display: true,
-                    // labelString: "Y axe name",
-                    fontColor: "#000000",
-                    fontSize: 10
-                  },
-                  gridLines: {
-                    display: false
-                  }
-                  // ticks: {
-                  //   fontColor: "black",
-                  //   fontSize: 8
-                  // }
-                }
-              ]
-            },
-            plugins: {
-              datalabels: {
-                display: false
-              }
-            }
-          }}
-        />
-      )
+      <Row>
+        <Col xl={24} style={{ padding: 24 }}>
+          <ProductChartCamparision />
+          <ProductThemesComparision />
+        </Col>
+      </Row>
     );
   }
 }

@@ -295,14 +295,14 @@ export default class DashboardComponent1 extends Component {
             <Col className="topContainer">
               <Row className="headerArea" style={{ marginBottom: 0 }}>
                 <Col className="header">
-                  Neptune & Strategie Assignment tool
+                  Neptune & Strategic Assignment tool
                 </Col>
               </Row>
             </Col>
           </Col>
           <Col xl={24} style={{ paddingTop: 10 }}>
-            <Tabs className="custTab" defaultActiveKey="4">
-              <TabPane tab="Tab 1" key="1">
+            <Tabs className="custTab" defaultActiveKey="2">
+              <TabPane tab="Satellite" key="1">
                 <Row>
                   <Col xl={24} style={{ marginTop: 10, padding: 20 }}>
                     <Col xl={8} className="">
@@ -590,17 +590,14 @@ export default class DashboardComponent1 extends Component {
                   </Col>
                 </Row>
               </TabPane>
-              <TabPane tab="Tab 2" key="2">
-                <FilterComponent />
-              </TabPane>
-              <TabPane tab="Tab 3" key="3">
+              <TabPane tab="Rover" key="2">
                 <ComparisionChart />
               </TabPane>
-              <TabPane tab="Churn Prediction" key="4">
-                <ChurnPrediction />
+              <TabPane tab="Astronaut" key="3">
+                <FilterComponent />
               </TabPane>
-              <TabPane tab="Cost Prediction" key="5">
-                Content of Tab Pane 3
+              <TabPane tab="Prediction" key="4">
+                <ChurnPrediction />
               </TabPane>
             </Tabs>
           </Col>
