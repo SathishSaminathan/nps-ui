@@ -10,7 +10,8 @@ export const SelectComponent = ({
   field,
   defaultValue = null,
   value = undefined,
-  placeholder
+  placeholder,
+  allowClear = true
 }) => {
   return (
     <Row>
@@ -21,7 +22,7 @@ export const SelectComponent = ({
       )}
       <Col>
         <Select
-          allowClear
+          allowClear={allowClear}
           showSearch
           value={value}
           defaultValue={defaultValue}

@@ -5,13 +5,13 @@ import { DashboardVariables } from "constants/APIConstants";
 class DashboardServices {
   service(type, data, id) {
     // const IP = "192.168.0.2:6062";
-    const IP = "122.165.203.72:9094";
+    const IP = "http://122.165.203.72:9094/nps/api/v1/";
     switch (type) {
       case DashboardVariables.GET_DATA:
         return axios.get(`https://api.myjson.com/bins/nh1ki`);
       case DashboardVariables.GET_DASHBOARD_DATA:
         return axios.get(
-          `http://${IP}/nps/api/v1/nps/chart/data?endMoney=${(data.ValueInvolved &&
+          `${IP}nps/chart/data?endMoney=${(data.ValueInvolved &&
             data.ValueInvolved[1]) ||
             ""}&endReceivedDate=${(data.Timeline && data.Timeline[1]) ||
             ""}&issueId=${data.Theme || ""}&productId=${data.Product ||
@@ -43,7 +43,23 @@ class DashboardServices {
       case DashboardVariables.GET_VOC:
         return axios.get(`http://122.165.203.72:9094/nps/api/v1/voc/chart`);
       case DashboardVariables.FEEDBACK_SERVICE:
-        return axios.get(`http://122.165.203.72:9094/nps/api/v1/feedback/summary?feedbackCategory=${data}`);
+        return axios.get(
+          `http://122.165.203.72:9094/nps/api/v1/feedback/summary?feedbackCategory=${data}`
+        );
+      case DashboardVariables.COMPARISION_CHART:
+        return axios.get(
+          `http://122.165.203.72:9094/nps/api/v1/compare/summary?${
+            data.comparisionMonth
+              ? `comparisionMonth=${data.comparisionMonth}`
+              : ""
+          }&isProduct=${data.isProduct}${
+            data.productId ? `&productId=${data.productId}` : ""
+          }`
+        );
+      case DashboardVariables.COMPARISION_CHART_PRODUCT_DD:
+        return axios.get(`${IP}top/products?limit=5&yearly=${data.comparisionMonth}`);
+      case DashboardVariables.PREDICTION:
+        return axios.get(`${IP}prediction/summary`);
     }
   }
 }

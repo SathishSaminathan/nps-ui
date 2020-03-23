@@ -8,11 +8,18 @@ const { TabPane } = Tabs;
 
 const PredictionMore = props => {
   const renderTabs = () => {
-    return ["Banking", "Debit card"].map((ele, index) => (
-      <TabPane tab={ele} key={index + 1}>
-        <PredictionMoreTabContentComponent {...props} title={ele} />
-      </TabPane>
-    ));
+    return (
+      props.location.state &&
+      props.location.state.products &&
+      props.location.state.products.map((ele, index) => (
+        <TabPane tab={ele.name} key={index + 1}>
+          <PredictionMoreTabContentComponent
+            {...props}
+            title={ele.PredictionMoreTabContentComponent}
+          />
+        </TabPane>
+      ))
+    );
   };
 
   console.log(renderTabs());

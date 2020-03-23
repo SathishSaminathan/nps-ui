@@ -14,33 +14,44 @@ export default class ProductThemesComparision extends Component {
     this.state = {
       VOCResponse: [],
       Products: [],
-      Product: undefined
+      Product: undefined,
+      FilteredValue: {
+        comparisionMonth: "QUATERLY",
+        isProduct: false,
+        productId: null
+      }
     };
     this.dashboardAPI = new DashboardServices();
   }
 
   componentDidMount() {
-    this.getChartData();
-    this.getProducts();
+    const { FilteredValue } = this.state;
+    this.getProducts(FilteredValue);
   }
 
-  getProducts = () => {
+  getProducts = data => {
     this.dashboardAPI
-      .service(DashboardVariables.GET_PRODUCTS)
+      .service(DashboardVariables.COMPARISION_CHART_PRODUCT_DD, data)
       .then(res => {
-        console.log(res);
-        this.setState({
-          Products: res.data
-        });
+        this.setState(
+          {
+            Products: res.data,
+            FilteredValue: {
+              ...this.state.FilteredValue,
+              productId: res.data[0].value
+            }
+          },
+          () => this.getChartData(this.state.FilteredValue)
+        );
       })
       .catch(err => {
         console.log(err);
       });
   };
 
-  getChartData = () => {
+  getChartData = data => {
     this.dashboardAPI
-      .service(DashboardVariables.GET_VOC)
+      .service(DashboardVariables.COMPARISION_CHART, data)
       .then(res => {
         this.setState({
           VOCResponse: res.data
@@ -51,14 +62,34 @@ export default class ProductThemesComparision extends Component {
       });
   };
 
+  handleComparisionMonth = ({ target: { value } }) => {
+    this.setState(
+      {
+        FilteredValue: { ...this.state.FilteredValue, comparisionMonth: value }
+      },
+      () => this.getProducts(this.state.FilteredValue)
+    );
+  };
+
   hadleProduct = (value, type) => {
-    this.setState({
-      [type]: value
-    });
+    this.setState(
+      {
+        FilteredValue: {
+          ...this.state.FilteredValue,
+          productId: value
+        }
+      },
+      () => this.getChartData(this.state.FilteredValue)
+    );
   };
 
   render() {
-    const { VOCResponse, Products, Product } = this.state;
+    const {
+      VOCResponse,
+      Products,
+      Product,
+      FilteredValue: { comparisionMonth, productId }
+    } = this.state;
     return (
       <Row>
         <Col xl={24} className="comparisionChartContainer">
@@ -67,10 +98,11 @@ export default class ProductThemesComparision extends Component {
               <Row>
                 <Col style={{ width: 200, marginRight: 10 }}>
                   <SelectComponent
+                    allowClear={false}
                     data={Products}
-                    defaultValue={Product}
+                    defaultValue={productId}
                     placeholder="Select Product"
-                    value={Product}
+                    value={productId}
                     handleProductChange={this.hadleProduct}
                     field="Product"
                   />
@@ -81,13 +113,13 @@ export default class ProductThemesComparision extends Component {
               <Row>
                 <Col>
                   <Radio.Group
-                  // value={size}
-                  // onChange={this.handleSizeChange}
+                    // value={size}
+                    onChange={this.handleComparisionMonth}
+                    defaultValue={comparisionMonth}
                   >
-                    <Radio.Button value="large">Monthly</Radio.Button>
-                    <Radio.Button value="Quaterly">Quaterly</Radio.Button>
-                    <Radio.Button value="default">6 Months</Radio.Button>
-                    <Radio.Button value="small">Yearly</Radio.Button>
+                    <Radio.Button value="QUATERLY">Quaterly</Radio.Button>
+                    <Radio.Button value="HALF_YEARLY">Half Yearly</Radio.Button>
+                    <Radio.Button value="YEARLY">Yearly</Radio.Button>
                   </Radio.Group>
                 </Col>
               </Row>
@@ -103,6 +135,16 @@ export default class ProductThemesComparision extends Component {
                   scales: {
                     xAxes: [
                       {
+                        ticks: {
+                          fontSize: 8,
+                          callback: function(label, index, labels) {
+                            if (/\s/.test(label)) {
+                              return label.split(" ");
+                            } else {
+                              return label;
+                            }
+                          }
+                        },
                         display: true,
                         scaleLabel: {
                           display: true,

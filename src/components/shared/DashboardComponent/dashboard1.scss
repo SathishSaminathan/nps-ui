@@ -201,7 +201,7 @@
   width: 100%;
   padding: 0 5px;
   .churnCardContainer {
-    width: 30%;
+    min-width: 30%;
     padding: 10px;
     .churnCard {
       cursor: pointer;

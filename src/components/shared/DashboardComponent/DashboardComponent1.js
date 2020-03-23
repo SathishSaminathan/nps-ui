@@ -20,6 +20,7 @@ import { Images } from "assets/images";
 import ComparisionChart from "./ComparisionChart";
 import ChurnPrediction from "./ChurnPrediction";
 import { setActiveDashboardTab } from "store/actions";
+import { getRandomColors } from "helpers/validationHelpers";
 
 const { TabPane } = Tabs;
 const { RangePicker } = DatePicker;
@@ -241,30 +242,6 @@ class DashboardComponent1 extends Component {
       });
   };
 
-  getRandomColors = (data, type) => {
-    switch (type) {
-      case "DOUGHNUT":
-        data.datasets[0].backgroundColor = data.datasets[0].data.map(
-          datum => `#${Math.floor(Math.random() * 16777215).toString(16)}`
-        );
-        return data;
-
-      case "PIE":
-        data.datasets[0].backgroundColor = data.datasets[0].data.map(
-          datum => `#${Math.floor(Math.random() * 16777215).toString(16)}`
-        );
-        return data;
-
-      case "BAR":
-        data.datasets[0].backgroundColor = "#79c447";
-        data.datasets[1].backgroundColor = "#f5222d";
-        return data;
-
-      default:
-        break;
-    }
-  };
-
   render() {
     const configImage = {
       1: Images.Smiley5,
@@ -377,10 +354,7 @@ class DashboardComponent1 extends Component {
                           <Doughnut
                             data={
                               SummaryResponse.length !== 0
-                                ? this.getRandomColors(
-                                    SummaryResponse,
-                                    "DOUGHNUT"
-                                  )
+                                ? getRandomColors(SummaryResponse, "DOUGHNUT")
                                 : []
                             }
                             legend={false}
@@ -409,7 +383,7 @@ class DashboardComponent1 extends Component {
                         <Label style={{ marginBottom: 20 }}>VOC</Label>
                         {VOCResponse.length !== 0 && (
                           <Bar
-                            data={this.getRandomColors(VOCResponse, "BAR")}
+                            data={getRandomColors(VOCResponse, "BAR")}
                             // legend={false}
                             height={80}
                             options={{

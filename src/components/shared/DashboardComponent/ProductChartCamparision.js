@@ -11,18 +11,22 @@ export default class ProductChartCamparision extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      VOCResponse: []
+      VOCResponse: [],
+      FilteredValue: {
+        comparisionMonth: "QUATERLY",
+        isProduct: true
+      }
     };
     this.dashboardAPI = new DashboardServices();
   }
 
   componentDidMount() {
-    this.getChartData();
+    this.getChartData(this.state.FilteredValue);
   }
 
-  getChartData = () => {
+  getChartData = data => {
     this.dashboardAPI
-      .service(DashboardVariables.GET_VOC)
+      .service(DashboardVariables.COMPARISION_CHART, data)
       .then(res => {
         this.setState({
           VOCResponse: res.data
@@ -32,8 +36,21 @@ export default class ProductChartCamparision extends Component {
         console.log(err);
       });
   };
+
+  handleComparisionMonth = ({ target: { value } }) => {
+    this.setState(
+      {
+        FilteredValue: { ...this.state.FilteredValue, comparisionMonth: value }
+      },
+      () => this.getChartData(this.state.FilteredValue)
+    );
+  };
+
   render() {
-    const { VOCResponse } = this.state;
+    const {
+      VOCResponse,
+      FilteredValue: { comparisionMonth }
+    } = this.state;
     return (
       <Row>
         <Col xl={24} className="comparisionChartContainer">
@@ -42,13 +59,13 @@ export default class ProductChartCamparision extends Component {
               <Row>
                 <Col>
                   <Radio.Group
-                  // value={size}
-                  // onChange={this.handleSizeChange}
+                    // value={size}
+                    onChange={this.handleComparisionMonth}
+                    defaultValue={comparisionMonth}
                   >
-                    <Radio.Button value="large">Monthly</Radio.Button>
-                    <Radio.Button value="Quaterly">Quaterly</Radio.Button>
-                    <Radio.Button value="default">6 Months</Radio.Button>
-                    <Radio.Button value="small">Yearly</Radio.Button>
+                    <Radio.Button value="QUATERLY">Quaterly</Radio.Button>
+                    <Radio.Button value="HALF_YEARLY">Half Yearly</Radio.Button>
+                    <Radio.Button value="YEARLY">Yearly</Radio.Button>
                   </Radio.Group>
                 </Col>
               </Row>
@@ -64,6 +81,16 @@ export default class ProductChartCamparision extends Component {
                   scales: {
                     xAxes: [
                       {
+                        ticks: {
+                          // fontSize: 8,
+                          callback: function(label, index, labels) {
+                            if (/\s/.test(label)) {
+                              return label.split(" ");
+                            } else {
+                              return label;
+                            }
+                          }
+                        },
                         display: true,
                         scaleLabel: {
                           display: true,
