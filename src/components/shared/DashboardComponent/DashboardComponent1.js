@@ -199,20 +199,58 @@ class DashboardComponent1 extends Component {
     this.getChartSummary();
     this.getSpeedometerValue();
     this.getVOCChart();
-    Promise.all([
-      this.getFeedbackService("QUALITY"),
-      this.getFeedbackService("PRICE"),
-      this.getFeedbackService("DESIGN"),
-      this.getFeedbackService("SERVICE")
-    ])
-      .then(([res1, res2, res3, res4]) => {
-        this.setState({
-          qualitySummary: res1.data.qualitySummary
-        });
+    this.getFeedbackService("QUALITY")
+      .then(res => {
+        console.log(res);
       })
       .catch(err => {
         console.log(err);
+        this.setState({});
       });
+    setTimeout(() => {
+      this.getFeedbackService("SERVICE")
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+          this.setState({});
+        });
+    }, 1);
+    setTimeout(() => {
+      this.getFeedbackService("PRICE")
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+          this.setState({});
+        });
+    }, 2);
+    setTimeout(() => {
+      this.getFeedbackService("DESIGN")
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+          this.setState({});
+        });
+    }, 3);
+    // Promise.all([
+    //   this.getFeedbackService("QUALITY")
+    //   // this.getFeedbackService("PRICE"),
+    //   // this.getFeedbackService("DESIGN"),
+    //   // this.getFeedbackService("SERVICE")
+    // ])
+    //   .then(([res1, res2, res3, res4]) => {
+    //     this.setState({
+    //       qualitySummary: res1.data.qualitySummary
+    //     });
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //   });
   }
 
   getFeedbackService = type => {
