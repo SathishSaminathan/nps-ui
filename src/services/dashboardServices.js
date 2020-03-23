@@ -6,6 +6,7 @@ class DashboardServices {
   service(type, data, id) {
     // const IP = "192.168.0.2:6062";
     const IP = "http://122.165.203.72:9094/nps/api/v1/";
+    // const IP = "http://122.165.203.72:9094/nps/api/v1/";
     switch (type) {
       case DashboardVariables.GET_DATA:
         return axios.get(`https://api.myjson.com/bins/nh1ki`);
@@ -22,33 +23,33 @@ class DashboardServices {
         );
       case DashboardVariables.GET_RAW_DATA:
         return axios.get(
-          `http://122.165.203.72:9094/nps/api/v1/raw/data?pageIndex=${data}`
+          `${IP}raw/data?pageIndex=${data}`
         );
       case DashboardVariables.GET_CHART_SUMMARY:
         return axios.get(
-          "http://122.165.203.72:9094/nps/api/v1/nps/chart/summary"
+          `${IP}nps/chart/summary`
         );
       case DashboardVariables.GET_STATES:
-        return axios.get("http://122.165.203.72:9094/nps/api/v1/states");
+        return axios.get(`${IP}states`);
       case DashboardVariables.GET_PRODUCTS:
-        return axios.get("http://122.165.203.72:9094/nps/api/v1/products");
+        return axios.get(`${IP}products`);
       case DashboardVariables.GET_THEMES:
-        return axios.get("http://122.165.203.72:9094/nps/api/v1/issues");
+        return axios.get(`${IP}issues`);
       case DashboardVariables.GET_SENTIMENT:
-        return axios.get("http://122.165.203.72:9094/nps/api/v1/sentiments");
+        return axios.get(`${IP}sentiments`);
       case DashboardVariables.GET_SPEEDOMETER:
         return axios.get(
-          `http://122.165.203.72:9094/nps/api/v1/value?type=${data}`
+          `${IP}value?type=${data}`
         );
       case DashboardVariables.GET_VOC:
-        return axios.get(`http://122.165.203.72:9094/nps/api/v1/voc/chart`);
+        return axios.get(`${IP}voc/chart`);
       case DashboardVariables.FEEDBACK_SERVICE:
         return axios.get(
-          `http://122.165.203.72:9094/nps/api/v1/feedback/summary?feedbackCategory=${data}`
+          `${IP}feedback/summary?feedbackCategory=${data}`
         );
       case DashboardVariables.COMPARISION_CHART:
         return axios.get(
-          `http://122.165.203.72:9094/nps/api/v1/compare/summary?${
+          `${IP}compare/summary?${
             data.comparisionMonth
               ? `comparisionMonth=${data.comparisionMonth}`
               : ""
