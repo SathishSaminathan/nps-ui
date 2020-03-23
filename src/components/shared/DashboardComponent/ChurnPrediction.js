@@ -6,6 +6,7 @@ import { GiSwapBag, GiChart } from "react-icons/gi";
 
 export default class ChurnPrediction extends Component {
   render() {
+    const { history } = this.props;
     const data = [
       {
         name: "Debit card",
@@ -36,7 +37,10 @@ export default class ChurnPrediction extends Component {
     return (
       <Row type="flex" align="middle">
         <Col xl={24} className="churn">
-          <Col className="churnCardContainer">
+          <Col
+            className="churnCardContainer"
+            onClick={() => history.push("/predictionmore")}
+          >
             <Col className="churnCard">
               <p className="custCountArea">
                 <span className="custCount"># 1000 </span> customers will leave

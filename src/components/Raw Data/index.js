@@ -361,7 +361,7 @@ export default class RawData extends Component {
             </Upload>
           </Col>
         </Row>
-        <Row style={{ padding: 24 }}>
+        <Row style={{ padding: 24, paddingTop: 0 }}>
           <Col xl={24} style={{ marginBottom: 10 }}>
             <Pagination
               style={{ float: "right" }}

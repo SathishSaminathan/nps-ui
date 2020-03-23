@@ -265,11 +265,11 @@ export default class DashboardComponent1 extends Component {
 
   render() {
     const configImage = {
-      1: Images.Smiley1,
-      2: Images.Smiley2,
+      1: Images.Smiley5,
+      2: Images.Smiley4,
       3: Images.Smiley3,
-      4: Images.Smiley4,
-      5: Images.Smiley5
+      4: Images.Smiley2,
+      5: Images.Smiley1
     };
     const {
       IsDataFetched,
@@ -301,7 +301,7 @@ export default class DashboardComponent1 extends Component {
             </Col>
           </Col>
           <Col xl={24} style={{ paddingTop: 10 }}>
-            <Tabs className="custTab" defaultActiveKey="2">
+            <Tabs className="custTab" defaultActiveKey="1" destroyInactiveTabPane>
               <TabPane tab="Satellite" key="1">
                 <Row>
                   <Col xl={24} style={{ marginTop: 10, padding: 20 }}>
@@ -357,21 +357,25 @@ export default class DashboardComponent1 extends Component {
                       </Col>
                     </Col>
                   </Col>
-                  <Col xl={24} style={{ padding: 20 }}>
+                  <Col xl={24} style={{ padding: 10 }}>
                     <Col xl={24} className="">
                       <Col xl={8}>
                         <Col xl={23} className="card">
                           <Col style={{ marginBottom: 10 }}>
                             <Label>NPS Category by Count of calls</Label>
                           </Col>
-                          {SummaryResponse.length !== 0 && (
+                          {/* {SummaryResponse.length !== 0 && ( */}
                             <Doughnut
-                              data={this.getRandomColors(
-                                SummaryResponse,
-                                "DOUGHNUT"
-                              )}
+                              data={
+                                SummaryResponse.length !== 0
+                                  ? this.getRandomColors(
+                                      SummaryResponse,
+                                      "DOUGHNUT"
+                                    )
+                                  : []
+                              }
                               legend={false}
-                              height={250}
+                              height={173}
                               options={{
                                 plugins: {
                                   datalabels: {
@@ -380,7 +384,7 @@ export default class DashboardComponent1 extends Component {
                                     anchor: "center",
                                     color: "#000",
                                     font: {
-                                      size: 15
+                                      size: 10
                                     },
                                     formatter: (value, ctx) => {
                                       return `${value}%`;
@@ -389,7 +393,7 @@ export default class DashboardComponent1 extends Component {
                                 }
                               }}
                             />
-                          )}
+                          {/* )} */}
                         </Col>
                       </Col>
                       <Col xl={16} className="card">
@@ -398,7 +402,7 @@ export default class DashboardComponent1 extends Component {
                           <Bar
                             data={this.getRandomColors(VOCResponse, "BAR")}
                             // legend={false}
-                            height={110}
+                            height={80}
                             options={{
                               scales: {
                                 xAxes: [
@@ -449,7 +453,7 @@ export default class DashboardComponent1 extends Component {
                       </Col>
                     </Col>
                   </Col>
-                  <Col xl={24} style={{ padding: 5 }}>
+                  <Col xl={24} style={{ padding: 10 }}>
                     <Col xl={6} className="feedbackCardContainer">
                       <Col xl={24} className="feedbackCard">
                         <Row style={{ height: "100%" }}>
@@ -597,7 +601,7 @@ export default class DashboardComponent1 extends Component {
                 <FilterComponent />
               </TabPane>
               <TabPane tab="Prediction" key="4">
-                <ChurnPrediction />
+                <ChurnPrediction {...this.props} />
               </TabPane>
             </Tabs>
           </Col>

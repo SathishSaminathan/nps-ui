@@ -59,7 +59,7 @@ export default class ProductChartCamparision extends Component {
               <Bar
                 data={getRandomColors(VOCResponse, "BAR")}
                 // legend={false}
-                height={110}
+                height={60}
                 options={{
                   scales: {
                     xAxes: [

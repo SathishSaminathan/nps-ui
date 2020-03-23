@@ -39,6 +39,7 @@ export default class FilterComponent extends Component {
       Themes: [],
       SummaryResponse: [],
       VOCResponse: [],
+      InitialFetched: false,
       NPS: 0,
       CSAT: 0,
       CES: 0,
@@ -152,7 +153,8 @@ export default class FilterComponent extends Component {
       .then(res => {
         this.setState({
           Response: Object.values(res.data),
-          IsDataFetched: true
+          IsDataFetched: true,
+          InitialFetched: this.state.InitialFetched ? false : true
         });
       })
       .catch(err => {
@@ -344,6 +346,7 @@ export default class FilterComponent extends Component {
       Products,
       Sentiments,
       Themes,
+      InitialFetched,
       SummaryResponse,
       VOCResponse,
       NPS,
@@ -478,11 +481,13 @@ export default class FilterComponent extends Component {
               </Row>
             </Col>
           </Col>
-          <Col xl={24} style={{ padding: 10, marginTop: 10 }}>
-            <Col xl={24} className="chartArea">
-              {this.renderCharts()}
+          {InitialFetched && (
+            <Col xl={24} style={{ padding: 10, marginTop: 10 }}>
+              <Col xl={24} className="chartArea">
+                {this.renderCharts()}
+              </Col>
             </Col>
-          </Col>
+          )}
         </Row>
       </>
     );

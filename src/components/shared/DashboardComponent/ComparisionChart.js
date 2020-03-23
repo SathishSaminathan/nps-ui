@@ -34,9 +34,13 @@ export default class ComparisionChart extends Component {
   render() {
     return (
       <Row>
-        <Col xl={24} style={{ padding: 24 }}>
-          <ProductChartCamparision />
-          <ProductThemesComparision />
+        <Col xl={24} style={{ padding: 10, paddingTop: 0 }}>
+          <Col>
+            <ProductChartCamparision />
+          </Col>
+          <Col style={{ paddingTop: 10 }}>
+            <ProductThemesComparision />
+          </Col>
         </Col>
       </Row>
     );

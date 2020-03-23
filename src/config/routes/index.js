@@ -12,6 +12,7 @@ import TextAnalytics1 from "components/TextAnalytics/TextAnalytics1";
 import RawData from "components/Raw Data";
 import ProtectedRoute from "./ProtectedRoutes";
 import DashboardComponent1 from "components/shared/DashboardComponent/DashboardComponent1";
+import PredictionMore from "components/shared/DashboardComponent/PredictionMore";
 
 const MainRoutes = () => {
   return (
@@ -45,6 +46,7 @@ const HomeRoutes = () => {
       <ProtectedRoute exact path="/integrations" component={Integrations} />
       <ProtectedRoute exact path="/textAnalytics" component={TextAnalytics} />
       <ProtectedRoute exact path="/textAnalytics1" component={TextAnalytics1} />
+      <ProtectedRoute exact path="/predictionmore" component={PredictionMore} />
       {/* <Route path="/dashboardWithoutData" component={WelcomeComponent} /> */}
     </Switch>
   );
