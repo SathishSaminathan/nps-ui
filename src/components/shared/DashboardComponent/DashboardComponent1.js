@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import { connect } from "react-redux";
 import { Row, Col, DatePicker, Button, Slider, Tabs, Rate } from "antd";
 import ReactSpeedometer from "react-d3-speedometer";
 import { FaEuroSign, FaDonate, FaUserEdit } from "react-icons/fa";
@@ -18,6 +19,7 @@ import FilterComponent from "./FilterComponent";
 import { Images } from "assets/images";
 import ComparisionChart from "./ComparisionChart";
 import ChurnPrediction from "./ChurnPrediction";
+import { setActiveDashboardTab } from "store/actions";
 
 const { TabPane } = Tabs;
 const { RangePicker } = DatePicker;
@@ -124,7 +126,7 @@ const barData = {
   ]
 };
 
-export default class DashboardComponent1 extends Component {
+class DashboardComponent1 extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -285,6 +287,8 @@ export default class DashboardComponent1 extends Component {
       FilterData: { Timeline, Sentiment, State, Product, ValueInvolved, Theme }
     } = this.state;
 
+    const { activeDashboardTab, setActiveDashboardTab } = this.props;
+
     const desc = ["terrible", "bad", "normal", "good", "wonderful"].reverse();
 
     return (
@@ -301,7 +305,12 @@ export default class DashboardComponent1 extends Component {
             </Col>
           </Col>
           <Col xl={24} style={{ paddingTop: 10 }}>
-            <Tabs className="custTab" defaultActiveKey="1" destroyInactiveTabPane>
+            <Tabs
+              className="custTab"
+              activeKey={activeDashboardTab}
+              destroyInactiveTabPane
+              onChange={setActiveDashboardTab}
+            >
               <TabPane tab="Satellite" key="1">
                 <Row>
                   <Col xl={24} style={{ marginTop: 10, padding: 20 }}>
@@ -365,34 +374,34 @@ export default class DashboardComponent1 extends Component {
                             <Label>NPS Category by Count of calls</Label>
                           </Col>
                           {/* {SummaryResponse.length !== 0 && ( */}
-                            <Doughnut
-                              data={
-                                SummaryResponse.length !== 0
-                                  ? this.getRandomColors(
-                                      SummaryResponse,
-                                      "DOUGHNUT"
-                                    )
-                                  : []
-                              }
-                              legend={false}
-                              height={173}
-                              options={{
-                                plugins: {
-                                  datalabels: {
-                                    // display: true,
-                                    align: "center",
-                                    anchor: "center",
-                                    color: "#000",
-                                    font: {
-                                      size: 10
-                                    },
-                                    formatter: (value, ctx) => {
-                                      return `${value}%`;
-                                    }
+                          <Doughnut
+                            data={
+                              SummaryResponse.length !== 0
+                                ? this.getRandomColors(
+                                    SummaryResponse,
+                                    "DOUGHNUT"
+                                  )
+                                : []
+                            }
+                            legend={false}
+                            height={173}
+                            options={{
+                              plugins: {
+                                datalabels: {
+                                  // display: true,
+                                  align: "center",
+                                  anchor: "center",
+                                  color: "#000",
+                                  font: {
+                                    size: 10
+                                  },
+                                  formatter: (value, ctx) => {
+                                    return `${value}%`;
                                   }
                                 }
-                              }}
-                            />
+                              }
+                            }}
+                          />
                           {/* )} */}
                         </Col>
                       </Col>
@@ -610,3 +619,18 @@ export default class DashboardComponent1 extends Component {
     );
   }
 }
+
+const mapStateToProps = ({ activeTab: { activeDashboardTab } }) => ({
+  activeDashboardTab
+});
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setActiveDashboardTab: key => dispatch(setActiveDashboardTab(key))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DashboardComponent1);

@@ -10,7 +10,7 @@ const PredictionMore = props => {
   const renderTabs = () => {
     return ["Banking", "Debit card"].map((ele, index) => (
       <TabPane tab={ele} key={index + 1}>
-        <PredictionMoreTabContentComponent title={ele} />
+        <PredictionMoreTabContentComponent {...props} title={ele} />
       </TabPane>
     ));
   };

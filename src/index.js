@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 
 import * as serviceWorker from "./serviceWorker";
@@ -7,11 +8,14 @@ import RouteWithAuth from "./App";
 import "./index.css";
 import "./style.scss";
 import "antd/dist/antd.css";
+import store from "store";
 
 ReactDOM.render(
-  <BrowserRouter>
-    <RouteWithAuth />
-  </BrowserRouter>,
+  <Provider store={store}>
+    <BrowserRouter>
+      <RouteWithAuth />
+    </BrowserRouter>
+  </Provider>,
   document.getElementById("root")
 );
 
