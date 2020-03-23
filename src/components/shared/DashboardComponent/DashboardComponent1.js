@@ -142,6 +142,7 @@ class DashboardComponent1 extends Component {
       NPS: 0,
       CSAT: 0,
       CES: 0,
+      qualitySummary: null,
       FilterData: {
         Product: null,
         State: null,
@@ -198,18 +199,20 @@ class DashboardComponent1 extends Component {
     this.getChartSummary();
     this.getSpeedometerValue();
     this.getVOCChart();
-    // Promise.all([
-    //   this.getFeedbackService("QUALITY"),
-    //   this.getFeedbackService("PRICE"),
-    //   this.getFeedbackService("DESIGN"),
-    //   this.getFeedbackService("SERVICE")
-    // ])
-    //   .then(([res1, res2, res3, res4]) => {
-    //     debugger;
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
+    Promise.all([
+      this.getFeedbackService("QUALITY"),
+      this.getFeedbackService("PRICE"),
+      this.getFeedbackService("DESIGN"),
+      this.getFeedbackService("SERVICE")
+    ])
+      .then(([res1, res2, res3, res4]) => {
+        this.setState({
+          qualitySummary: res1.data.qualitySummary
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   getFeedbackService = type => {
@@ -261,6 +264,7 @@ class DashboardComponent1 extends Component {
       NPS,
       CSAT,
       CES,
+      qualitySummary,
       FilterData: { Timeline, Sentiment, State, Product, ValueInvolved, Theme }
     } = this.state;
 
@@ -437,30 +441,30 @@ class DashboardComponent1 extends Component {
                     </Col>
                   </Col>
                   <Col xl={24} style={{ padding: 10 }}>
-                    <Col xl={6} className="feedbackCardContainer">
-                      <Col xl={24} className="feedbackCard">
-                        <Row style={{ height: "100%" }}>
-                          <Col className="feedbackCardHead">
-                            <p className="title">Quality</p>
-                            <p className="desc">
-                              How do you evaluate the quality of the Product?
-                            </p>
-                          </Col>
-                          <Col className="feedbackCardBody">
-                            <div className="smileyContainer">
-                              {[18.77, 13.38, 9.97, 10.96, 46.92].map(
-                                (value, i) => (
+                    {qualitySummary && (
+                      <Col xl={6} className="feedbackCardContainer">
+                        <Col xl={24} className="feedbackCard">
+                          <Row style={{ height: "100%" }}>
+                            <Col className="feedbackCardHead">
+                              <p className="title">Quality</p>
+                              <p className="desc">
+                                How do you evaluate the quality of the Product?
+                              </p>
+                            </Col>
+                            <Col className="feedbackCardBody">
+                              <div className="smileyContainer">
+                                {qualitySummary.map((value, i) => (
                                   <div className="smileyRow">
                                     <div className="value">{value}%</div>
                                     <img src={configImage[i + 1]} />
                                   </div>
-                                )
-                              )}
-                            </div>
-                          </Col>
-                        </Row>
+                                ))}
+                              </div>
+                            </Col>
+                          </Row>
+                        </Col>
                       </Col>
-                    </Col>
+                    )}
                     <Col xl={6} className="feedbackCardContainer">
                       <Col xl={24} className="feedbackCard">
                         <Row style={{ height: "100%" }}>

@@ -57,7 +57,9 @@ class DashboardServices {
           }`
         );
       case DashboardVariables.COMPARISION_CHART_PRODUCT_DD:
-        return axios.get(`${IP}top/products?limit=5&yearly=${data.comparisionMonth}`);
+        return axios.get(
+          `${IP}top/products?limit=5&yearly=${data.comparisionMonth}`
+        );
       case DashboardVariables.PREDICTION:
         return axios.get(`${IP}prediction/summary`);
     }
