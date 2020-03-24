@@ -22,13 +22,9 @@ class DashboardServices {
             ""}&state=${data.State || ""}`
         );
       case DashboardVariables.GET_RAW_DATA:
-        return axios.get(
-          `${IP}raw/data?pageIndex=${data}`
-        );
+        return axios.get(`${IP}raw/data?pageIndex=${data}`);
       case DashboardVariables.GET_CHART_SUMMARY:
-        return axios.get(
-          `${IP}nps/chart/summary`
-        );
+        return axios.get(`${IP}nps/chart/summary`);
       case DashboardVariables.GET_STATES:
         return axios.get(`${IP}states`);
       case DashboardVariables.GET_PRODUCTS:
@@ -38,15 +34,11 @@ class DashboardServices {
       case DashboardVariables.GET_SENTIMENT:
         return axios.get(`${IP}sentiments`);
       case DashboardVariables.GET_SPEEDOMETER:
-        return axios.get(
-          `${IP}value?type=${data}`
-        );
+        return axios.get(`${IP}value?type=${data}`);
       case DashboardVariables.GET_VOC:
         return axios.get(`${IP}voc/chart`);
       case DashboardVariables.FEEDBACK_SERVICE:
-        return axios.get(
-          `${IP}feedback/summary?feedbackCategory=${data}`
-        );
+        return axios.get(`${IP}feedback/summary?feedbackCategory=${data}`);
       case DashboardVariables.COMPARISION_CHART:
         return axios.get(
           `${IP}compare/summary?${
@@ -63,6 +55,10 @@ class DashboardServices {
         );
       case DashboardVariables.PREDICTION:
         return axios.get(`${IP}prediction/summary`);
+      case DashboardVariables.CUSTOMER_DETAILS:
+        return axios.get(
+          `${IP}customers?productId=${data.productId}&pageIndex=${data.pageIndex}`
+        );
     }
   }
 }

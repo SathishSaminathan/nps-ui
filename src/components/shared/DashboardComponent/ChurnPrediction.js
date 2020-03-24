@@ -5,6 +5,7 @@ import { MdCloud, MdTimeline, MdShowChart } from "react-icons/md";
 import { GiSwapBag, GiChart } from "react-icons/gi";
 import DashboardServices from "services/dashboardServices";
 import { DashboardVariables } from "constants/APIConstants";
+import Loader from "../Loader";
 
 export default class ChurnPrediction extends Component {
   constructor(props) {
@@ -39,14 +40,7 @@ export default class ChurnPrediction extends Component {
           this.props.history.push({
             pathname: "/predictionmore",
             state: {
-              products: [
-                {
-                  name: "Banking",
-                  id: 1
-                },
-                { name: "Debit card", id: 2 },
-                { name: "Credit card", id: 3 }
-              ]
+              products: ele.products
             }
           })
         }
@@ -103,7 +97,12 @@ export default class ChurnPrediction extends Component {
       }
     ];
     return (
-      <Row type="flex" align="middle">
+      <Row
+        type="flex"
+        align="middle"
+        style={{ position: "relative", height: "100%" }}
+      >
+        {/* {!PredictionResponse && <Loader />} */}
         <Col xl={24} className="churn">
           {PredictionResponse && this.renderCards(PredictionResponse)}
         </Col>

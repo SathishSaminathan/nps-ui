@@ -143,6 +143,9 @@ class DashboardComponent1 extends Component {
       CSAT: 0,
       CES: 0,
       qualitySummary: null,
+      priceSummary: null,
+      deignSummary: null,
+      serviceSummary: null,
       FilterData: {
         Product: null,
         State: null,
@@ -199,58 +202,61 @@ class DashboardComponent1 extends Component {
     this.getChartSummary();
     this.getSpeedometerValue();
     this.getVOCChart();
-    this.getFeedbackService("QUALITY")
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => {
-        console.log(err);
-        this.setState({});
-      });
-    setTimeout(() => {
-      this.getFeedbackService("SERVICE")
-        .then(res => {
-          console.log(res);
-        })
-        .catch(err => {
-          console.log(err);
-          this.setState({});
-        });
-    }, 1);
-    setTimeout(() => {
-      this.getFeedbackService("PRICE")
-        .then(res => {
-          console.log(res);
-        })
-        .catch(err => {
-          console.log(err);
-          this.setState({});
-        });
-    }, 2);
-    setTimeout(() => {
-      this.getFeedbackService("DESIGN")
-        .then(res => {
-          console.log(res);
-        })
-        .catch(err => {
-          console.log(err);
-          this.setState({});
-        });
-    }, 3);
-    // Promise.all([
-    //   this.getFeedbackService("QUALITY")
-    //   // this.getFeedbackService("PRICE"),
-    //   // this.getFeedbackService("DESIGN"),
-    //   // this.getFeedbackService("SERVICE")
-    // ])
-    //   .then(([res1, res2, res3, res4]) => {
-    //     this.setState({
-    //       qualitySummary: res1.data.qualitySummary
-    //     });
+    // this.getFeedbackService("QUALITY")
+    //   .then(res => {
+    //     console.log(res);
     //   })
     //   .catch(err => {
     //     console.log(err);
+    //     this.setState({});
     //   });
+    // setTimeout(() => {
+    //   this.getFeedbackService("SERVICE")
+    //     .then(res => {
+    //       console.log(res);
+    //     })
+    //     .catch(err => {
+    //       console.log(err);
+    //       this.setState({});
+    //     });
+    // }, 1);
+    // setTimeout(() => {
+    //   this.getFeedbackService("PRICE")
+    //     .then(res => {
+    //       console.log(res);
+    //     })
+    //     .catch(err => {
+    //       console.log(err);
+    //       this.setState({});
+    //     });
+    // }, 2);
+    // setTimeout(() => {
+    //   this.getFeedbackService("DESIGN")
+    //     .then(res => {
+    //       console.log(res);
+    //     })
+    //     .catch(err => {
+    //       console.log(err);
+    //       this.setState({});
+    //     });
+    // }, 3);
+    Promise.all([
+      this.getFeedbackService("QUALITY"),
+      this.getFeedbackService("PRICE"),
+      this.getFeedbackService("DESIGN"),
+      this.getFeedbackService("SERVICE")
+    ])
+      .then(([res1, res2, res3, res4]) => {
+        this.setState({
+          qualitySummary: res1.data.qualitySummary,
+          priceSummary: res2.data.priceSummary,
+          deignSummary: res3.data.deignSummary,
+          serviceSummary: res4.data.serviceSummary
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   getFeedbackService = type => {
@@ -303,12 +309,15 @@ class DashboardComponent1 extends Component {
       CSAT,
       CES,
       qualitySummary,
+      priceSummary,
+      deignSummary,
+      serviceSummary,
       FilterData: { Timeline, Sentiment, State, Product, ValueInvolved, Theme }
     } = this.state;
 
     const { activeDashboardTab, setActiveDashboardTab } = this.props;
 
-    const desc = ["terrible", "bad", "normal", "good", "wonderful"].reverse();
+    const desc = ["Terrible", "Bad", "Normal", "Good", "Wonderful"];
 
     return (
       <Row style={{ position: "relative", height: "100%" }}>
@@ -503,119 +512,135 @@ class DashboardComponent1 extends Component {
                         </Col>
                       </Col>
                     )}
-                    <Col xl={6} className="feedbackCardContainer">
-                      <Col xl={24} className="feedbackCard">
-                        <Row style={{ height: "100%" }}>
-                          <Col className="feedbackCardHead">
-                            <p className="title">Pricing</p>
-                            <p className="desc">
-                              what do you think about the price of the product?
-                            </p>
-                          </Col>
-                          <Col className="feedbackCardBody">
-                            <div className="smileyContainer">
-                              <div className="pricingRow">
-                                <div className="value">{18}%</div>
-                                <FaDonate className="icon" />
-                                <div className="desc">Top Expensive</div>
+                    {priceSummary && (
+                      <Col xl={6} className="feedbackCardContainer">
+                        <Col xl={24} className="feedbackCard">
+                          <Row style={{ height: "100%" }}>
+                            <Col className="feedbackCardHead">
+                              <p className="title">Pricing</p>
+                              <p className="desc">
+                                what do you think about the price of the
+                                product?
+                              </p>
+                            </Col>
+                            <Col className="feedbackCardBody">
+                              <div className="smileyContainer">
+                                <div className="pricingRow">
+                                  <div className="value">
+                                    {priceSummary.expense}%
+                                  </div>
+                                  <FaDonate className="icon" />
+                                  <div className="desc">Top Expensive</div>
+                                </div>
+                                <div className="pricingRow">
+                                  <div className="value">
+                                    {priceSummary.correct}%
+                                  </div>
+                                  <AiFillDollarCircle className="icon" />
+                                  <div className="desc">Just right</div>
+                                </div>
+                                <div className="pricingRow">
+                                  <div className="value">
+                                    {priceSummary.cheap}%
+                                  </div>
+                                  <FaEuroSign className="icon" />
+                                  <div className="desc">Top Cheap</div>
+                                </div>
                               </div>
-                              <div className="pricingRow">
-                                <div className="value">{18}%</div>
-                                <AiFillDollarCircle className="icon" />
-                                <div className="desc">Just right</div>
-                              </div>
-                              <div className="pricingRow">
-                                <div className="value">{63}%</div>
-                                <FaEuroSign className="icon" />
-                                <div className="desc">Top Cheap</div>
-                              </div>
-                            </div>
-                          </Col>
-                        </Row>
+                            </Col>
+                          </Row>
+                        </Col>
                       </Col>
-                    </Col>
-                    <Col xl={6} className="feedbackCardContainer">
-                      <Col xl={24} className="feedbackCard">
-                        <Row style={{ height: "100%" }}>
-                          <Col className="feedbackCardHead">
-                            <p className="title">Design</p>
-                            <p className="desc">
-                              How do you evaluate the design of the Product
-                            </p>
-                          </Col>
-                          <Col className="feedbackCardBody">
-                            <div className="designRow">
-                              <div className="desc">
-                                <span>75%</span> liked the product design.
+                    )}
+                    {deignSummary && (
+                      <Col xl={6} className="feedbackCardContainer">
+                        <Col xl={24} className="feedbackCard">
+                          <Row style={{ height: "100%" }}>
+                            <Col className="feedbackCardHead">
+                              <p className="title">Design</p>
+                              <p className="desc">
+                                How do you evaluate the design of the Product
+                              </p>
+                            </Col>
+                            <Col className="feedbackCardBody">
+                              <div className="designRow">
+                                <div className="desc">
+                                  <span>{deignSummary.like}%</span> liked the
+                                  product design.
+                                </div>
+                                <div className="desc">
+                                  <span>{deignSummary.fit}%</span> think is fits
+                                  with the brand.
+                                </div>
+                                <div className="desc">
+                                  <span>{deignSummary.appealing}%</span> think
+                                  its appealing.
+                                </div>
                               </div>
-                              <div className="desc">
-                                <span>75%</span> think is fits with the brand.
-                              </div>
-                              <div className="desc">
-                                <span>75%</span> think its appealing.
-                              </div>
-                            </div>
-                          </Col>
-                        </Row>
+                            </Col>
+                          </Row>
+                        </Col>
                       </Col>
-                    </Col>
-                    <Col xl={6} className="feedbackCardContainer">
-                      <Col xl={24} className="feedbackCard">
-                        <Row style={{ height: "100%" }}>
-                          <Col className="feedbackCardHead">
-                            <p className="title">Service</p>
-                            <p className="desc">
-                              How do you evaluate the performance of our team?
-                            </p>
-                          </Col>
-                          <Col
-                            className="feedbackCardBody"
-                            style={{ flexDirection: "column" }}
-                          >
-                            <div className="serviceRow">
-                              <WiDaySunny className="icon" />
-                              <div>Friendly</div>
-                              <Rate
-                                className="custRate"
-                                tooltips={desc}
-                                disabled
-                                value={3}
-                              />
-                            </div>
-                            <div className="serviceRow">
-                              <FaUserEdit className="icon" />
-                              <div>Customize</div>
-                              <Rate
-                                className="custRate"
-                                tooltips={desc}
-                                disabled
-                                value={3}
-                              />
-                            </div>
-                            <div className="serviceRow">
-                              <GiBracers className="icon" />
-                              <div>Competent</div>
-                              <Rate
-                                className="custRate"
-                                tooltips={desc}
-                                disabled
-                                value={3}
-                              />
-                            </div>
-                            <div className="serviceRow">
-                              <WiTime9 className="icon" />
-                              <div>Short wait</div>
-                              <Rate
-                                className="custRate"
-                                tooltips={desc}
-                                disabled
-                                value={3}
-                              />
-                            </div>
-                          </Col>
-                        </Row>
+                    )}
+                    {serviceSummary && (
+                      <Col xl={6} className="feedbackCardContainer">
+                        <Col xl={24} className="feedbackCard">
+                          <Row style={{ height: "100%" }}>
+                            <Col className="feedbackCardHead">
+                              <p className="title">Service</p>
+                              <p className="desc">
+                                How do you evaluate the performance of our team?
+                              </p>
+                            </Col>
+                            <Col
+                              className="feedbackCardBody"
+                              style={{ flexDirection: "column" }}
+                            >
+                              <div className="serviceRow">
+                                <WiDaySunny className="icon" />
+                                <div>Friendly</div>
+                                <Rate
+                                  className="custRate"
+                                  tooltips={desc}
+                                  disabled
+                                  value={serviceSummary.friendly}
+                                />
+                              </div>
+                              <div className="serviceRow">
+                                <FaUserEdit className="icon" />
+                                <div>Customize</div>
+                                <Rate
+                                  className="custRate"
+                                  tooltips={desc}
+                                  disabled
+                                  value={serviceSummary.customized}
+                                />
+                              </div>
+                              <div className="serviceRow">
+                                <GiBracers className="icon" />
+                                <div>Competent</div>
+                                <Rate
+                                  className="custRate"
+                                  tooltips={desc}
+                                  disabled
+                                  value={serviceSummary.competent}
+                                />
+                              </div>
+                              <div className="serviceRow">
+                                <WiTime9 className="icon" />
+                                <div>Short wait</div>
+                                <Rate
+                                  className="custRate"
+                                  tooltips={desc}
+                                  disabled
+                                  value={serviceSummary.shortWait}
+                                />
+                              </div>
+                            </Col>
+                          </Row>
+                        </Col>
                       </Col>
-                    </Col>
+                    )}
                   </Col>
                 </Row>
               </TabPane>

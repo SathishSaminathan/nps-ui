@@ -12,9 +12,10 @@ const PredictionMore = props => {
       props.location.state &&
       props.location.state.products &&
       props.location.state.products.map((ele, index) => (
-        <TabPane tab={ele.name} key={index + 1}>
+        <TabPane tab={ele.label} key={index + 1}>
           <PredictionMoreTabContentComponent
             {...props}
+            productId={ele.value}
             title={ele.PredictionMoreTabContentComponent}
           />
         </TabPane>
