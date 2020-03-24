@@ -40,11 +40,7 @@ export default class Home extends Component {
         </Header>
         <Layout style={{ height: "calc(100vh - 64px)" }}>
           <Sider
-            style={
-              {
-                // marginTop: 64
-              }
-            }
+             style={{ backgroundColor: "white" }}
             // breakpoint="lg"
             collapsible
             defaultCollapsed
@@ -62,7 +58,11 @@ export default class Home extends Component {
        ></img>
        <span>Round's Edge</span>
      </div> */}
-            <Menu theme="dark" defaultSelectedKeys={["1"]}>
+            <Menu
+              theme="light"
+              defaultSelectedKeys={["1"]}
+             
+            >
               <Menu.Item
                 key="1"
                 onClick={() => this.props.history.push("/dashboardWithoutData")}

@@ -54,7 +54,7 @@ code {
 
 .ant-menu.ant-menu-dark .ant-menu-item-selected,
 .ant-menu-submenu-popup.ant-menu-dark .ant-menu-item-selected {
-  background-color: #f22f7e !important;
+  /* background-color: #f22f7e !important; */
 }
 
 .ant-menu-item .anticon,
