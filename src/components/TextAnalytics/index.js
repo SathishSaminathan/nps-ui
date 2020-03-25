@@ -11,6 +11,7 @@ import { TextAnalyticsVariables } from "constants/APIConstants";
 import LineChart from "components/shared/Charts/LineChart";
 import response from "./data";
 import Filters from "components/Filters";
+import HeaderComponent from "components/shared/HeaderComponent";
 
 const months = [
   "January",
@@ -331,26 +332,20 @@ export default class TextAnalytics extends Component {
       //   </Col>
       // </Row>
       <Row>
+        <Col xl={24}>
+          
+        </Col>
         <Col xl={18}>
-          {/* <div
-            style={{
-              width: 100,
-              height: 100,
-              backgroundColor: Colors.negativeColor
-            }}
-          ></div> */}
           <Col className="topContainer">
-            <Row className="headerArea">
-              <Col className="header">Themes</Col>
-              <Col>
-                <div className="top">Top Themes</div>
-              </Col>
-            </Row>
+            <HeaderComponent title={"Themes"} />
+            <Col>
+              <div className="top">Top Themes</div>
+            </Col>
             <Row style={{ paddingLeft: 10 }}>
-              <Col style={{height: "30vh"}}>
+              <Col style={{ height: "30vh" }}>
                 <LineChart data={data} />
               </Col>
-              <Col style={{paddingTop: 50}}>
+              <Col style={{ paddingTop: 50 }}>
                 <BarChart data={barChartData} />
               </Col>
             </Row>

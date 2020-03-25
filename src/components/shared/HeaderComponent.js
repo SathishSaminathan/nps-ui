@@ -8,7 +8,7 @@ const HeaderComponent = ({ title = "", hasBack, children, history }) => {
         {hasBack && (
           <Col
             className="icon"
-            style={{ padding: 10, paddingTop: 0, paddingBottom: 0 }}
+            style={{ paddingRight: 10 }}
             onClick={() => history.goBack()}
           >
             <Icon type="left" />

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Row, Col, DatePicker, Button, Slider, Tabs } from "antd";
+import { isEqual } from "lodash";
 import { Doughnut, Bar, Pie, Bubble } from "react-chartjs-2";
 import "./dashboard1.scss";
 import Label from "../Label";
@@ -8,6 +9,7 @@ import Loader from "../Loader";
 import DashboardServices from "services/dashboardServices";
 import { DashboardVariables } from "constants/APIConstants";
 import moment from "moment";
+import FilterChartComponent from "./FilterChartComponent";
 
 const { TabPane } = Tabs;
 const { RangePicker } = DatePicker;
@@ -32,7 +34,7 @@ export default class FilterComponent extends Component {
     super(props);
     this.state = {
       IsDataFetched: true,
-      Response: [],
+      Response: null,
       States: [],
       Sentiments: [],
       Products: [],
@@ -160,168 +162,6 @@ export default class FilterComponent extends Component {
       .catch(err => {
         console.log(err);
       });
-  };
-
-  getRandomColors = (data, type) => {
-    switch (type) {
-      case "DOUGHNUT":
-        data.datasets[0].backgroundColor = data.datasets[0].data.map(
-          datum => `#${Math.floor(Math.random() * 16777215).toString(16)}`
-        );
-        return data;
-
-      case "PIE":
-        data.datasets[0].backgroundColor = data.datasets[0].data.map(
-          datum => `#${Math.floor(Math.random() * 16777215).toString(16)}`
-        );
-        return data;
-
-      case "BAR":
-        data.datasets[0].backgroundColor = "#79c447";
-        data.datasets[1].backgroundColor = "#f5222d";
-        return data;
-
-      default:
-        break;
-    }
-  };
-
-  renderCharts = () => {
-    const { Response } = this.state;
-    return Response.map((res, i) => (
-      <Col
-        key={i}
-        xl={24}
-        style={{
-          height: 270,
-          marginTop: 20
-        }}
-      >
-        <Row
-          type="flex"
-          justify="center"
-          align="middle"
-          style={{ height: "100%" }}
-        >
-          <Col xl={2} style={{ textAlign: "center" }}>
-            <Label className={`${res.npsState}`} style={{ fontSize: 20 }}>
-              {res.npsState}
-            </Label>
-          </Col>
-          <Col xl={6} style={{ height: "100%" }}>
-            <Row style={{ height: "100%" }} type="flex" justify="space-between">
-              <Col xl={24} style={{ textAlign: "center" }}>
-                <Label>Product Proportion</Label>
-              </Col>
-              <Col xl={24}>
-                <Doughnut
-                  data={this.getRandomColors(res.productChart, "DOUGHNUT")}
-                  legend={false}
-                  height={190}
-                  options={{
-                    plugins: {
-                      datalabels: {
-                        display: false
-                      }
-                    }
-                  }}
-                />
-              </Col>
-            </Row>
-          </Col>
-          <Col xl={6} style={{ height: "100%" }}>
-            <Row style={{ height: "100%" }} type="flex" justify="space-between">
-              <Col xl={24} style={{ textAlign: "center" }}>
-                <Label>Themes Proportion</Label>
-              </Col>
-              <Col xl={24}>
-                <Pie
-                  data={this.getRandomColors(res.issueChart, "PIE")}
-                  legend={false}
-                  height={190}
-                  options={{
-                    plugins: {
-                      datalabels: {
-                        display: false
-                      }
-                    }
-                  }}
-                />
-              </Col>
-            </Row>
-          </Col>
-          <Col xl={6} style={{ height: "100%" }}>
-            <Row style={{ height: "100%" }} type="flex" justify="space-between">
-              <Col xl={24} style={{ textAlign: "center" }}>
-                <Label>Customer Satisfaction</Label>
-              </Col>
-              <Col xl={24}>
-                <Bar
-                  data={this.getRandomColors(res.sentimentChart, "BAR")}
-                  // legend={false}
-                  height={180}
-                  options={{
-                    scales: {
-                      xAxes: [
-                        {
-                          display: true,
-                          scaleLabel: {
-                            display: true,
-                            // labelString: "X axe name",
-                            fontColor: "#000000",
-                            fontSize: 10
-                          },
-                          gridLines: {
-                            display: false
-                          },
-                          ticks: {
-                            fontColor: "black",
-                            fontSize: 8
-                          }
-                        }
-                      ],
-                      yAxes: [
-                        {
-                          display: true,
-                          scaleLabel: {
-                            display: true,
-                            // labelString: "Y axe name",
-                            fontColor: "#000000",
-                            fontSize: 10
-                          },
-                          gridLines: {
-                            display: false
-                          },
-                          ticks: {
-                            fontColor: "black",
-                            fontSize: 8
-                          }
-                        }
-                      ]
-                    },
-                    maintainAspectRatio: false,
-                    plugins: {
-                      datalabels: {
-                        display: false
-                      }
-                    }
-                  }}
-                />
-              </Col>
-            </Row>
-          </Col>
-          <Col xl={4} style={{ textAlign: "center" }}>
-            <p className="noMar">
-              <Label>{res.customerCount ? res.customerCount : 0}</Label> of
-              customers
-            </p>
-            <p className="noMar">
-              <Label>₹{res.totalAmount ? res.totalAmount : 0}</Label>
-            </p>
-          </Col>
-        </Row>
-      </Col>
-    ));
   };
 
   handleReset = () => {
@@ -468,23 +308,30 @@ export default class FilterComponent extends Component {
                   >
                     Filter
                   </Button>
-                  <Button
-                    style={{ marginLeft: 5 }}
-                    type="primary"
-                    className="filterButton"
-                    icon="reload"
-                    onClick={this.handleReset}
-                  >
-                    Reset
-                  </Button>
+                  {(Timeline ||
+                    Sentiment ||
+                    State ||
+                    Product ||
+                    ValueInvolved.length !== 0 ||
+                    Theme) && (
+                    <Button
+                      style={{ marginLeft: 5 }}
+                      type="primary"
+                      className="filterButton"
+                      icon="reload"
+                      onClick={this.handleReset}
+                    >
+                      Reset
+                    </Button>
+                  )}
                 </Col>
               </Row>
             </Col>
           </Col>
-          {InitialFetched && (
+          {this.state.Response && (
             <Col xl={24} style={{ padding: 10, marginTop: 10 }}>
               <Col xl={24} className="chartArea">
-                {this.renderCharts()}
+                <FilterChartComponent res={this.state.Response} />
               </Col>
             </Col>
           )}
