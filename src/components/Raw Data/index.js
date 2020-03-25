@@ -372,6 +372,7 @@ export default class RawData extends Component {
           </Col>
           <Col xl={24}>
             <Table
+              className="custTable"
               columns={columns}
               dataSource={data}
               scroll={{ x: 1500, y: "66vh" }}

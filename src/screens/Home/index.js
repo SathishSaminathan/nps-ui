@@ -70,13 +70,13 @@ export default class Home extends Component {
                 <Icon type="dashboard" />
                 <span className="nav-text">Dashboard</span>
               </Menu.Item>
-              <Menu.Item
+              {/* <Menu.Item
                 key="2"
                 onClick={() => this.props.history.push("/dashboardWithData")}
               >
                 <Icon type="dashboard" />
                 <span className="nav-text">Dashboard1</span>
-              </Menu.Item>
+              </Menu.Item> */}
               <Menu.Item
                 key="3"
                 onClick={() => this.props.history.push("/dashboardWithData1")}

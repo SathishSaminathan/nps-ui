@@ -72,26 +72,73 @@
   color: $primaryButtonColor !important;
 }
 
-.ant-table-fixed-left {
-  border-radius: 0 !important;
-  .ant-table-header {
-    .ant-table-fixed {
-      border-radius: 0 !important;
+.custTable {
+  .ant-table-fixed-left {
+    border-radius: 0 !important;
+    .ant-table-header {
+      .ant-table-fixed {
+        border-radius: 0 !important;
+      }
+    }
+  }
+
+  .ant-table-thead {
+    tr {
+      .ant-table-row-cell-break-word {
+        height: 75px !important;
+      }
+      th {
+        border-radius: 0 !important;
+        background-color: $primaryButtonColor !important;
+        // height: 74px !important;
+        span {
+          color: white;
+        }
+      }
     }
   }
 }
 
-.ant-table-thead {
-  tr {
-    .ant-table-row-cell-break-word {
-      height: 75px !important;
+.summaryOfTopics {
+  .ant-table-body {
+    table {
+      border: none !important;
     }
-    th {
-      border-radius: 0 !important;
-      background-color: $primaryButtonColor !important;
-      // height: 74px !important;
-      span {
-        color: white;
+  }
+  .ant-table-bordered {
+    .ant-table-thead {
+      tr {
+        .ant-table-row-cell-break-word {
+          // height: 75px !important;
+        }
+        th {
+          padding: 0;
+          border-radius: 0 !important;
+          background-color: white !important;
+          border-right: none;
+          border: none none inherit none;
+          // height: 74px !important;
+          span {
+            // color: black;
+            font-size: 12px;
+            font-weight: bold;
+            font-family: "Open Sans";
+          }
+        }
+        td {
+          border-right: none !important;
+        }
+      }
+    }
+    .ant-table-tbody {
+      table {
+        border: none;
+      }
+      tr {
+        td {
+          border-right: none;
+          padding: 10px 2px;
+        }
       }
     }
   }
@@ -196,4 +243,37 @@
   .ant-tabs-tab-active {
     // color: $primaryButtonColor !important;
   }
+}
+
+.headerTabs {
+  .ant-tabs-nav-wrap {
+    &::before {
+      border: none;
+    }
+    background-color: $menuColor;
+    .ant-tabs-tab {
+      color: white;
+      margin: 0;
+    }
+    .ant-tabs-nav .ant-tabs-tab-active {
+      color: white;
+      font-weight: 600;
+      // border-bottom: 5px solid red;
+    }
+    .ant-tabs-nav .ant-tabs-tab:hover {
+      color: white;
+    }
+  }
+}
+
+.descTitle {
+  color: $menuColor;
+  font-size: 1.2rem;
+  font-weight: bold;
+  font-family: "Poppins";
+}
+
+.desByTopic {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  padding: 20px;
 }

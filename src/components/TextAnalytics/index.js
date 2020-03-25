@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Row, Col } from "antd";
+import { Row, Col, Tabs, Icon } from "antd";
+
 import moment from "moment";
 
 import { Colors } from "constants/themeConstants";
@@ -12,6 +13,9 @@ import LineChart from "components/shared/Charts/LineChart";
 import response from "./data";
 import Filters from "components/Filters";
 import HeaderComponent from "components/shared/HeaderComponent";
+import Discovery from "./Discovery"
+
+const { TabPane } = Tabs;
 
 const months = [
   "January",
@@ -332,31 +336,40 @@ export default class TextAnalytics extends Component {
       //   </Col>
       // </Row>
       <Row>
+        <HeaderComponent title={"Text Analysis"} />
         <Col xl={24}>
-          
-        </Col>
-        <Col xl={18}>
-          <Col className="topContainer">
-            <HeaderComponent title={"Themes"} />
-            <Col>
-              <div className="top">Top Themes</div>
-            </Col>
-            <Row style={{ paddingLeft: 10 }}>
-              <Col style={{ height: "30vh" }}>
-                <LineChart data={data} />
+          <Tabs defaultActiveKey="1" className="headerTabs">
+            <TabPane tab={<span>Discovery</span>} key="1">
+              <Discovery/>
+            </TabPane>
+            <TabPane tab={<span>Theme Explorer</span>} key="2">
+              Tab 2
+            </TabPane>
+            <TabPane tab={<span>Previous</span>} key="3">
+              <Col xl={18}>
+                <Col className="topContainer">
+                  <Col>
+                    <div className="top">Top Themes</div>
+                  </Col>
+                  <Row style={{ paddingLeft: 10 }}>
+                    <Col style={{ height: "30vh" }}>
+                      <LineChart data={data} />
+                    </Col>
+                    <Col style={{ paddingTop: 50 }}>
+                      <BarChart data={barChartData} />
+                    </Col>
+                  </Row>
+                </Col>
               </Col>
-              <Col style={{ paddingTop: 50 }}>
-                <BarChart data={barChartData} />
+              <Col xl={6}>
+                <Filters
+                  states={states}
+                  handleFilter={this.handleFilter}
+                  products={products}
+                />
               </Col>
-            </Row>
-          </Col>
-        </Col>
-        <Col xl={6}>
-          <Filters
-            states={states}
-            handleFilter={this.handleFilter}
-            products={products}
-          />
+            </TabPane>
+          </Tabs>
         </Col>
       </Row>
     );

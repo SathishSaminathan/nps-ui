@@ -11,7 +11,10 @@ const Colors = {
   cardColorGreen: "#15c7a8",
   cardColorOrange: "#eb7d4b",
   cardColorPink: "#d74680",
-  cardColorSpan: "#3c4761"
+  cardColorSpan: "#3c4761",
+  red: "#ff6358",
+  yellow: "#ffd246",
+  green: "#78d237"
 };
 
 export { Colors };
