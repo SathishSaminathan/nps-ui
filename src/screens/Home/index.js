@@ -40,7 +40,7 @@ export default class Home extends Component {
         </Header>
         <Layout style={{ height: "calc(100vh - 64px)" }}>
           <Sider
-             style={{ backgroundColor: "white" }}
+            style={{ backgroundColor: "white" }}
             // breakpoint="lg"
             collapsible
             defaultCollapsed
@@ -58,18 +58,14 @@ export default class Home extends Component {
        ></img>
        <span>Round's Edge</span>
      </div> */}
-            <Menu
-              theme="light"
-              defaultSelectedKeys={["1"]}
-             
-            >
-              <Menu.Item
+            <Menu theme="light" defaultSelectedKeys={["1"]}>
+              {/* <Menu.Item
                 key="1"
                 onClick={() => this.props.history.push("/dashboardWithoutData")}
               >
                 <Icon type="dashboard" />
                 <span className="nav-text">Dashboard</span>
-              </Menu.Item>
+              </Menu.Item> */}
               {/* <Menu.Item
                 key="2"
                 onClick={() => this.props.history.push("/dashboardWithData")}

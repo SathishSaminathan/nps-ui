@@ -14,11 +14,11 @@ const data = {
       fill: false,
       borderJoinStyle: "miter",
       borderColor: Colors.blue,
-    //   backgroundColor: "#EC932F",
+      //   backgroundColor: "#EC932F",
       pointBorderColor: Colors.darkBlue,
       pointBackgroundColor: "white",
       //   pointHoverBackgroundColor: "#EC932F",
-    //   pointHoverBorderColor: "#EC932F",
+      //   pointHoverBorderColor: "#EC932F",
       yAxisID: "y-axis-1"
     },
     {
@@ -46,6 +46,10 @@ const options = {
     datalabels: {
       display: false
     }
+  },
+  legend: {
+    position: "bottom"
+    //   display: false
   },
   scales: {
     xAxes: [
@@ -122,7 +126,7 @@ export default class ProductVolume extends Component {
             style={{ paddingTop: 10, paddingBottom: 15 }}
           >
             <DescTitle style={{ fontSize: 15 }}>
-              Product Sentiment and Score over time
+              Product Volume over time
             </DescTitle>
             <Popover
               content={

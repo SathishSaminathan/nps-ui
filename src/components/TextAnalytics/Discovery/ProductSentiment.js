@@ -14,11 +14,11 @@ const data = {
       fill: false,
       borderJoinStyle: "miter",
       borderColor: Colors.brick,
-      backgroundColor: 'white',
+      backgroundColor: "white",
       pointBorderColor: Colors.brick,
       pointBackgroundColor: "white",
       //   pointHoverBackgroundColor: "#EC932F",
-    //   pointHoverBorderColor: "#EC932F",
+      //   pointHoverBorderColor: "#EC932F",
       yAxisID: "y-axis-2"
     },
     {
@@ -54,6 +54,10 @@ const options = {
     datalabels: {
       display: false
     }
+  },
+  legend: {
+    position: "bottom"
+    //   display: false
   },
   scales: {
     xAxes: [
