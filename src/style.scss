@@ -266,6 +266,13 @@
   }
 }
 
+.descTitleArea{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+}
+
 .descTitle {
   color: $menuColor;
   font-size: 1.2rem;

@@ -14,7 +14,10 @@ const Colors = {
   cardColorSpan: "#3c4761",
   red: "#ff6358",
   yellow: "#ffd246",
-  green: "#78d237"
+  green: "#78d237",
+  darkBlue: "#2d73f5",
+  blue: "#28b4c8",
+  brick:"#b3291c"
 };
 
 export { Colors };

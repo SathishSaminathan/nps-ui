@@ -5,6 +5,8 @@ import DescTitle from "components/shared/DescTitle";
 import DistributionByTopic from "./DistributionByTopic";
 import SummaryOfTopics from "./SummaryOfTopics";
 import TopicGettingBetterWorse from "./TopicGettingBetterWorse";
+import ProductSentiment from "./ProductSentiment";
+import ProductVolume from "./ProductVolume";
 
 export default class Discovery extends Component {
   render() {
@@ -36,6 +38,20 @@ export default class Discovery extends Component {
           <Col xl={12} style={{ ...style, paddingLeft: 10 }}>
             <Col xl={24} className="desByTopic">
               <TopicGettingBetterWorse />
+            </Col>
+          </Col>
+        </Fragment>
+        <Fragment>
+          <Col xl={24} style={{ ...style, paddingRight: 10 }}>
+            <Col xl={24} className="desByTopic">
+              <ProductSentiment />
+            </Col>
+          </Col>
+        </Fragment>
+        <Fragment>
+          <Col xl={24} style={{ ...style, paddingRight: 10 }}>
+            <Col xl={24} className="desByTopic">
+              <ProductVolume />
             </Col>
           </Col>
         </Fragment>

@@ -1,8 +1,19 @@
 import React, { Component, Fragment } from "react";
 import DescTitle from "components/shared/DescTitle";
-import { Col, Table } from "antd";
+import { Col, Table, Icon, Popover, Radio, Input, Button } from "antd";
 
 export default class SummaryOfTopics extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      comparisionMonth: "QUATERLY"
+    };
+  }
+
+  handleComparisionMonth = ({ target: { value } }) => {
+    this.setState({ comparisionMonth: value });
+  };
+
   render() {
     const dataSource = [
       {
@@ -89,15 +100,50 @@ export default class SummaryOfTopics extends Component {
     ];
 
     const { isBetter } = this.props;
+    const { comparisionMonth } = this.props;
+
+    const radioStyle = {
+      display: "block",
+      height: "30px",
+      lineHeight: "30px"
+    };
 
     return (
       <Fragment>
         <Col xl={24}>
-          <DescTitle
-            style={{ fontSize: 15, paddingTop: 10, paddingBottom: 15 }}
+          <Col
+            className="descTitleArea"
+            style={{ paddingTop: 10, paddingBottom: 15 }}
           >
-            Which Themes are getting {isBetter ? "Better" : "Worse"}?
-          </DescTitle>
+            <DescTitle style={{ fontSize: 15 }}>
+              Which Themes are getting {isBetter ? "Better" : "Worse"}?
+            </DescTitle>
+            <Popover
+              content={
+                <div>
+                  <Radio.Group
+                    // value={size}
+                    onChange={this.handleComparisionMonth}
+                    defaultValue={comparisionMonth}
+                  >
+                    <Radio style={radioStyle} value="QUATERLY">
+                      Quaterly
+                    </Radio>
+                    <Radio style={radioStyle} value="HALF_YEARLY">
+                      Half Yearly
+                    </Radio>
+                    <Radio style={radioStyle} value="YEARLY">
+                      Yearly
+                    </Radio>
+                  </Radio.Group>
+                </div>
+              }
+              trigger="click"
+              placement="right"
+            >
+              <Button icon="more"></Button>
+            </Popover>
+          </Col>
         </Col>
         <Col xl={24}>
           <Table
