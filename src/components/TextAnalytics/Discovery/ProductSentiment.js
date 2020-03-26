@@ -3,8 +3,11 @@ import DescTitle from "components/shared/DescTitle";
 import { Col, Table, Icon, Popover, Radio, Input, Button } from "antd";
 import { Bar } from "react-chartjs-2";
 import { Colors } from "constants/themeConstants";
+import Loader from "components/shared/Loader";
+import { DashboardVariables } from "constants/APIConstants";
+import DashboardServices from "services/dashboardServices";
 
-const data = {
+const chartData = {
   labels: ["January", "February", "March", "April", "May", "June", "July"],
   datasets: [
     {
@@ -112,22 +115,104 @@ export default class ProductSentiment extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      comparisionMonth: "QUATERLY"
+      data: null,
+      FilterValues: {
+        yearly: "QUATERLY"
+      },
+      isLoading: true
     };
+    this.dashboardAPI = new DashboardServices();
   }
 
-  handleComparisionMonth = ({ target: { value } }) => {
-    this.setState({ comparisionMonth: value });
+  componentDidMount() {
+    this.getChartData(this.state.FilterValues);
+  }
+
+  getChartData = FilterValues => {
+    this.setState({
+      isLoading: true
+    });
+    this.dashboardAPI
+      .service(DashboardVariables.SENTIMENT_CHART, FilterValues)
+      .then(res => {
+        this.setState({
+          data: res.data,
+          isLoading: false
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState({
+          isLoading: false
+        });
+      });
   };
+
+  handleComparisionMonth = ({ target: { value } }) => {
+    this.setState(
+      {
+        FilterValues: { ...this.state.FilterValues, yearly: value }
+      },
+      () => this.getChartData(this.state.FilterValues)
+    );
+  };
+
+  renderChartData = res => {
+    let data = res;
+    data = {
+      ...data,
+      datasets: [
+        {
+          label: "Sales",
+          type: "line",
+          data: [51, 65, 40, 49, 60, 37, 40],
+          fill: false,
+          borderJoinStyle: "miter",
+          borderColor: Colors.brick,
+          backgroundColor: "white",
+          pointBorderColor: Colors.brick,
+          pointBackgroundColor: "white",
+          //   pointHoverBackgroundColor: "#EC932F",
+          //   pointHoverBorderColor: "#EC932F",
+          yAxisID: "y-axis-2",
+          ...data.datasets[2]
+        },
+        {
+          type: "bar",
+          data: [200, 185, 590, 621, 250, 400, 95],
+          fill: false,
+          backgroundColor: Colors.green,
+          yAxisID: "y-axis-1",
+          ...data.datasets[0]
+        },
+        {
+          type: "bar",
+          data: [200, 185, 590, 621, 250, 400, 95],
+          fill: false,
+          backgroundColor: Colors.red,
+          yAxisID: "y-axis-1",
+          ...data.datasets[1]
+        }
+      ]
+    };
+  };
+
   render() {
     const radioStyle = {
       display: "block",
       height: "30px",
       lineHeight: "30px"
     };
-    const { comparisionMonth } = this.state;
+    const {
+      FilterValues: { yearly },
+      isLoading,
+      data
+    } = this.state;
+
+    console.log("datasss", data);
     return (
       <Fragment>
+        {isLoading && <Loader />}
         <Col xl={24}>
           <Col
             className="descTitleArea"
@@ -142,7 +227,7 @@ export default class ProductSentiment extends Component {
                   <Radio.Group
                     // value={size}
                     onChange={this.handleComparisionMonth}
-                    defaultValue={comparisionMonth}
+                    defaultValue={yearly}
                   >
                     <Radio style={radioStyle} value="QUATERLY">
                       Quaterly
@@ -164,7 +249,7 @@ export default class ProductSentiment extends Component {
           </Col>
         </Col>
         <Col xl={24}>
-          <Bar data={data} options={options} height={50} />
+          <Bar data={chartData} options={options} height={50} />
         </Col>
       </Fragment>
     );

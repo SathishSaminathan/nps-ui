@@ -11,7 +11,8 @@ export const SelectComponent = ({
   defaultValue = null,
   value = undefined,
   placeholder,
-  allowClear = true
+  allowClear = true,
+  loading = false
 }) => {
   return (
     <Row>
@@ -23,6 +24,7 @@ export const SelectComponent = ({
       <Col>
         <Select
           allowClear={allowClear}
+          loading={loading}
           showSearch
           value={value}
           defaultValue={defaultValue}

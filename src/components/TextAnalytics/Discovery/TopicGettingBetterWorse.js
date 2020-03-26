@@ -1,106 +1,139 @@
 import React, { Component, Fragment } from "react";
 import DescTitle from "components/shared/DescTitle";
-import { Col, Table, Icon, Popover, Radio, Input, Button } from "antd";
+import {
+  Col,
+  Table,
+  Icon,
+  Popover,
+  Radio,
+  Input,
+  Button,
+  Pagination
+} from "antd";
+import { SelectComponent } from "components/shared/SelectComponent";
+import DashboardServices from "services/dashboardServices";
+import { DashboardVariables } from "constants/APIConstants";
+import Loader from "components/shared/Loader";
+import ReadMore from "components/shared/ReadMore";
 
 export default class SummaryOfTopics extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      comparisionMonth: "QUATERLY"
+      Themes: [],
+      TotalData: 0,
+      data: [],
+      ThemeFetched: false,
+      isLoading: true,
+      FilterValues: {
+        yearly: "QUATERLY",
+        pageIndex: 1,
+        issueId: undefined,
+        themeIsBetter: props.isBetter || false
+      }
     };
+    this.dashboardAPI = new DashboardServices();
   }
 
+  componentDidMount() {
+    this.getThemesDD();
+    this.getData(this.state.FilterValues);
+  }
+
+  getData = FilterValues => {
+    this.setState({
+      isLoading: true
+    });
+    this.dashboardAPI
+      .service(DashboardVariables.THEME_POSITIVE_WORSE, FilterValues)
+      .then(res => {
+        this.setState({
+          data: res.data.results,
+          TotalData: res.data.totalData,
+          isLoading: false
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState({
+          isLoading: false
+        });
+      });
+  };
+
+  getThemesDD = () => {
+    this.dashboardAPI
+      .service(DashboardVariables.GET_THEMES)
+      .then(res => {
+        this.setState({
+          Themes: res.data,
+          ThemeFetched: true
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState({
+          ThemeFetched: true
+        });
+      });
+  };
   handleComparisionMonth = ({ target: { value } }) => {
-    this.setState({ comparisionMonth: value });
+    this.setState(
+      {
+        FilterValues: {
+          ...this.state.FilterValues,
+          yearly: value
+        }
+      },
+      () => this.getData(this.state.FilterValues)
+    );
+  };
+
+  handleProductChange = (value, type) => {
+    this.setState(
+      {
+        FilterValues: {
+          ...this.state.FilterValues,
+          [type]: value,
+          pageIndex: type === "issueId" ? 1 : value
+        }
+      },
+      () => this.getData(this.state.FilterValues)
+    );
   };
 
   render() {
-    const dataSource = [
-      {
-        key: "1",
-        name: "Mike",
-        age: 32,
-        address: "32.56%"
-      },
-      {
-        key: "2",
-        name: "John",
-        age: 42,
-        address: "32.56%"
-      },
-      {
-        key: "2",
-        name: "John",
-        age: 42,
-        address: "32.56%"
-      },
-      {
-        key: "2",
-        name: "John",
-        age: 42,
-        address: "32.56%"
-      },
-      {
-        key: "2",
-        name: "John",
-        age: 42,
-        address: "32.56%"
-      },
-      {
-        key: "2",
-        name: "John",
-        age: 42,
-        address: "32.56%"
-      },
-      {
-        key: "2",
-        name: "John",
-        age: 42,
-        address: "32.56%"
-      },
-      {
-        key: "2",
-        name: "John",
-        age: 42,
-        address: "32.56%"
-      },
-      {
-        key: "2",
-        name: "John",
-        age: 42,
-        address: "32.56%"
-      },
-      {
-        key: "2",
-        name: "John",
-        age: 42,
-        address: "32.56%"
-      }
-    ];
-
     const columns = [
       {
         title: "Themes",
-        dataIndex: "name",
-        key: "name",
-        width: "70%"
+        dataIndex: "theme",
+        key: "theme",
+        width: "70%",
+        render: text => <ReadMore lines={1}>{text}</ReadMore>
       },
       {
         title: "NPS",
-        dataIndex: "address",
-        key: "address",
+        dataIndex: "npsScore",
+        key: "npsScore",
         width: "15%"
       },
       {
         title: "Impact",
-        dataIndex: "age",
-        key: "age",
+        dataIndex: "impact",
+        key: "impact",
         width: "15%"
       }
     ];
 
     const { isBetter } = this.props;
-    const { comparisionMonth } = this.props;
+    const {
+      FilterValues: { yearly, issueId, pageIndex },
+      Themes,
+      ThemeFetched,
+      TotalData,
+      isLoading,
+      data
+    } = this.state;
 
     const radioStyle = {
       display: "block",
@@ -110,21 +143,35 @@ export default class SummaryOfTopics extends Component {
 
     return (
       <Fragment>
+        {isLoading && <Loader />}
         <Col xl={24}>
           <Col
             className="descTitleArea"
             style={{ paddingTop: 10, paddingBottom: 15 }}
           >
-            <DescTitle style={{ fontSize: 15 }}>
-              Which Themes are getting {isBetter ? "Better" : "Worse"}?
-            </DescTitle>
+            <Col style={{ display: "flex", alignItems: "center" }}>
+              <DescTitle style={{ fontSize: 15 }}>
+                Which Themes are getting {isBetter ? "Better" : "Worse"}?
+              </DescTitle>
+              <Col style={{ width: 150, marginLeft: 10 }}>
+                <SelectComponent
+                  data={Themes}
+                  defaultValue={issueId}
+                  value={issueId}
+                  placeholder="Select Theme"
+                  handleProductChange={this.handleProductChange}
+                  field="issueId"
+                  loading={!ThemeFetched}
+                />
+              </Col>
+            </Col>
             <Popover
               content={
                 <div>
                   <Radio.Group
                     // value={size}
                     onChange={this.handleComparisionMonth}
-                    defaultValue={comparisionMonth}
+                    defaultValue={yearly}
                   >
                     <Radio style={radioStyle} value="QUATERLY">
                       Quaterly
@@ -148,10 +195,18 @@ export default class SummaryOfTopics extends Component {
         <Col xl={24}>
           <Table
             className="summaryOfTopics"
-            dataSource={dataSource}
+            dataSource={data}
             columns={columns}
             bordered
             pagination={false}
+          />
+        </Col>
+        <Col xl={24} style={{ marginTop: 10 }}>
+          <Pagination
+            style={{ float: "right" }}
+            current={pageIndex}
+            onChange={value => this.handleProductChange(value, "pageIndex")}
+            total={TotalData}
           />
         </Col>
       </Fragment>

@@ -1,9 +1,13 @@
 import React, { Component, Fragment } from "react";
-import { Col } from "antd";
+import { Col, Popover, Radio, Button } from "antd";
 
 import DescTitle from "components/shared/DescTitle";
 import { HorizontalBar } from "react-chartjs-2";
 import { Colors } from "constants/themeConstants";
+import DashboardServices from "services/dashboardServices";
+import { DashboardVariables } from "constants/APIConstants";
+import { getRandomColors } from "helpers/validationHelpers";
+import Loader from "components/shared/Loader";
 
 const products = [
   "Consumer Loan",
@@ -67,16 +71,116 @@ const data = {
 };
 
 export default class DistributionByTopic extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      FilterValues: {
+        comparisionMonth: "QUATERLY",
+        dataLength: "5"
+      },
+      ChartResponse: [],
+      isLoading: true
+    };
+    this.dashboardAPI = new DashboardServices();
+  }
+
+  componentDidMount() {
+    this.getChartData(this.state.FilterValues);
+  }
+  getChartData = FilterValues => {
+    this.setState({
+      isLoading: true
+    });
+    this.dashboardAPI
+      .service(DashboardVariables.DISCOVERY_CHART, FilterValues)
+      .then(res => {
+        this.setState({
+          ChartResponse: res.data,
+          isLoading: false
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState({
+          isLoading: false
+        });
+      });
+  };
+
+  handleDataLength = ({ target: { value } }) => {
+    // this.setState({
+    //   FilterValues: { ...this.state.FilterValues, comparisionMonth: value }
+    // });
+    this.setState(
+      {
+        FilterValues: { ...this.state.FilterValues, dataLength: value }
+      },
+      () => this.getChartData(this.state.FilterValues)
+    );
+  };
+
   render() {
+    const radioStyle = {
+      display: "block",
+      height: "30px",
+      lineHeight: "30px"
+    };
+
+    const {
+      FilterValues: { comparisionMonth, dataLength },
+      ChartResponse,
+      isLoading
+    } = this.state;
     return (
       <Fragment>
-        <Col xl={24}>
-          <DescTitle
-            style={{ fontSize: 15, paddingTop: 10, paddingBottom: 15 }}
+        {isLoading && <Loader />}
+        <Col
+          className="descTitleArea"
+          style={{ paddingTop: 10, paddingBottom: 15 }}
+        >
+          <Col style={{ display: "flex", alignItems: "center" }}>
+            <DescTitle style={{ fontSize: 15 }}>
+              NPS distribution by Products
+            </DescTitle>
+            <Col style={{ marginLeft: 10 }}>
+              <Radio.Group
+                // value={size}
+                onChange={this.handleDataLength}
+                defaultValue={dataLength}
+              >
+                <Radio.Button value="5">Top 5</Radio.Button>
+                <Radio.Button value="10">Top 10</Radio.Button>
+                <Radio.Button value="15">Top 15</Radio.Button>
+              </Radio.Group>
+            </Col>
+          </Col>
+          {/* <Popover
+            content={
+              <div>
+                <Radio.Group
+                  // value={size}
+                  onChange={this.handleComparisionMonth}
+                  defaultValue={comparisionMonth}
+                >
+                  <Radio style={radioStyle} value="QUATERLY">
+                    Quaterly
+                  </Radio>
+                  <Radio style={radioStyle} value="HALF_YEARLY">
+                    Half Yearly
+                  </Radio>
+                  <Radio style={radioStyle} value="YEARLY">
+                    Yearly
+                  </Radio>
+                </Radio.Group>
+              </div>
+            }
+            trigger="click"
+            placement="right"
           >
-            NPS distribution by Products
-          </DescTitle>
+            <Button icon="more"></Button>
+          </Popover> */}
         </Col>
+
         <Col xl={24}>
           <HorizontalBar
             height={180}
@@ -116,26 +220,20 @@ export default class DistributionByTopic extends Component {
               plugins: {
                 datalabels: {
                   // display: "auto",
-                  display: false,
-                  align: "center",
-                  anchor: "end",
-                  color: "#000",
-                  font: {
-                    size: 12
-                  },
-                  formatter: (value, ctx) => {
-                    // let sum = 0;
-                    // let dataArr = ctx.chart.data.datasets[0].data;
-                    // dataArr.map(data => {
-                    //   sum += data;
-                    // });
-                    // let percentage = ((value * 100) / sum).toFixed(2) + "%";
-                    return `${value}%`;
-                  }
+                  display: false
                 }
               }
             }}
-            data={data}
+            // data={data}
+            data={
+              ChartResponse.length !== 0
+                ? getRandomColors(ChartResponse, "BAR", [
+                    Colors.green,
+                    Colors.yellow,
+                    Colors.red
+                  ])
+                : []
+            }
           />
         </Col>
       </Fragment>

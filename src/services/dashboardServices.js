@@ -57,7 +57,30 @@ class DashboardServices {
         return axios.get(`${IP}prediction/summary`);
       case DashboardVariables.CUSTOMER_DETAILS:
         return axios.get(
-          `${IP}customers?productId=${data.productId}&pageIndex=${data.pageIndex}`
+          `${IP}customers?productId=${
+            data.productId
+          }&pageIndex=${data.pageIndex - 1}`
+        );
+      case DashboardVariables.DISCOVERY_CHART:
+        return axios.get(
+          `${IP}text/analysis/discovery/chart?dataLength=${data.dataLength}`
+        );
+      case DashboardVariables.DISCOVERY_SUMMARY:
+        return axios.get(
+          `${IP}text/analysis/discovery/summary?pageIndex=${data.pageIndex -
+            1}${data.productId ? `&productId=${data.productId}` : ""}`
+        );
+      case DashboardVariables.THEME_POSITIVE_WORSE:
+        return axios.get(
+          `${IP}text/analysis/theme/discovery/summary?themeIsBetter=${
+            data.themeIsBetter
+          }&pageIndex=${data.pageIndex - 1}&yearly=${data.yearly}${
+            data.issueId ? `&productId=${data.issueId}` : ""
+          }`
+        );
+      case DashboardVariables.SENTIMENT_CHART:
+        return axios.get(
+          `${IP}text/analysis/sentiment/discovery/chart?yearly=${data.yearly}`
         );
     }
   }

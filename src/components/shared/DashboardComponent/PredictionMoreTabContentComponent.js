@@ -241,6 +241,7 @@ export default class PredictionMoreTabContentComponent extends Component {
         )}
         <Col xl={24}>
           <Table
+            className="custTable"
             columns={columns}
             dataSource={data}
             scroll={{ y: "50vh" }}

@@ -1,13 +1,14 @@
 import React from "react";
-import { ClipLoader } from "react-spinners";
+import { ClipLoader, DotLoader } from "react-spinners";
+import { Colors } from "constants/themeConstants";
 
 const Loader = ({ size = 40 }) => {
   return (
     <div className="loaderContainer">
-      <ClipLoader
+      <DotLoader
         size={size}
         //size={"150px"} this also works
-        color={"blue"}
+        color={Colors.blue}
         loading
       />
     </div>
