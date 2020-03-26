@@ -137,7 +137,8 @@
       tr {
         td {
           border-right: none;
-          padding: 10px 2px;
+          box-sizing: border-box;
+          padding: 5px;
         }
       }
     }

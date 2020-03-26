@@ -167,14 +167,15 @@ export default class ProductSentiment extends Component {
           type: "line",
           data: [51, 65, 40, 49, 60, 37, 40],
           fill: false,
-          borderJoinStyle: "miter",
+          // borderJoinStyle: "miter",
           borderColor: Colors.brick,
           backgroundColor: "white",
           pointBorderColor: Colors.brick,
           pointBackgroundColor: "white",
-          //   pointHoverBackgroundColor: "#EC932F",
-          //   pointHoverBorderColor: "#EC932F",
           yAxisID: "y-axis-2",
+          lineTension: 0.1,
+          pointRadius: 4,
+          pointBorderWidth: 2,
           ...data.datasets[2]
         },
         {
@@ -195,6 +196,7 @@ export default class ProductSentiment extends Component {
         }
       ]
     };
+    return data;
   };
 
   render() {
@@ -209,7 +211,6 @@ export default class ProductSentiment extends Component {
       data
     } = this.state;
 
-    console.log("datasss", data);
     return (
       <Fragment>
         {isLoading && <Loader />}
@@ -249,7 +250,11 @@ export default class ProductSentiment extends Component {
           </Col>
         </Col>
         <Col xl={24}>
-          <Bar data={chartData} options={options} height={50} />
+          <Bar
+            data={data ? this.renderChartData(data) : []}
+            options={options}
+            height={50}
+          />
         </Col>
       </Fragment>
     );

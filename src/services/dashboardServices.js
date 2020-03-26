@@ -82,6 +82,10 @@ class DashboardServices {
         return axios.get(
           `${IP}text/analysis/sentiment/discovery/chart?yearly=${data.yearly}`
         );
+      case DashboardVariables.VOLUME_CHART:
+        return axios.get(
+          `${IP}text/analysis/product/discovery/chart?yearly=${data.yearly}`
+        );
     }
   }
 }

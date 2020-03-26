@@ -3,6 +3,9 @@ import DescTitle from "components/shared/DescTitle";
 import { Col, Table, Icon, Popover, Radio, Input, Button } from "antd";
 import { Bar } from "react-chartjs-2";
 import { Colors } from "constants/themeConstants";
+import DashboardServices from "services/dashboardServices";
+import { DashboardVariables } from "constants/APIConstants";
+import Loader from "components/shared/Loader";
 
 const data = {
   labels: ["January", "February", "March", "April", "May", "June", "July"],
@@ -17,6 +20,9 @@ const data = {
       //   backgroundColor: "#EC932F",
       pointBorderColor: Colors.darkBlue,
       pointBackgroundColor: "white",
+      lineTension: 0.1,
+      pointRadius: 4,
+      pointBorderWidth: 2,
       //   pointHoverBackgroundColor: "#EC932F",
       //   pointHoverBorderColor: "#EC932F",
       yAxisID: "y-axis-1"
@@ -104,22 +110,95 @@ export default class ProductVolume extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      comparisionMonth: "QUATERLY"
+      data: null,
+      FilterValues: {
+        yearly: "QUATERLY"
+      },
+      isLoading: true
     };
+    this.dashboardAPI = new DashboardServices();
   }
 
-  handleComparisionMonth = ({ target: { value } }) => {
-    this.setState({ comparisionMonth: value });
+  componentDidMount() {
+    this.getChartData(this.state.FilterValues);
+  }
+
+  getChartData = FilterValues => {
+    this.setState({
+      isLoading: true
+    });
+    this.dashboardAPI
+      .service(DashboardVariables.VOLUME_CHART, FilterValues)
+      .then(res => {
+        this.setState({
+          data: res.data,
+          isLoading: false
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState({
+          isLoading: false
+        });
+      });
   };
+
+  renderChartData = res => {
+    let data = res;
+    data = {
+      ...data,
+      datasets: [
+        {
+          type: "line",
+          fill: false,
+          borderJoinStyle: "miter",
+          borderColor: Colors.blue,
+          //   backgroundColor: "#EC932F",
+          pointBorderColor: Colors.darkBlue,
+          pointBackgroundColor: "white",
+          lineTension: 0.1,
+          pointRadius: 4,
+          pointBorderWidth: 2,
+          //   pointHoverBackgroundColor: "#EC932F",
+          //   pointHoverBorderColor: "#EC932F",
+          yAxisID: "y-axis-1",
+          ...data.datasets[1]
+        },
+        {
+          type: "bar",
+          fill: false,
+          backgroundColor: Colors.darkBlue,
+          yAxisID: "y-axis-1",
+          ...data.datasets[0]
+        }
+      ]
+    };
+    return data;
+  };
+
+  handleComparisionMonth = ({ target: { value } }) => {
+    this.setState(
+      {
+        FilterValues: { ...this.state.FilterValues, yearly: value }
+      },
+      () => this.getChartData(this.state.FilterValues)
+    );
+  };
+
   render() {
     const radioStyle = {
       display: "block",
       height: "30px",
       lineHeight: "30px"
     };
-    const { comparisionMonth } = this.state;
+    const {
+      FilterValues: { yearly },
+      data,
+      isLoading
+    } = this.state;
     return (
       <Fragment>
+        {isLoading && <Loader/>}
         <Col xl={24}>
           <Col
             className="descTitleArea"
@@ -134,7 +213,7 @@ export default class ProductVolume extends Component {
                   <Radio.Group
                     // value={size}
                     onChange={this.handleComparisionMonth}
-                    defaultValue={comparisionMonth}
+                    defaultValue={yearly}
                   >
                     <Radio style={radioStyle} value="QUATERLY">
                       Quaterly
@@ -156,7 +235,11 @@ export default class ProductVolume extends Component {
           </Col>
         </Col>
         <Col xl={24}>
-          <Bar data={data} options={options} height={50} />
+          <Bar
+            data={data ? this.renderChartData(data) : []}
+            options={options}
+            height={50}
+          />
         </Col>
       </Fragment>
     );
