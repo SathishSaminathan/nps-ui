@@ -14,6 +14,7 @@ import response from "./data";
 import Filters from "components/Filters";
 import HeaderComponent from "components/shared/HeaderComponent";
 import Discovery from "./Discovery"
+import ThemeExplorer from "./ThemeExplorer";
 
 const { TabPane } = Tabs;
 
@@ -343,7 +344,7 @@ export default class TextAnalytics extends Component {
               <Discovery/>
             </TabPane>
             <TabPane tab={<span>Theme Explorer</span>} key="2">
-              Tab 2
+              <ThemeExplorer/>
             </TabPane>
             <TabPane tab={<span>Previous</span>} key="3">
               <Col xl={18}>
