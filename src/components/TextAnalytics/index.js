@@ -339,7 +339,7 @@ export default class TextAnalytics extends Component {
       <Row>
         <HeaderComponent title={"Text Analysis"} />
         <Col xl={24}>
-          <Tabs defaultActiveKey="1" className="headerTabs">
+          <Tabs defaultActiveKey="2" className="headerTabs">
             <TabPane tab={<span>Discovery</span>} key="1">
               <Discovery/>
             </TabPane>

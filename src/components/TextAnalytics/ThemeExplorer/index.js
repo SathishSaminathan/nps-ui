@@ -1,9 +1,16 @@
 import React, { Component } from "react";
 // import BubbleChart from "@weknow/react-bubble-chart-d3";
-import { Row, Col } from "antd";
+import { Row, Col, Radio, Icon } from "antd";
 import _ from "lodash";
 import * as d3 from "d3";
 import { Colors } from "constants/themeConstants";
+import { SelectComponent } from "components/shared/SelectComponent";
+import DashboardServices from "services/dashboardServices";
+import { DashboardVariables } from "constants/APIConstants";
+import { ChartContants } from "constants/AppConstants";
+import { Bar } from "react-chartjs-2";
+import { getRandomColors } from "helpers/validationHelpers";
+import ThemePhrases from "./ThemePhrases";
 
 class BubbleChart extends React.Component {
   //   static propTypes = {
@@ -16,8 +23,8 @@ class BubbleChart extends React.Component {
   static defaultProps = {
     data: [],
     useLabels: false,
-    width: 600,
-    height: 500
+    width: 580,
+    height: 580
   };
 
   constructor(props) {
@@ -68,7 +75,8 @@ class BubbleChart extends React.Component {
       .range([30, 80])
       .domain([this.minValue, this.maxValue]);
 
-    return fx(value);
+    // return fx(value);
+    return value;
   };
 
   simulatePositions = data => {
@@ -129,8 +137,8 @@ class BubbleChart extends React.Component {
 
       return (
         <g
-          transform={`translate(${this.props.width / 2}, ${this.props.height /
-            2})`}
+          transform={`transla+
+          te(${this.props.width / 2}, ${this.props.height / 2})`}
         >
           {circles}
         </g>
@@ -184,22 +192,93 @@ class BubbleChart extends React.Component {
 }
 
 export default class ThemeExplorer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      VOCResponse: [],
+      Themes: [],
+      data: [],
+      ThemeFetched: false,
+      isLoading: true,
+      FilterValues: {
+        issueId: undefined,
+        chartType: ChartContants.BUBBLE
+      }
+    };
+    this.dashboardAPI = new DashboardServices();
+  }
+  componentDidMount() {
+    this.getThemesDD();
+    this.getChartData({ comparisionMonth: "YEARLY", isProduct: false });
+  }
+
+  getChartData = data => {
+    this.dashboardAPI
+      .service(DashboardVariables.COMPARISION_CHART, data)
+      .then(res => {
+        this.setState({
+          VOCResponse: res.data
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+  getThemesDD = () => {
+    this.dashboardAPI
+      .service(DashboardVariables.GET_THEMES)
+      .then(res => {
+        this.setState({
+          Themes: res.data,
+          ThemeFetched: true
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState({
+          ThemeFetched: true
+        });
+      });
+  };
+  handleProductChange = (value, type) => {
+    this.setState(
+      {
+        FilterValues: {
+          ...this.state.FilterValues,
+          [type]: value,
+          pageIndex: type === "issueId" ? 1 : value
+        }
+      },
+      () => this.this.getChartData0(this.state.FilterValues)
+    );
+  };
   render() {
     // const rawdata = Array(10).map((e, i) => {
     //   return {
     //     v: _.random(10, 100)
     //   };
     // });
-    const rawdata = _.map(_.range(10), () => {
+    const rawdata = _.map(_.range(10), (value, index) => {
       return {
-        v: _.random(10, 100),
+        v: 60 + 3 * index,
+        // v: _.random(10, 100),
         l: "Sample"
       };
     });
+
+    const {
+      VOCResponse,
+      FilterValues: { yearly, issueId, chartType },
+      Themes,
+      ThemeFetched,
+      TotalData,
+      isLoading,
+      data
+    } = this.state;
     return (
       <Row>
-        <Col xl={24} style={{ padding: 20, paddingTop: 10, paddingBottom: 10 }}>
-          <Col xl={14}>
+        <Col xl={24} style={{ padding: 20, paddingTop: 0, paddingBottom: 10 }}>
+          <Col xl={14} style={{ padding: 5 }}>
             {/* <BubbleChart
               className="cust"
               graph={{
@@ -245,11 +324,115 @@ export default class ThemeExplorer extends Component {
                 { label: "Misc", value: 4 }
               ]}
             /> */}
-            <Col className="bubbleContainer">
-              <BubbleChart useLabels data={rawdata} />
+            <Col xl={24} className="bubbleContainer">
+              <Row type="flex" justify="space-between" style={{ padding: 10 }}>
+                <Col style={{ width: 150 }}>
+                  <SelectComponent
+                    data={Themes}
+                    defaultValue={issueId}
+                    value={issueId}
+                    placeholder="Select Theme"
+                    handleProductChange={this.handleProductChange}
+                    field="issueId"
+                    loading={!ThemeFetched}
+                  />
+                </Col>
+                <Col>
+                  <Radio.Group
+                    // value={size}
+                    onChange={e => {
+                      this.setState({
+                        FilterValues: {
+                          ...this.state.FilterValues,
+                          chartType: e.target.value
+                        }
+                      });
+                    }}
+                    value={chartType}
+                  >
+                    <Radio.Button value={ChartContants.BUBBLE}>
+                      <Icon type="dot-chart" />
+                    </Radio.Button>
+                    <Radio.Button value={ChartContants.BAR}>
+                      <Icon type="bar-chart" />
+                    </Radio.Button>
+                  </Radio.Group>
+                </Col>
+              </Row>
+              <Col xl={24}>
+                {chartType === ChartContants.BUBBLE ? (
+                  <BubbleChart useLabels data={rawdata} />
+                ) : VOCResponse.length !== 0 ? (
+                  <Bar
+                    data={getRandomColors(VOCResponse, "BAR")}
+                    // legend={false}
+                    height={600}
+                    options={{
+                      maintainAspectRatio: false,
+                      scales: {
+                        xAxes: [
+                          {
+                            ticks: {
+                              fontSize: 8,
+                              callback: function(label, index, labels) {
+                                if (/\s/.test(label)) {
+                                  return label.split(" ");
+                                } else {
+                                  return label;
+                                }
+                              }
+                            },
+                            display: true,
+                            scaleLabel: {
+                              display: true,
+                              // labelString: "X axe name",
+                              fontColor: "#000000",
+                              fontSize: 10
+                            },
+                            gridLines: {
+                              display: false
+                            }
+                            // ticks: {
+                            //   fontColor: "black",
+                            //   fontSize: 8
+                            // }
+                          }
+                        ],
+                        yAxes: [
+                          {
+                            display: true,
+                            scaleLabel: {
+                              display: true,
+                              // labelString: "Y axe name",
+                              fontColor: "#000000",
+                              fontSize: 10
+                            },
+                            gridLines: {
+                              display: false
+                            }
+                            // ticks: {
+                            //   fontColor: "black",
+                            //   fontSize: 8
+                            // }
+                          }
+                        ]
+                      },
+                      plugins: {
+                        datalabels: {
+                          display: false
+                        }
+                      }
+                    }}
+                  />
+                ) : null}
+              </Col>
             </Col>
           </Col>
-          <Col xl={10}></Col>
+          <Col xl={10} style={{ padding: 5 }}>
+            <Col xl={24} className="bubbleContainer">
+              <ThemePhrases />
+            </Col>
+          </Col>
         </Col>
       </Row>
     );

@@ -288,6 +288,7 @@
 
 .bubbleContainer {
   // background: red;
+  height: 633px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -295,5 +296,18 @@
   svg {
     width: 100% !important;
     // background: green;
+  }
+}
+
+.themePrasesTable {
+  .ant-table-thead {
+    display: none;
+  }
+  .ant-table-tbody {
+    tr {
+      td {
+        padding: 8px 5px;
+      }
+    }
   }
 }

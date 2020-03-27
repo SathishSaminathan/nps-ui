@@ -7,4 +7,14 @@ const StoreContants = {
   DASHBOARD: "DASHBOARD"
 };
 
-export { Lotties, StoreContants };
+const ChartContants = {
+  BUBBLE: "BUBBLE",
+  BAR: "BAR"
+};
+
+const SentimentConstants = {
+  HAPPY: "HAPPY",
+  UNHAPPY: "UN_HAPPY"
+};
+
+export { Lotties, StoreContants, ChartContants, SentimentConstants };
