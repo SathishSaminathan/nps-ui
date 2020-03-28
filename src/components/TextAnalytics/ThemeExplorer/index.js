@@ -325,7 +325,11 @@ export default class ThemeExplorer extends Component {
               ]}
             /> */}
             <Col xl={24} className="bubbleContainer">
-              <Row type="flex" justify="space-between" style={{ padding: 10 }}>
+              <Row
+                type="flex"
+                justify="space-between"
+                style={{ padding: 10, width: "100%" }}
+              >
                 <Col style={{ width: 150 }}>
                   <SelectComponent
                     data={Themes}

@@ -207,7 +207,11 @@ export default class ThemePhrases extends Component {
     ];
     return (
       <Fragment>
-        <Row type="flex" justify="space-between" style={{ padding: 10 }}>
+        <Row
+          type="flex"
+          justify="space-between"
+          style={{ padding: 10, width: "100%" }}
+        >
           <Col style={{ width: 150 }}>
             <SelectComponent
               data={Themes}
@@ -245,7 +249,7 @@ export default class ThemePhrases extends Component {
             </Radio.Group>
           </Col>
         </Row>
-        <Row>
+        <Row style={{ width: "100%" }}>
           <Col xl={24} style={{ padding: 5 }}>
             <Table
               className="themePrasesTable"
