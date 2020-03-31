@@ -6,6 +6,7 @@ import { ChartContants, SentimentConstants } from "constants/AppConstants";
 import { DashboardVariables } from "constants/APIConstants";
 import DashboardServices from "services/dashboardServices";
 import { Colors } from "constants/themeConstants";
+import ReadMore from "components/shared/ReadMore";
 
 const dataSource = [
   {
@@ -124,7 +125,7 @@ export default class ThemePhrases extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      VOCResponse: [],
+      dataSource: [],
       Themes: [],
       data: [],
       ThemeFetched: false,
@@ -138,6 +139,7 @@ export default class ThemePhrases extends Component {
   }
   componentDidMount() {
     this.getThemesDD();
+    this.getMessages(this.state.FilterValues);
   }
   getThemesDD = () => {
     this.dashboardAPI
@@ -155,16 +157,37 @@ export default class ThemePhrases extends Component {
         });
       });
   };
+
+  getMessages = data => {
+    this.setState({
+      isLoading: true
+    });
+    this.dashboardAPI
+      .service(DashboardVariables.THEME_EXPLORER_PHRASES, data)
+      .then(res => {
+        this.setState({
+          dataSource: res.data,
+          isLoading: false
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState({
+          ThemeFetched: true,
+          isLoading: false
+        });
+      });
+  };
   handleProductChange = (value, type) => {
     this.setState(
       {
         FilterValues: {
           ...this.state.FilterValues,
-          [type]: value,
-          pageIndex: type === "issueId" ? 1 : value
+          [type]: value
+          // pageIndex: type === "issueId" ? 1 : value
         }
       },
-      () => this.this.getChartData0(this.state.FilterValues)
+      () => this.getMessages(this.state.FilterValues)
     );
   };
   render() {
@@ -173,7 +196,7 @@ export default class ThemePhrases extends Component {
       [SentimentConstants.UNHAPPY]: "frown"
     };
     const {
-      VOCResponse,
+      dataSource,
       FilterValues: { yearly, issueId, chartType, sentiment },
       Themes,
       ThemeFetched,
@@ -182,27 +205,32 @@ export default class ThemePhrases extends Component {
       data
     } = this.state;
 
+    const color = {
+      GREEN: "green",
+      YELLOW: "yellow",
+      RED: "red",
+      GREY: "lightgrey"
+    };
+
     const columns = [
       {
-        dataIndex: "sentiment",
-        key: "sentiment",
+        dataIndex: "phraseType",
+        key: "phraseType",
         width: "8%",
         align: "center",
         render: text => (
           <Icon
-            type={config[text]}
+            type={"smile"}
             style={{
-              color:
-                text === SentimentConstants.HAPPY
-                  ? Colors.green
-                  : Colors.primaryButtonColor
+              color: color[text]
             }}
           />
         )
       },
       {
-        dataIndex: "comment",
-        key: "comment"
+        dataIndex: "message",
+        key: "message",
+        render: text => <ReadMore lines={1}>{text}</ReadMore>
       }
     ];
     return (
@@ -227,24 +255,30 @@ export default class ThemePhrases extends Component {
             <Radio.Group
               // value={size}
               onChange={e => {
-                this.setState({
-                  FilterValues: {
-                    ...this.state.FilterValues,
-                    sentiment: e.target.value
-                  }
-                });
+                this.setState(
+                  {
+                    FilterValues: {
+                      ...this.state.FilterValues,
+                      sentiment: e.target.value
+                    }
+                  },
+                  () => this.getMessages(this.state.FilterValues)
+                );
               }}
               value={sentiment}
             >
               <Radio.Button value={"ALL"}>All</Radio.Button>
-              <Radio.Button value={SentimentConstants.HAPPY}>
-                <Icon type="smile" style={{ color: Colors.green }} />
+              <Radio.Button value={SentimentConstants.GREEN}>
+                <Icon type="smile" style={{ color: color.GREEN }} />
               </Radio.Button>
-              <Radio.Button value={SentimentConstants.UNHAPPY}>
-                <Icon
-                  type="frown"
-                  style={{ color: Colors.primaryButtonColor }}
-                />
+              <Radio.Button value={SentimentConstants.YELLOW}>
+                <Icon type="smile" style={{ color: color.YELLOW }} />
+              </Radio.Button>
+              <Radio.Button value={SentimentConstants.RED}>
+                <Icon type="smile" style={{ color: color.RED }} />
+              </Radio.Button>
+              <Radio.Button value={SentimentConstants.GREY}>
+                <Icon type="smile" style={{ color: color.GREY }} />
               </Radio.Button>
             </Radio.Group>
           </Col>
@@ -256,6 +290,7 @@ export default class ThemePhrases extends Component {
               dataSource={dataSource}
               columns={columns}
               pagination={{ pageSize: 13 }}
+              loading={isLoading}
             />
           </Col>
         </Row>

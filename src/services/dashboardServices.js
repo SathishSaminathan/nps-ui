@@ -86,6 +86,20 @@ class DashboardServices {
         return axios.get(
           `${IP}text/analysis/product/discovery/chart?yearly=${data.yearly}`
         );
+      case DashboardVariables.THEME_EXPLORER_CHART:
+        return axios.get(
+          `${IP}text/analysis/theme/explorer?isChart=${data.isChart}${
+            data.issueId ? `&issueId=${data.issueId}` : ``
+          }`
+        );
+      case DashboardVariables.THEME_EXPLORER_PHRASES:
+        return axios.get(
+          `${IP}text/analysis/theme/explorer/phrases${
+            data.sentiment && data.sentiment !== "ALL"
+              ? `?phraseType=${data.sentiment}`
+              : ``
+          }`
+        );
     }
   }
 }

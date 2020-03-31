@@ -14,7 +14,11 @@ const ChartContants = {
 
 const SentimentConstants = {
   HAPPY: "HAPPY",
-  UNHAPPY: "UN_HAPPY"
+  UNHAPPY: "UN_HAPPY",
+  GREEN: "GREEN",
+  YELLOW: "YELLOW",
+  RED: "RED",
+  GREY: "GREY"
 };
 
 export { Lotties, StoreContants, ChartContants, SentimentConstants };

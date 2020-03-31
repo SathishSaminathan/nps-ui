@@ -148,7 +148,7 @@ class BubbleChart extends React.Component {
     // render circle and text elements inside a group
     const texts = _.map(data, (item, index) => {
       const props = this.props;
-      const fontSize = this.radiusScale(item.v) / 6;
+      const fontSize = this.radiusScale(item.v) / 10;
       return (
         <g
           key={index}
@@ -169,7 +169,7 @@ class BubbleChart extends React.Component {
             fontSize={`${fontSize}px`}
             fontWeight="bold"
           >
-            {item.l}
+            {item.name}
           </text>
         </g>
       );
@@ -196,6 +196,7 @@ export default class ThemeExplorer extends Component {
     super(props);
     this.state = {
       VOCResponse: [],
+      bubbleResponse: null,
       Themes: [],
       data: [],
       ThemeFetched: false,
@@ -209,15 +210,39 @@ export default class ThemeExplorer extends Component {
   }
   componentDidMount() {
     this.getThemesDD();
-    this.getChartData({ comparisionMonth: "YEARLY", isProduct: false });
+    this.getData();
   }
+
+  getData = FilterValues => {
+    this.getChartData(FilterValues);
+    this.getBubbleData(FilterValues);
+  };
+
+  getBubbleData = data => {
+    this.dashboardAPI
+      .service(DashboardVariables.THEME_EXPLORER_CHART, {
+        ...data,
+        isChart: true
+      })
+      .then(res => {
+        this.setState({
+          bubbleResponse: res.data.results
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   getChartData = data => {
     this.dashboardAPI
-      .service(DashboardVariables.COMPARISION_CHART, data)
+      .service(DashboardVariables.THEME_EXPLORER_CHART, {
+        ...data,
+        isChart: false
+      })
       .then(res => {
         this.setState({
-          VOCResponse: res.data
+          VOCResponse: res.data.chartDto
         });
       })
       .catch(err => {
@@ -245,11 +270,11 @@ export default class ThemeExplorer extends Component {
       {
         FilterValues: {
           ...this.state.FilterValues,
-          [type]: value,
-          pageIndex: type === "issueId" ? 1 : value
+          [type]: value
+          // pageIndex: type === "issueId" ? 1 : value
         }
       },
-      () => this.this.getChartData0(this.state.FilterValues)
+      () => this.getData(this.state.FilterValues)
     );
   };
   render() {
@@ -258,16 +283,10 @@ export default class ThemeExplorer extends Component {
     //     v: _.random(10, 100)
     //   };
     // });
-    const rawdata = _.map(_.range(10), (value, index) => {
-      return {
-        v: 60 + 3 * index,
-        // v: _.random(10, 100),
-        l: "Sample"
-      };
-    });
 
     const {
       VOCResponse,
+      bubbleResponse,
       FilterValues: { yearly, issueId, chartType },
       Themes,
       ThemeFetched,
@@ -275,6 +294,18 @@ export default class ThemeExplorer extends Component {
       isLoading,
       data
     } = this.state;
+    let rawdata = [];
+    if (bubbleResponse) {
+      rawdata = _.map(bubbleResponse, (value, index) => {
+        return {
+          v: 60 + 3 * index,
+          val: value.positivePercentage,
+          // v: _.random(10, 100),
+          // l: "Sample",
+          name: value.issue
+        };
+      });
+    }
     return (
       <Row>
         <Col xl={24} style={{ padding: 20, paddingTop: 0, paddingBottom: 10 }}>
@@ -331,7 +362,7 @@ export default class ThemeExplorer extends Component {
                 style={{ padding: 10, width: "100%" }}
               >
                 <Col style={{ width: 150 }}>
-                  <SelectComponent
+                  {/* <SelectComponent
                     data={Themes}
                     defaultValue={issueId}
                     value={issueId}
@@ -339,7 +370,7 @@ export default class ThemeExplorer extends Component {
                     handleProductChange={this.handleProductChange}
                     field="issueId"
                     loading={!ThemeFetched}
-                  />
+                  /> */}
                 </Col>
                 <Col>
                   <Radio.Group
@@ -364,7 +395,7 @@ export default class ThemeExplorer extends Component {
                 </Col>
               </Row>
               <Col xl={24}>
-                {chartType === ChartContants.BUBBLE ? (
+                {chartType === ChartContants.BUBBLE && bubbleResponse ? (
                   <BubbleChart useLabels data={rawdata} />
                 ) : VOCResponse.length !== 0 ? (
                   <Bar
@@ -404,7 +435,7 @@ export default class ThemeExplorer extends Component {
                         ],
                         yAxes: [
                           {
-                            display: true,
+                            display: false,
                             scaleLabel: {
                               display: true,
                               // labelString: "Y axe name",
