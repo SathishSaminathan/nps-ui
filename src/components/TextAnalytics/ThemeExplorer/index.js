@@ -355,7 +355,7 @@ export default class ThemeExplorer extends Component {
                 { label: "Misc", value: 4 }
               ]}
             /> */}
-            <Col xl={24} className="bubbleContainer">
+            <Col xl={24} className="bubbleContainers">
               <Row
                 type="flex"
                 justify="space-between"
