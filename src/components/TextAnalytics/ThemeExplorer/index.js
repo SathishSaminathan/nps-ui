@@ -24,7 +24,7 @@ class BubbleChart extends React.Component {
     data: [],
     useLabels: false,
     width: 580,
-    height: 580
+    height: 580,
   };
 
   constructor(props) {
@@ -35,7 +35,7 @@ class BubbleChart extends React.Component {
     this.mounted = false;
 
     this.state = {
-      data: []
+      data: [],
     };
 
     this.radiusScale = this.radiusScale.bind(this);
@@ -51,13 +51,13 @@ class BubbleChart extends React.Component {
     if (this.props.data.length > 0) {
       this.minValue =
         0.95 *
-        d3.min(this.props.data, item => {
+        d3.min(this.props.data, (item) => {
           return item.v;
         });
 
       this.maxValue =
         1.05 *
-        d3.max(this.props.data, item => {
+        d3.max(this.props.data, (item) => {
           return item.v;
         });
 
@@ -69,7 +69,7 @@ class BubbleChart extends React.Component {
     this.mounted = false;
   }
 
-  radiusScale = value => {
+  radiusScale = (value) => {
     const fx = d3
       .scaleSqrt()
       .range([30, 80])
@@ -79,7 +79,7 @@ class BubbleChart extends React.Component {
     return value;
   };
 
-  simulatePositions = data => {
+  simulatePositions = (data) => {
     this.simulation = d3
       .forceSimulation()
       .nodes(data)
@@ -88,7 +88,7 @@ class BubbleChart extends React.Component {
       .force("y", d3.forceY().strength(0.05))
       .force(
         "collide",
-        d3.forceCollide(d => {
+        d3.forceCollide((d) => {
           return this.radiusScale(d.v) + 2;
         })
       )
@@ -99,16 +99,16 @@ class BubbleChart extends React.Component {
       });
   };
 
-  renderBubbles = data => {
+  renderBubbles = (data) => {
     const minValue =
       0.95 *
-      d3.min(data, item => {
+      d3.min(data, (item) => {
         return item.v;
       });
 
     const maxValue =
       1.05 *
-      d3.max(data, item => {
+      d3.max(data, (item) => {
         return item.v;
       });
 
@@ -152,9 +152,9 @@ class BubbleChart extends React.Component {
       return (
         <g
           key={index}
-          transform={`translate(${props.width / 2 + item.x}, ${props.height /
-            2 +
-            item.y})`}
+          transform={`translate(${props.width / 2 + item.x}, ${
+            props.height / 2 + item.y
+          })`}
         >
           <circle
             r={this.radiusScale(item.v)}
@@ -203,8 +203,8 @@ export default class ThemeExplorer extends Component {
       isLoading: true,
       FilterValues: {
         issueId: undefined,
-        chartType: ChartContants.BUBBLE
-      }
+        chartType: ChartContants.BUBBLE,
+      },
     };
     this.dashboardAPI = new DashboardServices();
   }
@@ -213,55 +213,55 @@ export default class ThemeExplorer extends Component {
     this.getData();
   }
 
-  getData = FilterValues => {
+  getData = (FilterValues) => {
     this.getChartData(FilterValues);
     this.getBubbleData(FilterValues);
   };
 
-  getBubbleData = data => {
+  getBubbleData = (data) => {
     this.dashboardAPI
       .service(DashboardVariables.THEME_EXPLORER_CHART, {
         ...data,
-        isChart: true
+        isChart: true,
       })
-      .then(res => {
+      .then((res) => {
         this.setState({
-          bubbleResponse: res.data.results
+          bubbleResponse: res.data.results,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
 
-  getChartData = data => {
+  getChartData = (data) => {
     this.dashboardAPI
       .service(DashboardVariables.THEME_EXPLORER_CHART, {
         ...data,
-        isChart: false
+        isChart: false,
       })
-      .then(res => {
+      .then((res) => {
         this.setState({
-          VOCResponse: res.data.chartDto
+          VOCResponse: res.data.chartDto,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
   getThemesDD = () => {
     this.dashboardAPI
       .service(DashboardVariables.GET_THEMES)
-      .then(res => {
+      .then((res) => {
         this.setState({
           Themes: res.data,
-          ThemeFetched: true
+          ThemeFetched: true,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         this.setState({
-          ThemeFetched: true
+          ThemeFetched: true,
         });
       });
   };
@@ -270,9 +270,9 @@ export default class ThemeExplorer extends Component {
       {
         FilterValues: {
           ...this.state.FilterValues,
-          [type]: value
+          [type]: value,
           // pageIndex: type === "issueId" ? 1 : value
-        }
+        },
       },
       () => this.getData(this.state.FilterValues)
     );
@@ -292,7 +292,7 @@ export default class ThemeExplorer extends Component {
       ThemeFetched,
       TotalData,
       isLoading,
-      data
+      data,
     } = this.state;
     let rawdata = [];
     if (bubbleResponse) {
@@ -302,7 +302,7 @@ export default class ThemeExplorer extends Component {
           val: value.positivePercentage,
           // v: _.random(10, 100),
           // l: "Sample",
-          name: value.issue
+          name: value.issue,
         };
       });
     }
@@ -355,7 +355,7 @@ export default class ThemeExplorer extends Component {
                 { label: "Misc", value: 4 }
               ]}
             /> */}
-            <Col xl={24} className="bubbleContainers">
+            <Col xl={24} className="bubbleContainer">
               <Row
                 type="flex"
                 justify="space-between"
@@ -375,12 +375,14 @@ export default class ThemeExplorer extends Component {
                 <Col>
                   <Radio.Group
                     // value={size}
-                    onChange={e => {
-                      this.setState({
+                    onChange={(e) => {
+                      this.setState
+                      
+                      ({
                         FilterValues: {
                           ...this.state.FilterValues,
-                          chartType: e.target.value
-                        }
+                          chartType: e.target.value,
+                        },
                       });
                     }}
                     value={chartType}
@@ -409,29 +411,29 @@ export default class ThemeExplorer extends Component {
                           {
                             ticks: {
                               fontSize: 8,
-                              callback: function(label, index, labels) {
+                              callback: function (label, index, labels) {
                                 if (/\s/.test(label)) {
                                   return label.split(" ");
                                 } else {
                                   return label;
                                 }
-                              }
+                              },
                             },
                             display: true,
                             scaleLabel: {
                               display: true,
                               // labelString: "X axe name",
                               fontColor: "#000000",
-                              fontSize: 10
+                              fontSize: 10,
                             },
                             gridLines: {
-                              display: false
-                            }
+                              display: false,
+                            },
                             // ticks: {
                             //   fontColor: "black",
                             //   fontSize: 8
                             // }
-                          }
+                          },
                         ],
                         yAxes: [
                           {
@@ -440,23 +442,23 @@ export default class ThemeExplorer extends Component {
                               display: true,
                               // labelString: "Y axe name",
                               fontColor: "#000000",
-                              fontSize: 10
+                              fontSize: 10,
                             },
                             gridLines: {
-                              display: false
-                            }
+                              display: false,
+                            },
                             // ticks: {
                             //   fontColor: "black",
                             //   fontSize: 8
                             // }
-                          }
-                        ]
+                          },
+                        ],
                       },
                       plugins: {
                         datalabels: {
-                          display: false
-                        }
-                      }
+                          display: false,
+                        },
+                      },
                     }}
                   />
                 ) : null}
