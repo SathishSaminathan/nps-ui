@@ -17,7 +17,10 @@ const Colors = {
   green: "#78d237",
   darkBlue: "#2d73f5",
   blue: "#28b4c8",
-  brick:"#b3291c"
+  brick: "#b3291c",
+  textColor: "#3d5170;",
+  darkBlue: "#70bff8",
+  lightBlue: "#a8e3f3",
 };
 
 export { Colors };

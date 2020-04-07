@@ -8,7 +8,7 @@ import { HomeRoutes } from "config/routes";
 const { Header, Content, Footer, Sider } = Layout;
 export default class Home extends Component {
   state = {
-    collapsed: true
+    collapsed: true,
   };
 
   render() {
@@ -74,10 +74,17 @@ export default class Home extends Component {
                 <span className="nav-text">Dashboard1</span>
               </Menu.Item> */}
               <Menu.Item
-                key="3"
+                key="2"
                 onClick={() => this.props.history.push("/dashboardWithData1")}
               >
                 <Icon type="dashboard" />
+                <span className="nav-text">Dashboard2</span>
+              </Menu.Item>
+              <Menu.Item
+                key="3"
+                onClick={() => this.props.history.push("/satellite")}
+              >
+                <Icon type="percentage" />
                 <span className="nav-text">Dashboard2</span>
               </Menu.Item>
               <Menu.Item
@@ -125,26 +132,26 @@ export default class Home extends Component {
               </Menu.Item>
             </Menu>
           </Sider>
-          <Layout>
+          <Layout style={{ backgroundColor: "#f4f5f7" }}>
             <Content
               style={{
                 margin: 16,
-                backgroundColor: "white",
-                minHeight: "fit-content"
+                backgroundColor: "#f4f5f7",
+                minHeight: "fit-content",
                 // marginTop: 80
               }}
             >
               <div
                 style={{
                   padding: 0,
-                  background: "#fff",
-                  height: "100%"
+                  background: "#f4f5f7",
+                  height: "100%",
                 }}
               >
                 <HomeRoutes />
               </div>
             </Content>
-            <Footer style={{ textAlign: "center" }}>
+            <Footer style={{ textAlign: "center", backgroundColor: "#f4f5f7", }}>
               NPS ©2020 Created by Round's Edge Technologies
             </Footer>
           </Layout>

@@ -212,8 +212,76 @@
 }
 
 .card {
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  // box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  border-radius: 0.625rem;
+  box-shadow: 0 2px 0 rgba(90, 97, 105, 0.11), 0 4px 8px rgba(90, 97, 105, 0.12),
+    0 10px 10px rgba(90, 97, 105, 0.06), 0 7px 70px rgba(90, 97, 105, 0.1);
   padding: 25px;
+  background-color: white;
+}
+
+.page-header {
+  // padding-bottom: 1.5rem !important;
+  padding-top: 1.5rem !important;
+  .page-subtitle {
+    letter-spacing: 0.125rem;
+    color: #818ea3;
+    font-size: 0.625rem;
+    text-transform: uppercase !important;
+  }
+  .page-title {
+    letter-spacing: 0.125rem;
+    color: #818ea3;
+    font-size: 0.625rem;
+  }
+
+  h3 {
+    margin-bottom: 0;
+    // font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    //   Helvetica Neue, Arial, sans-serif;
+    font-weight: 400;
+    color: #3d5170;
+    font-size: 1.953rem;
+  }
+}
+
+.satelliteMain {
+  .satelliteMainText {
+    margin-bottom: 0.75rem;
+    // font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    //   Helvetica Neue, Arial, sans-serif;
+    font-weight: 400;
+    color: #3d5170;
+    font-size: 1.5rem;
+  }
+  .moreValueContainer {
+    .moreValue {
+      padding-top: 24px;
+      svg {
+        font-size: 2.5rem;
+      }
+      .value {
+        font-size: 1rem;
+      }
+    }
+  }
+}
+.border {
+  // box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  // // box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  // padding: 25px;
+
+  // border: 1px solid rgba(0, 0, 0, 0.16);
+  // padding: 25px;
+  // border-radius: 5px;
+  margin-bottom: 10px;
+  background-color: white;
+  border: none;
+  border-radius: 0.625rem;
+  padding: 25px;
+  border-radius: 0.625rem;
+  box-shadow: 0 2px 0 rgba(90, 97, 105, 0.11), 0 4px 8px rgba(90, 97, 105, 0.12),
+    0 10px 10px rgba(90, 97, 105, 0.06), 0 7px 70px rgba(90, 97, 105, 0.1);
 }
 
 .masonry-layout {
@@ -244,6 +312,12 @@
   .ant-tabs-tab-active {
     // color: $primaryButtonColor !important;
   }
+}
+
+.flex {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
 }
 
 .headerTabs {
@@ -284,10 +358,11 @@
 .desByTopic {
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   padding: 20px;
+  background-color: white;
 }
 
 .bubbleContainer {
-  // background: red;
+  background: white;
   height: 633px;
   display: flex;
   align-items: center;

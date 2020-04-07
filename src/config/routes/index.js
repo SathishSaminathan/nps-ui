@@ -13,6 +13,7 @@ import RawData from "components/Raw Data";
 import ProtectedRoute from "./ProtectedRoutes";
 import DashboardComponent1 from "components/shared/DashboardComponent/DashboardComponent1";
 import PredictionMore from "components/shared/DashboardComponent/PredictionMore";
+import SatelliteMain from "screens/Satellite/SatelliteMain";
 
 const MainRoutes = () => {
   return (
@@ -35,6 +36,11 @@ const HomeRoutes = () => {
         exact
         path="/dashboardWithData1"
         component={DashboardComponent1}
+      />
+      <ProtectedRoute
+        exact
+        path="/satellite"
+        component={SatelliteMain}
       />
       <ProtectedRoute
         exact

@@ -9,7 +9,7 @@ export const numberOnly = event => {
 export const getRandomColors = (
   data,
   type,
-  colors = [Colors.green, Colors.red]
+  colors = [Colors.darkBlue, Colors.lightBlue]
 ) => {
   switch (type) {
     case "DOUGHNUT":

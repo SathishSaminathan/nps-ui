@@ -34,7 +34,7 @@ const products = [
   "Mortgage",
   "Other financial service",
   "Payday loan",
-  "Prepaid card"
+  "Prepaid card",
 ];
 
 const pieData = {
@@ -43,23 +43,23 @@ const pieData = {
     {
       data: [300, 50, 100],
       backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
-      hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"]
-    }
-  ]
+      hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+    },
+  ],
 };
 const marks = {
   100: {
     style: {
-      color: "#f22f7e"
+      color: "#f22f7e",
     },
-    label: <strong>100</strong>
+    label: <strong>100</strong>,
   },
   999999: {
     style: {
-      color: "#f22f7e"
+      color: "#f22f7e",
     },
-    label: <strong>999999</strong>
-  }
+    label: <strong>999999</strong>,
+  },
 };
 
 const data = {
@@ -68,9 +68,9 @@ const data = {
     {
       data: [20, 50, 30],
       backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
-      hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"]
-    }
-  ]
+      hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+    },
+  ],
 };
 
 const bubbleData = {
@@ -95,9 +95,9 @@ const bubbleData = {
       pointHoverBorderWidth: 2,
       pointRadius: 1,
       pointHitRadius: 10,
-      data: [{ x: 10, y: 20, r: 50 }]
-    }
-  ]
+      data: [{ x: 10, y: 20, r: 50 }],
+    },
+  ],
 };
 
 const barData = {
@@ -111,20 +111,20 @@ const barData = {
     "July",
     "August",
     "Septemper",
-    "October"
+    "October",
   ],
   datasets: [
     {
       label: "Happy",
       backgroundColor: "#79c447",
-      data: [65, 59, 80, 81, 56, 55, 51, 80, 90, 100]
+      data: [65, 59, 80, 81, 56, 55, 51, 80, 90, 100],
     },
     {
       label: "Un Happy",
       backgroundColor: "#f5222d",
-      data: [65, 59, 80, 81, 56, 55, 51, 80, 90, 100]
-    }
-  ]
+      data: [65, 59, 80, 81, 56, 55, 51, 80, 90, 100],
+    },
+  ],
 };
 
 class DashboardComponent1 extends Component {
@@ -152,8 +152,8 @@ class DashboardComponent1 extends Component {
         Sentiment: null,
         Timeline: null,
         ValueInvolved: [],
-        Theme: null
-      }
+        Theme: null,
+      },
     };
     this.dashboardAPI = new DashboardServices();
   }
@@ -162,16 +162,16 @@ class DashboardComponent1 extends Component {
     Promise.all([
       this.dashboardAPI.service(DashboardVariables.GET_SPEEDOMETER, "NPS"),
       this.dashboardAPI.service(DashboardVariables.GET_SPEEDOMETER, "CSAT"),
-      this.dashboardAPI.service(DashboardVariables.GET_SPEEDOMETER, "CES")
+      this.dashboardAPI.service(DashboardVariables.GET_SPEEDOMETER, "CES"),
     ])
       .then(([res1, res2, res3]) => {
         this.setState({
           NPS: res1.data.value,
           CSAT: res2.data.value,
-          CES: res3.data.value
+          CES: res3.data.value,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
@@ -181,17 +181,17 @@ class DashboardComponent1 extends Component {
       this.dashboardAPI.service(DashboardVariables.GET_PRODUCTS),
       this.dashboardAPI.service(DashboardVariables.GET_STATES),
       this.dashboardAPI.service(DashboardVariables.GET_SENTIMENT),
-      this.dashboardAPI.service(DashboardVariables.GET_THEMES)
+      this.dashboardAPI.service(DashboardVariables.GET_THEMES),
     ])
       .then(([res1, res2, res3, res4]) => {
         this.setState({
           Products: res1.data,
           States: res2.data,
           Sentiments: res3.data,
-          Themes: res4.data
+          Themes: res4.data,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
@@ -244,34 +244,34 @@ class DashboardComponent1 extends Component {
       this.getFeedbackService("QUALITY"),
       this.getFeedbackService("PRICE"),
       this.getFeedbackService("DESIGN"),
-      this.getFeedbackService("SERVICE")
+      this.getFeedbackService("SERVICE"),
     ])
       .then(([res1, res2, res3, res4]) => {
         this.setState({
           qualitySummary: res1.data.qualitySummary,
           priceSummary: res2.data.priceSummary,
           deignSummary: res3.data.deignSummary,
-          serviceSummary: res4.data.serviceSummary
+          serviceSummary: res4.data.serviceSummary,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }
 
-  getFeedbackService = type => {
+  getFeedbackService = (type) => {
     return this.dashboardAPI.service(DashboardVariables.FEEDBACK_SERVICE, type);
   };
 
   getChartSummary = () => {
     this.dashboardAPI
       .service(DashboardVariables.GET_CHART_SUMMARY)
-      .then(res => {
+      .then((res) => {
         this.setState({
-          SummaryResponse: res.data
+          SummaryResponse: res.data,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
@@ -279,12 +279,12 @@ class DashboardComponent1 extends Component {
   getVOCChart = () => {
     this.dashboardAPI
       .service(DashboardVariables.GET_VOC)
-      .then(res => {
+      .then((res) => {
         this.setState({
-          VOCResponse: res.data
+          VOCResponse: res.data,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
@@ -295,7 +295,7 @@ class DashboardComponent1 extends Component {
       2: Images.Smiley4,
       3: Images.Smiley3,
       4: Images.Smiley2,
-      5: Images.Smiley1
+      5: Images.Smiley1,
     };
     const {
       IsDataFetched,
@@ -312,13 +312,13 @@ class DashboardComponent1 extends Component {
       priceSummary,
       deignSummary,
       serviceSummary,
-      FilterData: { Timeline, Sentiment, State, Product, ValueInvolved, Theme }
+      FilterData: { Timeline, Sentiment, State, Product, ValueInvolved, Theme },
     } = this.state;
 
     const { activeDashboardTab, setActiveDashboardTab } = this.props;
 
     const desc = ["Terrible", "Bad", "Normal", "Good", "Wonderful"];
-
+    const segmentColors = ["#70bff8", "#7bccf7", "#a8e3f3"];
     return (
       <Row style={{ position: "relative", height: "100%" }}>
         {SummaryResponse.length === 0 && VOCResponse.length === 0 && <Loader />}
@@ -351,7 +351,9 @@ class DashboardComponent1 extends Component {
                           width={190}
                           ringWidth={20}
                           customSegmentStops={[0, 3, 6, 10]}
-                          segmentColors={["#ff6384", "#ffce56", "#79c447"]}
+                          // segmentColors={segmentColors}
+                          startColor={segmentColors[0]}
+                          endColor={segmentColors[2]}
                           minValue={0}
                           maxValue={10}
                           needleTransitionDuration={4000}
@@ -368,7 +370,7 @@ class DashboardComponent1 extends Component {
                           width={190}
                           ringWidth={20}
                           customSegmentStops={[0, 1.5, 3.5, 5]}
-                          segmentColors={["#ff6384", "#ffce56", "#79c447"]}
+                          segmentColors={segmentColors}
                           minValue={0}
                           maxValue={5}
                           needleTransitionDuration={5000}
@@ -385,7 +387,7 @@ class DashboardComponent1 extends Component {
                           width={190}
                           ringWidth={20}
                           customSegmentStops={[0, 3, 6, 10]}
-                          segmentColors={["#ff6384", "#ffce56", "#79c447"]}
+                          segmentColors={segmentColors}
                           minValue={0}
                           maxValue={10}
                           needleTransitionDuration={6000}
@@ -418,13 +420,13 @@ class DashboardComponent1 extends Component {
                                   anchor: "center",
                                   color: "#000",
                                   font: {
-                                    size: 10
+                                    size: 10,
                                   },
                                   formatter: (value, ctx) => {
                                     return `${value}%`;
-                                  }
-                                }
-                              }
+                                  },
+                                },
+                              },
                             }}
                           />
                           {/* )} */}
@@ -446,16 +448,16 @@ class DashboardComponent1 extends Component {
                                       display: true,
                                       // labelString: "X axe name",
                                       fontColor: "#000000",
-                                      fontSize: 10
+                                      fontSize: 10,
                                     },
                                     gridLines: {
-                                      display: false
-                                    }
+                                      display: false,
+                                    },
                                     // ticks: {
                                     //   fontColor: "black",
                                     //   fontSize: 8
                                     // }
-                                  }
+                                  },
                                 ],
                                 yAxes: [
                                   {
@@ -464,23 +466,23 @@ class DashboardComponent1 extends Component {
                                       display: true,
                                       // labelString: "Y axe name",
                                       fontColor: "#000000",
-                                      fontSize: 10
+                                      fontSize: 10,
                                     },
                                     gridLines: {
-                                      display: false
-                                    }
+                                      display: false,
+                                    },
                                     // ticks: {
                                     //   fontColor: "black",
                                     //   fontSize: 8
                                     // }
-                                  }
-                                ]
+                                  },
+                                ],
                               },
                               plugins: {
                                 datalabels: {
-                                  display: false
-                                }
-                              }
+                                  display: false,
+                                },
+                              },
                             }}
                           />
                         )}
@@ -662,12 +664,12 @@ class DashboardComponent1 extends Component {
 }
 
 const mapStateToProps = ({ activeTab: { activeDashboardTab } }) => ({
-  activeDashboardTab
+  activeDashboardTab,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    setActiveDashboardTab: key => dispatch(setActiveDashboardTab(key))
+    setActiveDashboardTab: (key) => dispatch(setActiveDashboardTab(key)),
   };
 };
 
