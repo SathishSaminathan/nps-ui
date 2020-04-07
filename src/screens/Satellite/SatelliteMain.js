@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Col, Row,  Tabs } from "antd";
+import { Col, Row, Tabs } from "antd";
 
 import KPI from "./KPI";
+import ThemesAndSentiments from "./ThemesAndSentiments";
 
 const { TabPane } = Tabs;
 
@@ -26,7 +27,9 @@ export default class SatelliteMain extends Component {
             >
               <KPI />
             </TabPane>
-            <TabPane tab={<span>Themes and sentiments</span>} key="2"></TabPane>
+            <TabPane tab={<span>Themes and sentiments</span>} key="2">
+              <ThemesAndSentiments />
+            </TabPane>
           </Tabs>
         </Col>
       </Row>

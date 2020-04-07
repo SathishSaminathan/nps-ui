@@ -6,7 +6,7 @@ import { Colors } from "constants/themeConstants";
 import KPIComponent from "./KPIComponent";
 import { SelectComponent } from "components/shared/SelectComponent";
 
-export default class KPI extends Component {
+export default class ThemesAndSentiments extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -197,6 +197,17 @@ export default class KPI extends Component {
                   // loading={!ThemeFetched}
                 />
               </Col>
+              <Col style={{ paddingBottom: 10 }} xl={24}>
+                <SelectComponent
+                  data={[]}
+                  // defaultValue={issueId}
+                  // value={issueId}
+                  placeholder="customer journey"
+                  // handleProductChange={this.handleProductChange}
+                  field="issueId"
+                  // loading={!ThemeFetched}
+                />
+              </Col>
               <Col xl={24}>
                 <Button icon="filter" type="primary" style={{ width: "100%" }}>
                   Apply
@@ -213,7 +224,7 @@ export default class KPI extends Component {
           />
           <Col className="page-header">
             <span class="text-uppercase page-subtitle">Satellite</span>
-            <h3 class="+">KPI</h3>
+            <h3 class="+">Themes and sentiments</h3>
           </Col>
           <Col xl={24}>
             <KPIComponent

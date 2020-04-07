@@ -125,7 +125,7 @@ code {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 3% !important;
+  padding: 0 1% !important;
 }
 
 .textEllipsis {
@@ -151,7 +151,8 @@ code {
   border: none !important;
 }
 
-.Yes, .Male {
+.Yes,
+.Male {
   background-color: #79c447 !important;
 }
 
@@ -159,7 +160,8 @@ code {
   background-color: #ff5555 !important;
 }
 
-.NA, .Female {
+.NA,
+.Female {
   background-color: #30bae7 !important;
 }
 
