@@ -22,13 +22,35 @@ export default class SatelliteMain extends Component {
           <Tabs defaultActiveKey="1">
             <TabPane
               style={{ backgroundColor: "#f4f5f7" }}
-              tab={<span>KPI</span>}
+              tab={<span>Customer Experiance</span>}
               key="1"
             >
-              <KPI />
+              <Tabs defaultActiveKey="1">
+                <TabPane
+                  style={{ backgroundColor: "#f4f5f7" }}
+                  tab={<span>KPI</span>}
+                  key="1"
+                >
+                  <KPI />
+                </TabPane>
+                <TabPane tab={<span>Themes and sentiments</span>} key="2">
+                  <ThemesAndSentiments />
+                </TabPane>
+              </Tabs>
             </TabPane>
-            <TabPane tab={<span>Themes and sentiments</span>} key="2">
-              <ThemesAndSentiments />
+            <TabPane tab={<span>Employee Performance</span>} key="2">
+            <Tabs defaultActiveKey="1">
+                <TabPane
+                  style={{ backgroundColor: "#f4f5f7" }}
+                  tab={<span>KPI</span>}
+                  key="1"
+                >
+                  <KPI />
+                </TabPane>
+                <TabPane tab={<span>Themes and sentiments</span>} key="2">
+                  <ThemesAndSentiments />
+                </TabPane>
+              </Tabs>
             </TabPane>
           </Tabs>
         </Col>

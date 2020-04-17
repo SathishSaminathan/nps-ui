@@ -85,7 +85,7 @@ export default class Home extends Component {
                 onClick={() => this.props.history.push("/satellite")}
               >
                 <Icon type="percentage" />
-                <span className="nav-text">Dashboard2</span>
+                <span className="nav-text">Satellite</span>
               </Menu.Item>
               <Menu.Item
                 key="4"
