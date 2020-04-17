@@ -245,7 +245,7 @@ export default class KPI extends Component {
                 style={{ height: 242 }}
               >
                 <Col
-                  xl={15}
+                  xl={18}
                   // style={{ height: 300 }}
                   className="moreValueContainer"
                 >
